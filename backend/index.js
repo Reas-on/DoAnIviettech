@@ -14,7 +14,7 @@ app.use(cors());
 
 // Mongoose connect
 mongoose.connect(
-  "mongodb+srv://chuchu1:tuan123@cluster0.o3pv3ft.mongodb.net/iviettech"
+  ""
 );
 
 // Image Store
