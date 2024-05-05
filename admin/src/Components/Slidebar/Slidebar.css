@@ -1,0 +1,61 @@
+/* Slidebar.css */
+
+.slidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #fff; /* Màu nền của sidebar là trắng */
+    color: #333; /* Màu chữ của các mục trong sidebar */
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+  
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee; /* Đường viền giữa các mục */
+    cursor: pointer;
+
+}
+  
+  .sidebar-item img {
+    width: 24px; /* Kích thước ảnh icon */
+    margin: 10px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+  }
+  
+  .sidebar-item p {
+    margin: 0;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-weight: normal;
+    flex-grow: 1;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #f0f0f0;
+    color: #000;
+    font-weight: bold;
+    filter: grayscale(0);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+  }
+  
+  .sidebar-item:hover p {
+    font-weight: bold; /* Hiển thị chữ in đậm khi di chuột vào */
+  }
+  
