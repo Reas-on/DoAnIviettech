@@ -5,15 +5,16 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
-
+const jwt = require("jsonwebtoken");
 // Import schema from the new directory
 const Product = require("./Schema/ProductSchema");
+const User = require("./Schema/UsersSchema");
 app.use(express.json());
 app.use(cors());
 
 // Mongoose connect
 mongoose.connect(
-  ""
+  "mongodb+srv://chuchu1:tuan123@cluster0.o3pv3ft.mongodb.net/iviettech"
 );
 
 // Image Store
@@ -85,14 +86,12 @@ app.post("/removeproduct", async (req, res) => {
         name: req.body.name, // Thêm trường "name" vào phản hồi
       });
     } else {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "Product removed successfully",
-          productid: productId,
-          name: req.body.name, // Thêm trường "name" vào phản hồi
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Product removed successfully",
+        productid: productId,
+        name: req.body.name, // Thêm trường "name" vào phản hồi
+      });
     }
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -108,26 +107,90 @@ app.get("/allproducts", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-// Edit Product
-app.put("/editproduct", async (req, res) => {
+
+// Route để lấy thông tin của một người dùng dựa trên tên
+app.get("/users/:username", async (req, res) => {
   try {
-    const productId = req.body.id;
-    const product = await Product.findOneAndUpdate(
-      { id: productId },
-      req.body,
-      { new: true }
-    );
-    if (!product) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
-    } else {
-      return res
-        .status(200)
-        .json({ success: true, message: "Product updated successfully" });
+    const username = req.params.username;
+    const user = await User.findOne({ name: username });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
+    res.json(user);
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    console.error("Error retrieving user:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Thêm một endpoint để lấy thông tin người dùng từ token
+app.get("/user", async (req, res) => {
+  try {
+    // Lấy token từ header của yêu cầu
+    const token = req.headers.authorization.split(" ")[1];
+    
+    // Giải mã token để lấy thông tin người dùng
+    const decoded = jwt.verify(token, YOUR_JWT_SECRET);
+    
+    // Lấy thông tin người dùng từ decoded token
+    const user = await User.findById(decoded.user.id);
+    
+    // Trả về thông tin người dùng
+    res.json(user);
+  } catch (error) {
+    console.error("Error retrieving user:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+app.post("/signup", async (req, res) => {
+  let check = await User.findOne({ email: req.body.email });
+  if (check) {
+    return res.status(400).json({
+      success: false,
+      errors: "existing user found with same email",
+    });
+  }
+  let cart = {};
+  for (let i = 0; i < 300; i++) {
+    cart[i] = 0;
+  }
+  const user = new User({
+    name: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    cartData: cart,
+  });
+
+  await user.save();
+
+  const data = {
+    user: {
+      id: user.id,
+    },
+  };
+  const token = jwt.sign(data, "secret_ecom");
+  res.json({ success: true, token });
+});
+// creating endpoint login
+app.post("/login", async (req, res) => {
+  let user = await User.findOne({ email: req.body.email });
+  if (user) {
+    const passCompare = req.body.password === user.password;
+    if (passCompare) {
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authToken = jwt.sign(data, "secret_ecom");
+      res.json({ success: true, authToken });
+    } else {
+      res.status(400).json({ success: false, errors: "Incorrect password" });
+    }
+  } else {
+    res.json({ success: false, errors: "Invalid Email" });
   }
 });
 
