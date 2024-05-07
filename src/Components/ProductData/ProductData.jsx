@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Descriptions, Button, Input, Checkbox, message } from 'antd';
 
 const ProductData = () => {
-  const { id } = useParams(); // Trích xuất id từ URL
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +14,7 @@ const ProductData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/allproducts/${id}`); 
+        const response = await fetch(`http://localhost:4000/allproducts/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch product data');
         }
@@ -28,7 +29,7 @@ const ProductData = () => {
     };
 
     fetchData();
-  }, [id]); 
+  }, [id]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -47,11 +48,11 @@ const ProductData = () => {
         throw new Error('Failed to update product');
       }
       setIsEditing(false);
-      // Fetch lại thông tin sản phẩm sau khi lưu thành công
       fetchProduct();
-      setShowPopup(true); // Hiển thị popup khi lưu thành công
+      setShowPopup(true);
     } catch (error) {
       console.error('Error updating product:', error);
+      message.error('Failed to update product');
     }
   };
 
@@ -60,14 +61,13 @@ const ProductData = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setEditedProduct({
       ...editedProduct,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
-  // Hàm fetch lại thông tin sản phẩm từ API
   const fetchProduct = async () => {
     try {
       const response = await fetch(`http://localhost:4000/allproducts/${id}`);
@@ -98,69 +98,42 @@ const ProductData = () => {
       {product ? (
         <div>
           <h2>Product Detail</h2>
-          <div>
-            <p>ID: {product.id}</p>
-            <p>
-              Name:{' '}
+          <Descriptions layout="vertical" bordered>
+            <Descriptions.Item label="ID">{product.id}</Descriptions.Item>
+            <Descriptions.Item label="Name">
               {isEditing ? (
-                <input
-                  type="text"
-                  name="name"
-                  value={editedProduct.name}
-                  onChange={handleChange}
-                />
+                <Input name="name" value={editedProduct.name} onChange={handleChange} />
               ) : (
                 product.name
               )}
-            </p>
-            <p>
-              Image:{' '}
+            </Descriptions.Item>
+            <Descriptions.Item label="Image">
               <img src={product.image} alt={product.name} style={{ maxWidth: '100px' }} />
-            </p>
-            <p>
-              Category:{' '}
+            </Descriptions.Item>
+            <Descriptions.Item label="Category">
               {isEditing ? (
-                <input
-                  type="text"
-                  name="category"
-                  value={editedProduct.category}
-                  onChange={handleChange}
-                />
+                <Input name="category" value={editedProduct.category} onChange={handleChange} />
               ) : (
                 product.category
               )}
-            </p>
-            <p>
-              New Price:{' '}
+            </Descriptions.Item>
+            <Descriptions.Item label="New Price">
               {isEditing ? (
-                <input
-                  type="text"
-                  name="new_price"
-                  value={editedProduct.new_price}
-                  onChange={handleChange}
-                />
+                <Input name="new_price" value={editedProduct.new_price} onChange={handleChange} />
               ) : (
                 product.new_price
               )}
-            </p>
-            <p>
-              Old Price:{' '}
+            </Descriptions.Item>
+            <Descriptions.Item label="Old Price">
               {isEditing ? (
-                <input
-                  type="text"
-                  name="old_price"
-                  value={editedProduct.old_price}
-                  onChange={handleChange}
-                />
+                <Input name="old_price" value={editedProduct.old_price} onChange={handleChange} />
               ) : (
                 product.old_price
               )}
-            </p>
-            <p>
-              Available:{' '}
+            </Descriptions.Item>
+            <Descriptions.Item label="Available">
               {isEditing ? (
-                <input
-                  type="checkbox"
+                <Checkbox
                   name="available"
                   checked={editedProduct.available}
                   onChange={handleChange}
@@ -168,17 +141,16 @@ const ProductData = () => {
               ) : (
                 product.available ? 'Yes' : 'No'
               )}
-            </p>
-            <p>Date: {product.date}</p>
-            {isEditing ? (
-              <div>
-                <button onClick={handleSave}>Save</button>
-                <button onClick={handleClose}>Close</button>
-              </div>
-            ) : (
-              <button onClick={handleEdit}>Edit</button>
-            )}
-          </div>
+            </Descriptions.Item>
+          </Descriptions>
+          {isEditing ? (
+            <div>
+              <Button type="primary" onClick={handleSave}>Save</Button>
+              <Button onClick={handleClose}>Close</Button>
+            </div>
+          ) : (
+            <Button onClick={handleEdit}>Edit</Button>
+          )}
         </div>
       ) : (
         <div>No product data available</div>
@@ -188,9 +160,7 @@ const ProductData = () => {
           <span className="popup-close" onClick={closePopup}>
             &times;
           </span>
-          <p className="popup-message">Đã Thay Đổi Thông Tin</p>
-          <p className="popup-message">Thông tin mới: {JSON.stringify(editedProduct)}</p>
-          <p className="popup-message">Thông tin cũ: {JSON.stringify(product)}</p>
+          <p className="popup-message">Thông tin sản phẩm đã được cập nhật!</p>
         </div>
       )}
     </div>

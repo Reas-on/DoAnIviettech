@@ -50,8 +50,8 @@ const LoginSignup = () => {
       responseData = data;
     })
     if(responseData.success) {
-      localStorage.setItem("auth-token", responseData.authToken);
-      window.location.replace("/");
+      // localStorage.setItem("auth-token", responseData.authToken);
+      window.location.replace("/login");
     }else {
       alert(responseData.errors);
     }
