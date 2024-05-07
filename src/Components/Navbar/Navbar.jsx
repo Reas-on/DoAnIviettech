@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./Navbar.scss";
+import "./Navbar.css";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("Shop");
+  const [userName, setUserName] = useState(""); // Thêm state userName
   const { getTotalCartItems } = useContext(ShopContext);
   const authToken = localStorage.getItem("auth-token");
 
@@ -14,6 +15,27 @@ const Navbar = () => {
     localStorage.removeItem("auth-token");
     window.location.replace("/");
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/profile", {
+          method: "GET",
+          headers: {
+            "auth-token": authToken,
+          },
+        });
+        const data = await response.json();
+        setUserName(data.name); // Lưu tên người dùng vào state
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    if (authToken) {
+      fetchUserInfo();
+    }
+  }, [authToken]);
 
   return (
     <div className="navbar">
@@ -67,7 +89,7 @@ const Navbar = () => {
         {authToken ? (
           <>
             <Link to="/profile">
-              <button>Profile</button>
+              <button>{userName}</button>
             </Link>
             <button onClick={handleLogout}>Logout</button>
           </>

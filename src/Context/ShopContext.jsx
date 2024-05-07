@@ -2,14 +2,17 @@ import React, { createContext, useEffect, useState } from "react";
 import all_product from "../Components/Assets/all_product";
 
 export const ShopContext = createContext(null);
+
 const getDefaultCart = () => {
   let cart = {};
-  for (let i = 1; i < all_product.length + 1; i++) {
-    cart[i] = 0; // Sửa từ index thành i
+  for (let i = 1; i < 300 + 1; i++) {
+    cart[i] = 0;
   }
   return cart;
 };
+
 const ShopContextProvider = (props) => {
+  const [all_product, setAll_Product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem("cartItems"));
@@ -23,10 +26,44 @@ const ShopContextProvider = (props) => {
   }, [cartItems]);
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    console.log(cartItems);
+    const authToken = localStorage.getItem("auth-token");
+
+    if (authToken) {
+      fetch("http://localhost:4000/addtocart", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "auth-token": authToken,
+        },
+        body: JSON.stringify({ itemId: itemId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    }
   };
+
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    const authToken = localStorage.getItem("auth-token");
+
+    if (authToken) {
+      fetch("http://localhost:4000/removefromcart", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "auth-token": authToken,
+        },
+        body: JSON.stringify({ itemId: itemId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    }
   };
 
   const getTotalCartAmount = () => {
@@ -51,6 +88,8 @@ const ShopContextProvider = (props) => {
     }
     return totalItems;
   };
+
+
   const contextValue = {
     getTotalCartItems,
     getTotalCartAmount,
@@ -60,6 +99,7 @@ const ShopContextProvider = (props) => {
     removeFromCart,
     setCartItems,
   };
+
   return (
     <ShopContext.Provider value={contextValue}>
       {props.children}

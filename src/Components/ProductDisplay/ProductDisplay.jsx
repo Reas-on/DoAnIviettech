@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import "./ProductDisplay.scss";
+import React, { useState, useContext } from "react";
+import "./ProductDisplay.css";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
@@ -7,6 +7,18 @@ import { ShopContext } from "../../Context/ShopContext";
 const ProductDisplay = (props) => {
   const { product } = props;
   const { addToCart } = useContext(ShopContext);
+  const [showPopup, setShowPopup] = useState(false);// Trạng thái của size được chọn
+
+  const handleAddToCart = () => {
+    addToCart(product.id);
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 5000); // 5 giây
+  };
+  if (!product) {
+    return
+  }
   return (
     <div className="productdisplay">
       <div className="productdisplay-left">
@@ -56,7 +68,14 @@ const ProductDisplay = (props) => {
             <div>XXL</div>
           </div>
         </div>
-        <button onClick={() => addToCart(product.id)}>Add To Cart</button>
+        <div className="productdisplay-right-cart">
+          <button onClick={handleAddToCart}>Add To Cart</button>
+          {showPopup && (
+            <div className="productdisplay-right-cart-popup">
+              Added Product {product.name} in your cart
+            </div>
+          )}
+        </div>
         <p className="productdisplay-right-category">
           Category: <span>{product.category}</span>
         </p>

@@ -1,9 +1,12 @@
 import React from "react";
-import "./Breadcrum.scss";
+import "./Breadcrum.css";
 import arrow_icon from "../Assets/breadcrum_arrow.png";
 import { Link } from "react-router-dom";
 
 const Breadcrums = ({ product }) => {
+  if (!product || !product.category) {
+    return null; // Hoặc có thể trả về một phần tử rỗng để không render gì cả
+  }
   const getCategoryRoute = (category) => {
     switch (category) {
       case "men":

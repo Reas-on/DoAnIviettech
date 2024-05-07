@@ -31,6 +31,7 @@ const CartItems = () => {
       <div className="cartitems-format-main">
         <p>Product</p>
         <p>Title</p>
+        <p>Size</p>
         <p>Price</p>
         <p>Quantity</p>
         <p>Total</p>
@@ -49,9 +50,12 @@ const CartItems = () => {
                   className="carticon-product-icon"
                 />
                 <p>{product.name}</p>
+                <p>{product.size}</p> {/* Thêm cột Size */}
                 <p>{product.new_price.toLocaleString("en-US")} VND</p>
                 <button className="cartitems-quantity">{quantity}</button>
-                <p>{(product.new_price * quantity).toLocaleString("en-US")} VND</p>
+                <p>
+                  {(product.new_price * quantity).toLocaleString("en-US")} VND
+                </p>
                 <img
                   className="cartitems-remove-icon"
                   src={remove_icon}
@@ -66,6 +70,7 @@ const CartItems = () => {
           return null;
         }
       })}
+
       <div className="cartitems-down">
         <div className="cartitems-total">
           <h1>Cart Total</h1>
@@ -86,6 +91,14 @@ const CartItems = () => {
             </div>
           </div>
           <Checkout />
+          <div className="cartitems-total-method">
+            <p>Select payment method:</p>
+            <select defaultValue="receive" onChange={handlePaymentMethodChange}>
+              <option value="receive">Nhận Hàng Khi Thanh Toán</option>
+              <option value="vnpay">Thanh Toán Qua VNPay</option>
+            </select>
+          </div>
+          <button className="cartitems-checkout-button">Checkout</button>
         </div>
         <div className="cartitems-promocode">
           <p>Promo code</p>
