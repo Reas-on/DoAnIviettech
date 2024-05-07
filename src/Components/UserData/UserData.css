@@ -1,0 +1,63 @@
+/* UserData.css */
+
+.user-data {
+    width: 100%; /* Kích thước chiều rộng của khung chứa */
+    margin: 10px auto; /* Căn giữa và tạo khoảng cách ở trên và dưới */
+    padding: 20px; /* Thêm padding để tạo khoảng cách với viền ngoài */
+    background-color: #f9f9f9; /* Màu nền */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    font-family: Arial, sans-serif; /* Font chữ */
+    overflow-x: auto; /* Cho phép cuộn ngang khi bảng quá rộng */
+    margin-left: 10px;
+  }
+  
+  .user-data table {
+    width: 100%; /* Kích thước chiều rộng của bảng */
+    border-collapse: collapse; /* Gộp các đường viền của ô */
+  }
+  
+  .user-data th,
+  .user-data td {
+    padding: 8px; /* Thêm padding cho các ô */
+    border: 1px solid #ddd; /* Đường viền của ô */
+  }
+  
+  .user-data th {
+    background-color: #f0f0f0; /* Màu nền của tiêu đề cột */
+    font-weight: bold; /* Độ đậm của tiêu đề cột */
+  }
+  
+  .user-data tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Màu nền của hàng chẵn */
+  }
+  
+  .user-data tbody tr:hover {
+    background-color: #ddd; /* Màu nền khi di chuột qua hàng */
+  }
+  
+  .user-data button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .user-data button:hover {
+    background-color: #0056b3;
+  }
+  
+  .user-data button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .user-data button:not(:last-child) {
+    margin-right: 5px;
+  }
+  
