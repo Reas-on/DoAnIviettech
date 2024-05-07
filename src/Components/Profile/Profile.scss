@@ -1,0 +1,53 @@
+$profile-color: #f0f0f0;
+$text-color: #212529;
+$button-border-radius: 5px;
+$button-font-size: 16px;
+
+.profile-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: $profile-color;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.profile-info {
+  margin-top: 20px;
+}
+
+.profile-info p {
+  margin-bottom: 10px;
+}
+
+.profile-info strong {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.cart-button,
+.edit-button,
+.save-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: $button-font-size;
+  border: none;
+  border-radius: $button-border-radius;
+  cursor: pointer;
+}
+
+.cart-button {
+  background-color: #007bff;
+  color: $text-color;
+}
+
+.edit-button {
+  background-color: #28a745;
+  color: $text-color;
+}
+
+.save-button {
+  background-color: #ffc107;
+  color: $text-color;
+}

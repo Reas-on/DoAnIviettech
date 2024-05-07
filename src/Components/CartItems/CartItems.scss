@@ -1,0 +1,143 @@
+.cartitems {
+  margin: 100px 170px;
+
+  hr {
+    height: 3px;
+    background: #e2e2e2;
+    border: 0;
+  }
+
+  .cartitems-format-main {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 75px;
+    padding: 20px 0px;
+    color: #454545;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .cartitems-format {
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .carticon-product-icon {
+    height: 62px;
+  }
+
+  .cartitems-remove-icon {
+    width: 15px;
+    cursor: pointer;
+    margin: 0px 40px;
+  }
+
+  .cartitems-quantity {
+    width: 64px;
+    height: 50px;
+    border: 2px solid #ebebeb;
+    background: #fff;
+  }
+
+  .cartitems-down {
+    display: flex;
+    margin: 50px 0;
+  }
+
+  .cartitems-total,
+  .cartitems-promocode {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #787878;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 15px 0px;
+  }
+
+  .cartitems-total {
+    margin-right: 40px;
+
+    .cartitems-total-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0px;
+
+      p {
+        font-size: 20px;
+        font-weight: 500;
+      }
+    }
+
+    button {
+      width: 100%;
+      height: 69px;
+      border-radius: 75px;
+      background: #e2e2e2;
+      color: #787878;
+      font-size: 20px;
+      font-weight: 500;
+      border: 0;
+    }
+  }
+
+  .cartitems-promocode {
+    margin-left: 40px;
+
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: 18px;
+      font-weight: 400;
+      color: #454545;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    input {
+      width: 100%;
+      height: 69px;
+      border-radius: 75px;
+      background: #e2e2e2;
+      border: 0;
+      outline: 0;
+      padding: 0 20px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #787878;
+      transition: color 0.3s;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    button {
+      height: 69px;
+      border-radius: 75px;
+      background: black;
+      color: white !important;
+      font-size: 20px;
+      font-weight: 500;
+      border: 0;
+    }
+  }
+  @media (max-width: 768px) {
+    margin: 50px 20px;
+
+    .cartitems-format-main {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .cartitems-down {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .cartitems-total,
+    .cartitems-promocode {
+      margin: 20px 0;
+    }
+  }
+}

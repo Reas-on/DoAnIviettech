@@ -1,0 +1,75 @@
+$offers-width: 65%;
+$offers-height: 60vh;
+$offers-padding: 0px 140px;
+$offers-margin-bottom: 150px;
+$offers-left-button-width: 282px;
+$offers-left-button-height: 70px;
+
+.offers {
+  width: $offers-width;
+  height: $offers-height;
+  display: flex;
+  margin: auto;
+  padding: $offers-padding;
+  margin-bottom: $offers-margin-bottom;
+  background: linear-gradient(180deg, #fde1ff, #e1ffea22 60%);
+
+  .offers-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h1 {
+      color: #171717;
+      font-size: 80px;
+      font-weight: 600;
+    }
+
+    p {
+      color: #171717;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    button {
+      width: $offers-left-button-width;
+      height: $offers-left-button-height;
+      border-radius: 35px;
+      background: #ff4141;
+      color: white;
+      font-size: 22px;
+      font-weight: 500;
+      border: none;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+  }
+
+  .offers-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 50px;
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 0px 20px;
+
+    .offers-left {
+      h1 {
+        font-size: 40px;
+      }
+
+      p {
+        font-size: 18px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

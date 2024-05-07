@@ -1,0 +1,103 @@
+$newsletter-width: 65%;
+$newsletter-height: 40vh;
+$newsletter-padding: 0px 140px;
+$newsletter-margin-bottom: 150px;
+$newsletter-gap: 30px;
+$newsletter-button-width: 200px;
+$newsletter-button-height: 60px;
+$newsletter-input-font-size: 16px;
+
+$newsletter-width-mobile: 90%;
+$newsletter-padding-mobile: 0px 20px;
+$newsletter-margin-bottom-mobile: 50px;
+$newsletter-input-width-mobile: 100%;
+
+.newsletter {
+  width: $newsletter-width;
+  height: $newsletter-height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  padding: $newsletter-padding;
+  margin-bottom: $newsletter-margin-bottom;
+  gap: $newsletter-gap;
+  background: linear-gradient(180deg, #fde1ff, #e1ffea22 60%);
+  color: #454545;
+
+  h1 {
+    font-size: 55px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    width: 730px;
+    height: 70px;
+    border-radius: 80px;
+    border: 1px solid #e3e3e3;
+
+    button {
+      width: $newsletter-button-width;
+      height: $newsletter-button-height;
+      border: none;
+      outline: none;
+      background: #252525;
+      color: white;
+      font-family: Poppins;
+      font-size: $newsletter-input-font-size;
+      font-weight: 600;
+      border-radius: 80px;
+      cursor: pointer;
+    }
+  }
+
+  input {
+    width: $newsletter-width;
+    margin-left: 30px;
+    border: none;
+    outline: none;
+    color: #616161;
+    font-family: Poppins;
+    font-size: $newsletter-input-font-size;
+    height: 70px;
+    padding: 0px 20px;
+    border-radius: 80px;
+    background: white;
+    border: 1px solid #e3e3e3;
+
+    @media (max-width: 768px) {
+      width: $newsletter-input-width-mobile;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: $newsletter-width-mobile;
+    padding: $newsletter-padding-mobile;
+    margin-bottom: $newsletter-margin-bottom-mobile;
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    div {
+      width: 100%;
+    }
+  }
+}

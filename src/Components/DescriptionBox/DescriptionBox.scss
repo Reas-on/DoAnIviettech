@@ -1,0 +1,59 @@
+$descriptionbox-margin: 120px 170px;
+$description-nav-box-size: 171px;
+$description-nav-box-height: 76px;
+$description-nav-box-border: 1px solid #d0d0d0;
+$description-nav-box-font-size: 16px;
+$description-nav-box-font-weight: 600;
+$descriptionbox-description-gap: 25px;
+$descriptionbox-description-padding: 48px;
+$descriptionbox-description-padding-bottom: 70px;
+$descriptionbox-description-border: 1px solid #d0d0d0;
+$description-nav-box-fade-background: #fbfbfb;
+$description-nav-box-fade-color: #555;
+
+.descriptionbox {
+  margin: $descriptionbox-margin;
+
+  .descriptionbox-navigator {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    margin-bottom: 20px; 
+
+    .description-nav-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $description-nav-box-font-size;
+      font-weight: $description-nav-box-font-weight;
+      width: $description-nav-box-size;
+      height: $description-nav-box-height;
+      border: $description-nav-box-border;
+
+      &.fade {
+        background: $description-nav-box-fade-background;
+        color: $description-nav-box-fade-color;
+      }
+    }
+  }
+
+  .descriptionbox-description {
+    display: flex;
+    flex-direction: column;
+    gap: $descriptionbox-description-gap;
+    padding: $descriptionbox-description-padding;
+    padding-bottom: $descriptionbox-description-padding-bottom;
+    border: $descriptionbox-description-border;
+  }
+}
+
+@media (max-width: 768px) {
+  .descriptionbox {
+    margin: 50px 20px;
+
+    .descriptionbox-navigator {
+      justify-content: center; 
+      gap: 10px; 
+    }
+  }
+}
