@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./ListProduct.css";
 import { Link } from "react-router-dom";
 
@@ -8,11 +8,7 @@ const ListProduct = () => {
   const [message, setMessage] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
 
-  useEffect(() => {
-    fetchInfo();
-  }, [currentPage]);
-
-  const fetchInfo = async () => {
+  const fetchInfo = useCallback(async () => {
     try {
       const response = await fetch(
         `http://localhost:4000/allproducts?page=${currentPage}`
@@ -25,7 +21,11 @@ const ListProduct = () => {
     } catch (error) {
       console.error("Error fetching data:", error.message);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    fetchInfo();
+  }, [fetchInfo, currentPage]);
 
   const removeProduct = async (id) => {
     try {
@@ -97,10 +97,9 @@ const ListProduct = () => {
                   alt=""
                   className="listproduct-product-icon"
                 />
-                <Link to={`/listProduct/${product.id}`}>
+                <Link to={`/admin/listProduct/${product.id}`}>
                   <p>{product.name}</p>
                 </Link>
-
                 <p>{product.old_price.toLocaleString("en-US")} VND</p>
                 <p>{product.new_price.toLocaleString("en-US")} VND</p>
                 <p>{product.category}</p>

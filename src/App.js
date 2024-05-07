@@ -13,10 +13,10 @@ import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import DashBoard from "./Components/DashBoard/DashBoard";
 import Payment from "./Pages/Payment";
-
-
-
-
+import AddProduct from "./Components/AddProduct/AddProduct";
+import ListProduct from "./Components/ListProduct/ListProduct";
+import ProductData from "./Components/ProductData/ProductData";
+import UserData from "./Components/UserData/UserData";
 function App() {
   return (
     <div>
@@ -43,8 +43,12 @@ function App() {
             <Route path="/payment" element={<Payment/>}/>
           </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="admin" element={<AdminLayout />}>
             <Route index element={<DashBoard/>} />
+           <Route path='/admin/Addproduct' element={<AddProduct />} />
+           <Route path='/admin/Listproduct' element={<ListProduct />} />
+           <Route path='/admin/ListProduct/:id' element={<ProductData />} />
+           <Route path='/admin/Userdata' element={<UserData />} />
           </Route>
         </Routes>
       </BrowserRouter>

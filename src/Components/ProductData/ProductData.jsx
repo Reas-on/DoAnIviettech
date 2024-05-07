@@ -28,7 +28,7 @@ const ProductData = () => {
     };
 
     fetchData();
-  }, [id]); // Chạy useEffect mỗi khi id thay đổi
+  }, [id]); 
 
   const handleEdit = () => {
     setIsEditing(true);

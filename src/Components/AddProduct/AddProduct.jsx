@@ -2,7 +2,6 @@ import React from "react";
 import "./AddProduct.css";
 import upload_area from "../../assets/upload_area.svg";
 import { useState } from "react";
-import { Await } from "react-router-dom";
 const AddProduct = () => {
   const [image, setImage] = useState(false);
   const [productDetails, setProductDetails] = useState({
@@ -21,7 +20,6 @@ const AddProduct = () => {
       [e.target.name]: e.target.value,
     });
   };
-  // Add product function
   const Add_Product = async () => {
     try {
       console.log(productDetails);
