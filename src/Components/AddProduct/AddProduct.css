@@ -1,0 +1,53 @@
+/* AddProduct.css */
+
+.addproduct {
+    width: 80%; /* To hơn 1 tí */ /* Giới hạn kích thước tối đa */
+    margin: 20px auto; /* Căn giữa và tạo khoảng cách ở trên và dưới */
+    padding: 20px; /* Thêm padding để tạo khoảng cách với viền ngoài */
+    background-color: #f9f9f9; /* Màu nền */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+  }
+  
+  .addproduct-itemfield {
+    margin-bottom: 30px; 
+  }
+  
+  .addproduct p {
+    margin: 10px 0; 
+  }
+  
+  .addproduct input[type="text"],
+  .addproduct select {
+    width: calc(100% - 20px); 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px; 
+  }
+  
+  .addproduct-itemfield label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .addproduct-itemfield label img {
+    width: 150px; /* Tăng kích thước ảnh */
+    margin-right: 15px; /* Tăng khoảng cách giữa ảnh và văn bản */
+  }
+  
+  .addproduct-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 18px; /* Kích thước chữ */
+    cursor: pointer;
+  }
+  
+  .addproduct-btn:hover {
+    background-color: #0056b3;
+  }
+  
