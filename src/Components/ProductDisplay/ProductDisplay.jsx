@@ -1,24 +1,26 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import "./ProductDisplay.css";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
-import { ShopContext } from "../../Context/ShopContext";
+import { addToCart } from "../../Redux/Thunk/addToCart"; 
 
-const ProductDisplay = (props) => {
-  const { product } = props;
-  const { addToCart } = useContext(ShopContext);
-  const [showPopup, setShowPopup] = useState(false);// Trạng thái của size được chọn
+const ProductDisplay = ({ product }) => {
+  const dispatch = useDispatch();
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart(product.id);
+    dispatch(addToCart(product.id));
     setShowPopup(true);
     setTimeout(() => {
       setShowPopup(false);
-    }, 5000); // 5 giây
+    }, 5000);
   };
+
   if (!product) {
-    return
+    return null;
   }
+
   return (
     <div className="productdisplay">
       <div className="productdisplay-left">

@@ -10,6 +10,7 @@ import men_banner from "./Components/Assets/banner_mens.png";
 import women_banner from "./Components/Assets/banner_women.png";
 import kid_banner from "./Components/Assets/banner_kids.png";
 import MainLayout from "./layouts/MainLayout";
+// Admin
 import AdminLayout from "./layouts/AdminLayout";
 import DashBoard from "./Components/DashBoard/DashBoard";
 import Payment from "./Pages/Payment";
@@ -17,7 +18,19 @@ import AddProduct from "./Components/AddProduct/AddProduct";
 import ListProduct from "./Components/ListProduct/ListProduct";
 import ProductData from "./Components/ProductData/ProductData";
 import UserData from "./Components/UserData/UserData";
+
+import { useDispatch } from "react-redux";
+import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
+import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
+import { useEffect } from "react";
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+    dispatch(fetchCartItems());
+  }, [dispatch]);
+
   return (
     <div>
       <BrowserRouter>
@@ -42,7 +55,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/payment" element={<Payment/>}/>
           </Route>
-
+          {/* Admin */}
           <Route path="admin" element={<AdminLayout />}>
             <Route index element={<DashBoard/>} />
            <Route path='/admin/Addproduct' element={<AddProduct />} />

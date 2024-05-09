@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
-import { ShopContext } from "../../Context/ShopContext";
+import { useSelector } from "react-redux";
+import { selectTotalCartItems } from "../../Redux/ShopSlice"; // Import các action và selector từ Redux
 
 const Navbar = () => {
   const [menu, setMenu] = useState("Shop");
-  const [userName, setUserName] = useState(""); // Thêm state userName
-  const { getTotalCartItems } = useContext(ShopContext);
+  const [userName, setUserName] = useState("");
   const authToken = localStorage.getItem("auth-token");
+  const totalCartItem = useSelector(selectTotalCartItems);
 
   const handleLogout = () => {
     localStorage.removeItem("auth-token");
@@ -26,7 +27,7 @@ const Navbar = () => {
           },
         });
         const data = await response.json();
-        setUserName(data.name); // Lưu tên người dùng vào state
+        setUserName(data.name);
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
@@ -36,6 +37,7 @@ const Navbar = () => {
       fetchUserInfo();
     }
   }, [authToken]);
+
 
   return (
     <div className="navbar">
@@ -101,7 +103,7 @@ const Navbar = () => {
         <Link to="/cart">
           <img src={cart_icon} alt="" />
         </Link>
-        <div className="nav-cart-count">{getTotalCartItems()}</div>
+        <div className="nav-cart-count">{totalCartItem}</div>
       </div>
     </div>
   );

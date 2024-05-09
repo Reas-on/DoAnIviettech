@@ -1,39 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAllProducts } from "../Redux/Thunk/fetchAllProducts";
 import "./CSS/ShopCategory.css";
-import { ShopContext } from "../Context/ShopContext";
 import dropdown_icon from "../Components/Assets/dropdown_icon.png";
 import Item from "../Components/Item/Item";
 
 const ShopCategory = (props) => {
-  const { all_product } = useContext(ShopContext);
-  const [visibleProducts, setVisibleProducts] = useState(8); 
-  const [sortBy, setSortBy] = useState(""); // State để lưu trạng thái của sắp xếp
+  const dispatch = useDispatch();
+  const allProducts = useSelector((state) => state.shop.allProducts);
+  const status = useSelector((state) => state.shop.status);
+  const error = useSelector((state) => state.shop.error);
 
-  const loadMore = () => {
-    setVisibleProducts((prevCount) => prevCount + 8); 
-  };
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value);
-  };
-  let sortedProducts = all_product
-    .filter((item) => item.category === props.category) 
-    .slice(0, visibleProducts); 
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
 
-  if (sortBy === "price") {
-    sortedProducts = sortedProducts.sort((a, b) => a.new_price - b.new_price); 
-  } else if (sortBy === "name") {
-    sortedProducts = sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+  const sortedProducts = () => {
+    // Add your sorting logic here if needed
+    return allProducts.filter((item) => item.category === props.category);
+  };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "failed") {
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div className="shop-category">
       <img className="shopcategory-banner" src={props.banner} alt="" />
       <div className="shopcategory-indexSort">
-        <p>
-          <span>Showing 1-{Math.min(visibleProducts, all_product.length)} of {all_product.length}</span>
-        </p>
+        {/* Add your index and sort components here */}
         <div className="shopcategory-sort">
-          <select onChange={handleSortChange}>
+          <select>
             <option value="">Sort by</option>
             <option value="price">Price</option>
             <option value="name">Name</option>
@@ -42,9 +43,9 @@ const ShopCategory = (props) => {
         </div>
       </div>
       <div className="shopcategory-products">
-        {sortedProducts.map((item, i) => (
+        {sortedProducts().map((item) => (
           <Item
-            key={i}
+            key={item.id}
             id={item.id}
             name={item.name}
             image={item.image}
@@ -53,11 +54,6 @@ const ShopCategory = (props) => {
           />
         ))}
       </div>
-      {visibleProducts < all_product.length && ( 
-        <div className="shopcategory-loadmore" onClick={loadMore}>
-          Explore More
-        </div>
-      )}
     </div>
   );
 };

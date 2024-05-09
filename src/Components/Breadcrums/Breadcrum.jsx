@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Breadcrums = ({ product }) => {
   if (!product || !product.category) {
-    return null; // Hoặc có thể trả về một phần tử rỗng để không render gì cả
+    return null; 
   }
   const getCategoryRoute = (category) => {
     switch (category) {

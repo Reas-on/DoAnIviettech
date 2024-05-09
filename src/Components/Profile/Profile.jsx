@@ -1,41 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './Profile.scss';
+import { useNavigate, Link } from 'react-router-dom';
+import { message } from 'antd';
+import './Profile.css';
 
 const Profile = () => {
   // const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUserInfo, setEditedUserInfo] = useState({});
-  
+  const [editedUserInfo, setEditedUserInfo] = useState(null);
+
   useEffect(() => {
-    const userFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
-    if (userFromLocalStorage) {
-      setUserInfo(userFromLocalStorage);
-      setEditedUserInfo(userFromLocalStorage);
-    } else {
-      const defaultUserInfo = {
-        _id: '123',
-        name: 'duy',
-        email: 'duy00@gmail.com',
-        password: '123456',
-        address: 'Da Nang',
-        phone: '0901887889',
-      };
-      setUserInfo(defaultUserInfo);
-      setEditedUserInfo(defaultUserInfo);
-    }
-  }, []);
-  
-  const handleEditClick = () => {
-    setIsEditing(true); 
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem('auth-token');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+        
+        const response = await fetch(`http://localhost:4000/profile`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': token
+          }
+        });
+
+        if (!response.ok) {
+          navigate('/login');
+          return;
+        }
+
+        const data = await response.json();
+        setUserInfo(data);
+        setEditedUserInfo({ ...data });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        navigate('/login');
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate]);
+
+  const handleEdit = () => {
+    setEditedUserInfo({ ...userInfo });
   };
-  
-  const handleSaveClick = () => {
-    console.log('Edited user info:', editedUserInfo);
-    localStorage.setItem('userInfo', JSON.stringify(editedUserInfo));
-    setIsEditing(false);
-    setUserInfo(editedUserInfo);
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem('auth-token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      const response = await fetch(`http://localhost:4000/users/${userInfo._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': token
+        },
+        body: JSON.stringify(editedUserInfo) 
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save changes');
+      }
+
+      message.success('Changes saved successfully');
+      setUserInfo(editedUserInfo);
+    } catch (error) {
+      console.error('Error saving changes:', error);
+      message.error('Failed to save changes');
+    }
   };
 
   if (!userInfo) {
@@ -105,8 +142,8 @@ const Profile = () => {
         <Link to="/cart">
           <button className="cart-button">My Cart</button>
         </Link>
-        <button className="edit-button" onClick={handleEditClick}>Edit</button>
-        <button className="save-button"onClick={handleSaveClick}>Save</button>
+        <button className="edit-button" onClick={handleEdit}>Edit</button>
+        <button className="save-button" onClick={handleSave}>Save</button>
       </div>
     </div>
   );
