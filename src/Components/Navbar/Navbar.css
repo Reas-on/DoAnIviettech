@@ -80,3 +80,10 @@
     background: red;
     color: white;
 }
+
+.nav-login-cart {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 45px;
+}

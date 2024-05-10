@@ -4,10 +4,10 @@ import "./Navbar.css";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { useSelector } from "react-redux";
-import { selectTotalCartItems } from "../../Redux/ShopSlice"; // Import các action và selector từ Redux
+import { selectTotalCartItems } from "../../Redux/ShopSlice";
+import { Dropdown, Menu } from "antd"; // Import Dropdown and Menu components from antd
 
 const Navbar = () => {
-  const [menu, setMenu] = useState("Shop");
   const [userName, setUserName] = useState("");
   const authToken = localStorage.getItem("auth-token");
   const totalCartItem = useSelector(selectTotalCartItems);
@@ -38,6 +38,24 @@ const Navbar = () => {
     }
   }, [authToken]);
 
+  const authMenu = (
+    <Menu className="custom-dropdown-menu">
+      <Menu.Item key="profile">
+        <Link to="/profile">Profile</Link>
+      </Menu.Item>
+      <Menu.Item key="cart">
+        <Link to="/cart">Cart</Link>
+      </Menu.Item>
+      {authToken === "admin-token" && ( // Check for admin token
+        <Menu.Item key="admin">
+          <Link to="/admin">Admin</Link>
+        </Menu.Item>
+      )}
+      <Menu.Item key="logout">
+        <button onClick={handleLogout}>Logout</button>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <div className="navbar">
@@ -46,55 +64,32 @@ const Navbar = () => {
         <p>Kuromi Store</p>
       </div>
       <ul className="nav-menu">
-        <li
-          onClick={() => {
-            setMenu("shop");
-          }}
-        >
+        <li className="nav-menu-item">
           <Link style={{ textDecoration: "none" }} to="/">
             Shop
           </Link>
-          {menu === "shop" ? <hr /> : <></>}
         </li>
-        <li
-          onClick={() => {
-            setMenu("mens");
-          }}
-        >
+        <li className="nav-menu-item">
           <Link style={{ textDecoration: "none" }} to="/mens">
             Men
           </Link>
-          {menu === "mens" ? <hr /> : <></>}
         </li>
-        <li
-          onClick={() => {
-            setMenu("womans");
-          }}
-        >
+        <li className="nav-menu-item">
           <Link style={{ textDecoration: "none" }} to="/womans">
             Woman
           </Link>
-          {menu === "womans" ? <hr /> : <></>}
         </li>
-        <li
-          onClick={() => {
-            setMenu("kids");
-          }}
-        >
+        <li className="nav-menu-item">
           <Link style={{ textDecoration: "none" }} to="/kids">
             Kids
           </Link>
-          {menu === "kids" ? <hr /> : <></>}
         </li>
       </ul>
       <div className="nav-login-cart">
         {authToken ? (
-          <>
-            <Link to="/profile">
-              <button>{userName}</button>
-            </Link>
-            <button onClick={handleLogout}>Logout</button>
-          </>
+          <Dropdown overlay={authMenu} trigger={["click"]}>
+            <button className="dropdown-trigger">{userName}</button>
+          </Dropdown>
         ) : (
           <Link to="/login">
             <button>Login</button>
@@ -110,3 +105,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

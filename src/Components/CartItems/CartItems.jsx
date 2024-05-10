@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./CartItems.css";
 import remove_icon from "../Assets/cart_cross_icon.png";
@@ -9,12 +9,14 @@ import {
 } from "../../Redux/ShopSlice";
 import { removeFromCart } from "../../Redux/Thunk/removeFromCart";
 import { fetchCartItems } from "../../Redux/Thunk/fetchCartItems";
+
 const CartItems = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const totalCartAmount = useSelector(selectTotalCartAmount);
   const totalCartItem = useSelector(selectTotalCartItems);
   const allProducts = useSelector((state) => state.shop.allProducts);
+  const [paymentMethod, setPaymentMethod] = useState("receive");
 
   useEffect(() => {
     dispatch(fetchCartItems());
@@ -24,7 +26,17 @@ const CartItems = () => {
     dispatch(removeFromCart(itemId));
   };
 
-  const handlePaymentMethodChange = (event) => {};
+  const handlePaymentMethodChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
+
+  const handleCheckout = () => {
+    if (paymentMethod === "receive") {
+      // Redirect to OrderCart page if payment method is "Nhận Hàng Khi Thanh Toán"
+      window.location.href = "/OrderCart"; 
+    } else {
+    }
+  };
 
   return (
     <div className="cartitems">
@@ -77,7 +89,6 @@ const CartItems = () => {
             return null;
           }
         })}
-
       <div className="cartitems-down">
         <div className="cartitems-total">
           <h1>Cart Total - {totalCartItem} items</h1>
@@ -100,12 +111,14 @@ const CartItems = () => {
           <Checkout />
           <div className="cartitems-total-method">
             <p>Select payment method:</p>
-            <select defaultValue="receive" onChange={handlePaymentMethodChange}>
+            <select value={paymentMethod} onChange={handlePaymentMethodChange}>
               <option value="receive">Nhận Hàng Khi Thanh Toán</option>
               <option value="vnpay">Thanh Toán Qua VNPay</option>
             </select>
           </div>
-          <button className="cartitems-checkout-button">Checkout</button>
+          <button className="cartitems-checkout-button" onClick={handleCheckout}>
+            Checkout
+          </button>
         </div>
         <div className="cartitems-promocode">
           <p>Promo code</p>

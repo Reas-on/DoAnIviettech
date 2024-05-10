@@ -10,6 +10,7 @@ const getDefaultCart = () => {
   }
   return cart;
 };
+
 const shopSlice = createSlice({
   name: "shop",
   initialState: {

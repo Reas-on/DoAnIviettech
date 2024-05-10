@@ -2,9 +2,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const removeFromCart = createAsyncThunk(
   "shop/removeFromCart",
-  async (itemId) => {
-    const authToken = localStorage.getItem("auth-token");
-    if (authToken) {
+  async (itemId, thunkAPI) => {
+    try {
+      const authToken = localStorage.getItem("auth-token");
+      if (!authToken) {
+        // Nếu không có token, xóa sản phẩm khỏi local storage và trả về itemId
+        const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
+        delete storedItems[itemId];
+        localStorage.setItem("cartItems", JSON.stringify(storedItems));
+        return itemId;
+      }
       const response = await fetch("http://localhost:4000/removefromcart", {
         method: "POST",
         headers: {
@@ -15,8 +22,8 @@ export const removeFromCart = createAsyncThunk(
       });
       await response.json();
       return itemId;
-    } else {
-      throw new Error("Authentication token is missing.");
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

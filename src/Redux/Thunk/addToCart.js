@@ -24,7 +24,10 @@ export const addToCart = createAsyncThunk(
         return thunkAPI.rejectWithValue(error.message);
       }
     } else {
-      throw new Error("Authentication token is missing.");
+      const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
+      storedItems[itemId] = (storedItems[itemId] || 0) + 1;
+      localStorage.setItem("cartItems", JSON.stringify(storedItems));
+      return storedItems;
     }
   }
 );
