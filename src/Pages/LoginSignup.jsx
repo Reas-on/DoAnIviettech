@@ -1,5 +1,5 @@
 import React from "react";
-import "./CSS/LoginSignup.scss";
+import "./CSS/LoginSignup.css";
 import { useState } from "react";
 
 const LoginSignup = () => {
@@ -16,60 +16,44 @@ const LoginSignup = () => {
     });
   };
   const login = async () => {
-    console.log("Login", formData);
-    try {
-      const response = await fetch("http://localhost:4000/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem("auth-token", data.authToken); // Change to authToken
-        window.location.replace("/");
-      } else {
-        alert(data.errors);
-      }
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+    console.log("Signup", formData);
+    let responseData;
+    await fetch ("http://localhost:4000/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/form-data",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    }).then(response => response.json()).then((data) => {
+      responseData = data;
+    })
+    if(responseData.success) {
+      localStorage.setItem("auth-token", responseData.authToken);
+      window.location.replace("/");
+    }else {
+      alert(responseData.errors);
     }
   };
 
   const signup = async () => {
     console.log("Signup", formData);
-    try {
-      const response = await fetch("http://localhost:4000/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem("auth-token", data.token); // Change to token
-        window.location.replace("/");
-      } else {
-        alert(data.errors);
-      }
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+    let responseData;
+    await fetch ("http://localhost:4000/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/form-data",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    }).then(response => response.json()).then((data) => {
+      responseData = data;
+    })
+    if(responseData.success) {
+      // localStorage.setItem("auth-token", responseData.authToken);
+      window.location.replace("/login");
+    }else {
+      alert(responseData.errors);
     }
   };
 
@@ -119,7 +103,7 @@ const LoginSignup = () => {
           </p>
         )}
         <div className="loginsignup-agree">
-          <input type="checkbox" name="" id="check-button" />
+          <input type="checkbox" name="" id="" />
           <p>
             I agree to the <span>Terms of Service</span> and{" "}
             <span>Privacy Policy</span>

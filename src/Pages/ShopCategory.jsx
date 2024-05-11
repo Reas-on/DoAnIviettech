@@ -1,41 +1,58 @@
-import React, { useContext } from "react";
-import "./CSS/ShopCategory.scss";
-import { ShopContext } from "../Context/ShopContext";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAllProducts } from "../Redux/Thunk/fetchAllProducts";
+import "./CSS/ShopCategory.css";
 import dropdown_icon from "../Components/Assets/dropdown_icon.png";
 import Item from "../Components/Item/Item";
+
 const ShopCategory = (props) => {
-  const {all_product} = useContext(ShopContext);
+  const dispatch = useDispatch();
+  const allProducts = useSelector((state) => state.shop.allProducts);
+  const status = useSelector((state) => state.shop.status);
+  const error = useSelector((state) => state.shop.error);
+
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+
+  const sortedProducts = () => {
+    // Add your sorting logic here if needed
+    return allProducts.filter((item) => item.category === props.category);
+  };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "failed") {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="shop-category">
       <img className="shopcategory-banner" src={props.banner} alt="" />
       <div className="shopcategory-indexSort">
-        <p>
-          <span>Showing 1-12 of {all_product.length}</span>
-        </p>
+        {/* Add your index and sort components here */}
         <div className="shopcategory-sort">
-          Sort by <img src={dropdown_icon} alt="" />
+          <select>
+            <option value="">Sort by</option>
+            <option value="price">Price</option>
+            <option value="name">Name</option>
+          </select>
+          <img src={dropdown_icon} alt="" />
         </div>
       </div>
       <div className="shopcategory-products">
-        {all_product.map((item, i) => {
-          if (item.category === props.category) {
-            return (
-              <Item
-                key={i}
-                id={item.id}
-                name={item.name}
-                image={item.image}
-                new_price={item.new_price}
-                old_price={item.old_price}
-              />
-            );
-          } else {
-            return null;
-          }
-        })}
-      </div>
-      <div className="shopcategory-loadmore">
-        Explore-More
+        {sortedProducts().map((item) => (
+          <Item
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            image={item.image}
+            new_price={item.new_price}
+            old_price={item.old_price}
+          />
+        ))}
       </div>
     </div>
   );
