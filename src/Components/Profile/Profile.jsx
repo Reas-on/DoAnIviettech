@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { message } from 'antd';
 import './Profile.css';
 
-const Profile = () => {
-  // const navigate = useNavigate();
+const Profile = ({isEditing}) => {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
   const [editedUserInfo, setEditedUserInfo] = useState(null);
 
