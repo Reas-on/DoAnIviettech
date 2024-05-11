@@ -11,43 +11,80 @@ $button-font-size: 16px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
-}
 
-.profile-info {
-  margin-top: 20px;
-}
+  .profile-info {
+    margin-top: 20px;
 
-.profile-info p {
-  margin-bottom: 10px;
-}
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ced4da; 
+      border-radius: $button-border-radius;
+      box-sizing: border-box;
+    }
 
-.profile-info strong {
-  font-weight: bold;
-  margin-right: 10px;
-}
+    p {
+      margin-bottom: 10px;
+    }
 
-.cart-button,
-.edit-button,
-.save-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-size: $button-font-size;
-  border: none;
-  border-radius: $button-border-radius;
-  cursor: pointer;
-}
+    strong {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  }
 
-.cart-button {
-  background-color: #007bff;
-  color: $text-color;
-}
+  .profile-buttons {
+    margin-top: 20px;
 
-.edit-button {
-  background-color: #28a745;
-  color: $text-color;
-}
+    .edit-button,
+    .save-button,
+    .cart-button {
+      padding: 10px 20px;
+      font-size: $button-font-size;
+      border: none;
+      border-radius: $button-border-radius;
+      cursor: pointer;
+      transition: background-color 0.3s ease; 
+    }
 
-.save-button {
-  background-color: #ffc107;
-  color: $text-color;
+    .edit-button {
+      background-color: #28a745;
+      color: $text-color;
+      margin-left: 5px;
+    }
+
+    .save-button {
+      background-color: #ffc107;
+      color: $text-color;
+      margin-left: 5px;
+      display: none;
+    }
+    
+    .cart-button{
+      background-color: #007bff;
+      color:$text-color;
+    }
+
+    .edit-button:hover,
+    .save-button:hover {
+      background-color: darken(#28a745, 10%); 
+    }
+  }
+
+  &.edit-mode {
+    .profile-info {
+      input {
+        background-color: #f9f9f9;
+      }
+    }
+
+    .edit-button {
+      display: none;
+    }
+
+    .save-button {
+      display: inline-block;
+    }
+  }
 }

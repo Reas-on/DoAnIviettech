@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import all_product from "../Components/Assets/all_product";
 
 export const ShopContext = createContext(null);
@@ -11,6 +11,16 @@ const getDefaultCart = () => {
 };
 const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
+  useEffect(() => {
+    const storedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    if (storedCartItems) {
+      setCartItems(storedCartItems);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     console.log(cartItems);
@@ -48,6 +58,7 @@ const ShopContextProvider = (props) => {
     cartItems,
     addToCart,
     removeFromCart,
+    setCartItems,
   };
   return (
     <ShopContext.Provider value={contextValue}>
