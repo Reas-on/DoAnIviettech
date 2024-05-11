@@ -1,13 +1,10 @@
-import React, { useContext } from "react";
-import { ShopContext } from "../../Context/ShopContext";
+import React from "react";
 import remove_icon from "../Assets/cart_cross_icon.png";
 import './HandleOrder.scss'
 
 
 
 const HandleOrder = ({onCheckout}) => {
-
-  const { all_product, cartItems, removeFromCart } = useContext(ShopContext);
   return (
     <div className="orderitems">
       <div className="orderitems-format-main">
@@ -19,7 +16,7 @@ const HandleOrder = ({onCheckout}) => {
         <p>Remove</p>
       </div>
       <hr />
-      {all_product.map((product) => {
+      {/* {all_product.map((product) => {
         const quantity = cartItems[product.id];
         if (quantity > 0) {
           return (
@@ -47,7 +44,7 @@ const HandleOrder = ({onCheckout}) => {
         } else {
           return null;
         }
-      })}
+      })} */}
         
       </div>
 

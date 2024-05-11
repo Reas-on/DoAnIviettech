@@ -108,7 +108,6 @@ const CartItems = () => {
               <p>{totalCartAmount.toLocaleString("en-US")} VND</p>
             </div>
           </div>
-          <Checkout />
           <div className="cartitems-total-method">
             <p>Select payment method:</p>
             <select value={paymentMethod} onChange={handlePaymentMethodChange}>
