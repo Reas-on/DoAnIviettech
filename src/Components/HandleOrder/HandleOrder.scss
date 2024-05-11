@@ -1,0 +1,30 @@
+.orderitems {
+    height: calc(100vh - 100px); 
+    margin-top: 50px;
+    margin-bottom: 50px;
+    overflow-y: auto; 
+  
+    .orderitems-format-main {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
+      gap: 10px;
+      align-items: center;
+      justify-items: center;
+      padding: 10px;
+    }
+  
+    .orderitems-format {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr 1fr auto;
+      gap: 10px;
+      align-items: center;
+      justify-items: center;
+      padding: 10px;
+      
+      img {
+        max-width: 250px; 
+        height: auto;
+      }
+    }
+  }
+  

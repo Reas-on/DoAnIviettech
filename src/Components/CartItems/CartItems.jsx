@@ -1,10 +1,30 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./CartItems.scss";
 import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
+import Checkout from "../Checkout/Checkout";
 
 const CartItems = () => {
-  const { getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(ShopContext);
+  const { getTotalCartAmount, all_product, cartItems, removeFromCart, setCartItems } = useContext(ShopContext);
+  const [loaded, setLoaded] = useState(false);
+
+ 
+  useEffect(() => {
+    const storedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    if (storedCartItems) {
+      setCartItems(storedCartItems);
+    }
+    setLoaded(true);
+  }, [setCartItems]);
+  const handleRemoveFromCart = (productId) => {
+    removeFromCart(productId);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  };
+
+  
+  if (!loaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="cartitems">
@@ -35,7 +55,7 @@ const CartItems = () => {
                 <img
                   className="cartitems-remove-icon"
                   src={remove_icon}
-                  onClick={() => removeFromCart(product.id)}
+                  onClick={() => handleRemoveFromCart(product.id)}
                   alt=""
                 />
               </div>
@@ -65,7 +85,7 @@ const CartItems = () => {
               <p>{getTotalCartAmount().toLocaleString("en-US")} VND</p>
             </div>
           </div>
-          <button className="cartitems-checkout-button">Checkout</button>
+          <Checkout />
         </div>
         <div className="cartitems-promocode">
           <p>Promo code</p>

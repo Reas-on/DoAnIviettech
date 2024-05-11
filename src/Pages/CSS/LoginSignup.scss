@@ -73,21 +73,11 @@ $border-radius: 10px;
   transition: color 0.3s;
   justify-content: center;
 
-  p {
-    margin-top: 20px;
-    font-size: 14px;
-    color: $text-color-secondary;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  span {
+    color: #007bff;
     cursor: pointer;
-
-    span {
-      color: #007bff;
-      cursor: pointer;
-      transition: color 0.3s;
-      font-weight: 600;
-    }
+    transition: color 0.3s;
+    font-weight: 600;
   }
 }
 

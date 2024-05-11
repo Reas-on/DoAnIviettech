@@ -12,6 +12,10 @@ import kid_banner from "./Components/Assets/banner_kids.png";
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import DashBoard from "./Components/DashBoard/DashBoard";
+import Payment from "./Pages/Payment";
+
+
+
 
 function App() {
   return (
@@ -36,6 +40,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<LoginSignup />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/payment" element={<Payment/>}/>
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
