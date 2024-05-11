@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Navigate } from 'react-router-dom';
 const AdminRoute = ({ element, ...rest }) => {
-    const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const fetchAdminStatus = async () => {

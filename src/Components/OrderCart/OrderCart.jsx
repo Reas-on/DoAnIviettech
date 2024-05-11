@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Steps } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectCartItems, selectTotalCartAmount } from "../../Redux/ShopSlice";
+import { fetchCartItems } from "../../Redux/Thunk/fetchCartItems"; // Import fetchCartItems action
 
 const { Step } = Steps;
 
@@ -11,13 +12,17 @@ const OrderCart = () => {
     receiverName: "",
     deliveryAddress: "",
     phoneNumber: "",
+    email: "", // Add email key
     note: "",
   });
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const [orderData, setOrderData] = useState(null);
   const cartItems = useSelector(selectCartItems);
   const totalCartAmount = useSelector(selectTotalCartAmount);
   const allProducts = useSelector((state) => state.shop.allProducts);
+  const dispatch = useDispatch(); // Initialize useDispatch hook
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -42,11 +47,12 @@ const OrderCart = () => {
         }
 
         const data = await response.json();
-        const { name, address, phone, _id } = data;
+        const { name, address, phone, email, _id } = data;
         setFormValues({
           receiverName: name,
           deliveryAddress: address,
           phoneNumber: phone,
+          email: email,
         });
         setUserId(_id);
         setLoading(false);
@@ -72,8 +78,10 @@ const OrderCart = () => {
     setCurrentStep(currentStep - 1);
   };
 
-  const onFinish = () => {
-    const { receiverName, deliveryAddress, phoneNumber, note } = formValues;
+  const onFinish = async () => {
+    setLoading(true);
+    const { receiverName, deliveryAddress, phoneNumber, email, note } =
+      formValues;
     const orderedProducts = Object.keys(cartItems)
       .map((itemId) => {
         const item = allProducts.find(
@@ -92,13 +100,42 @@ const OrderCart = () => {
       })
       .filter((item) => item !== null);
     const totalBill = totalCartAmount;
-    console.log("ID người dùng:", userId);
-    console.log("Tên:", receiverName);
-    console.log("Địa chỉ giao hàng:", deliveryAddress);
-    console.log("Số Điện Thoại:", phoneNumber);
-    console.log("Ghi chú:", note);
-    console.log("Sản phẩm đã đặt:", orderedProducts);
-    console.log("Tổng hóa đơn:", totalBill);
+    const formData = {
+      userId: userId,
+      receiverName: receiverName,
+      deliveryAddress: deliveryAddress,
+      phoneNumber: phoneNumber,
+      email: email,
+      note: note,
+      orderedProducts: orderedProducts,
+      totalBill: totalBill,
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/orderData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        console.error("Error submitting order:", response.statusText);
+        setLoading(false);
+        return;
+      }
+      console.log("Order submitted successfully!", formData);
+      const data = await response.json();
+      setTimeout(() => {
+        setLoading(false);
+        setOrderData(data);
+        setOrderPlaced(true);
+        dispatch(fetchCartItems());
+      }, 3000);
+    } catch (error) {
+      console.error("Error submitting order:", error.message);
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -120,7 +157,12 @@ const OrderCart = () => {
               return (
                 <div key={item.id}>
                   <p>
-                    {item.name} - {quantity}
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={{ width: 50 }}
+                    />
+                    {item.name} - Số lượng : {quantity}
                   </p>
                   <p>
                     {(item.new_price * quantity).toLocaleString("en-US")} VND
@@ -178,6 +220,19 @@ const OrderCart = () => {
           >
             <Input name="phoneNumber" onChange={handleInputChange} />
           </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                type: "email",
+                required: true,
+                message: "Please input a valid email address!",
+              },
+            ]}
+          >
+            <Input name="email" onChange={handleInputChange} />
+          </Form.Item>
           <Form.Item label="Ghi Chú" name="note">
             <Input.TextArea name="note" onChange={handleInputChange} />
           </Form.Item>
@@ -220,6 +275,33 @@ const OrderCart = () => {
           </Button>
         )}
       </div>
+      {orderPlaced && orderData && (
+        <div style={{ marginTop: "20px" }}>
+          <h2>Thông Tin Đơn Hàng Đã Đặt</h2>
+          <p>Order Number: {orderData.orderNumber}</p>
+          <p>Người nhận: {orderData.receiverName}</p>
+          <p>Địa chỉ giao hàng: {orderData.deliveryAddress}</p>
+          <p>Số điện thoại: {orderData.phoneNumber}</p>
+          <p>Email: {orderData.email}</p>
+          <p>Ghi chú: {orderData.note}</p>
+          <p>Trạng Thái : {orderData.status}</p>
+          <h3>Sản phẩm đã đặt:</h3>
+          <ul>
+            {orderData.orderedProducts.map((product) => (
+              <li key={product._id.$oid}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  style={{ width: 50 }}
+                />
+                {product.name} - Số lượng: {product.quantity} - Tổng giá:{" "}
+                {product.total.toLocaleString("en-US")} VND
+              </li>
+            ))}
+          </ul>
+          <p>Tổng hóa đơn: {orderData.totalBill.toLocaleString("en-US")} VND</p>
+        </div>
+      )}
     </div>
   );
 };

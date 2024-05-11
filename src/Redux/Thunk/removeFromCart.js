@@ -6,7 +6,6 @@ export const removeFromCart = createAsyncThunk(
     try {
       const authToken = localStorage.getItem("auth-token");
       if (!authToken) {
-        // Nếu không có token, xóa sản phẩm khỏi local storage và trả về itemId
         const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
         delete storedItems[itemId];
         localStorage.setItem("cartItems", JSON.stringify(storedItems));

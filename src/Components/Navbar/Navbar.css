@@ -87,3 +87,21 @@
     align-items: center;
     gap: 45px;
 }
+
+.ant-dropdown {
+    z-index: 9999; /* Đảm bảo overlay hiển thị trên các phần tử khác */
+  }
+  
+  .ant-dropdown-menu {
+    border-radius: 10px; /* Bo tròn viền cho overlay */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng bóng cho overlay */
+  }
+  
+  .custom-dropdown-menu {
+    padding: 10px; /* Tăng khoảng cách nội dung trong overlay */
+  }
+  
+  .custom-dropdown-menu a {
+    color: #515151; /* Đổi màu chữ của các liên kết trong overlay */
+  }
+  
