@@ -1,5 +1,6 @@
 // actions/AddToCart.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchCartItems } from "./fetchCartItems";
 
 export const addToCart = createAsyncThunk(
   "shop/addToCart",
@@ -27,6 +28,7 @@ export const addToCart = createAsyncThunk(
       const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
       storedItems[itemId] = (storedItems[itemId] || 0) + 1;
       localStorage.setItem("cartItems", JSON.stringify(storedItems));
+      thunkAPI.dispatch(fetchCartItems());
       return storedItems;
     }
   }

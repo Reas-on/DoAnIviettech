@@ -1,34 +1,69 @@
-import React from 'react';
-import { Card, Col, Row, Typography, Upload, message, Button, Timeline, Radio } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Col, Row, Typography, Upload, Button, Timeline } from 'antd';
 import { UploadOutlined } from '@ant-design/icons'; // Import UploadOutlined icon
 
 const { Title } = Typography;
 
 const Dashboard = () => {
-  // Mock data
-  const totalProducts = 100;
-  const totalRevenue = 5000;
-  const totalOrders = 50;
-  const totalUsers = 200;
-  const topProducts = [
-    { id: 1, name: 'Product A', quantity: 100 },
-    { id: 2, name: 'Product B', quantity: 90 },
-    { id: 3, name: 'Product C', quantity: 80 },
-    { id: 4, name: 'Product D', quantity: 70 },
-    { id: 5, name: 'Product E', quantity: 60 }
-  ];
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalRevenue] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [topProducts] = useState([]);
 
-  // Demo functions
-  const handleUpload = () => {
-    message.success('Upload successful');
+  useEffect(() => {
+    fetchTotalProducts();
+    fetchTotalRevenue();
+    fetchTotalOrders();
+    fetchTotalUsers();
+    fetchTopProducts();
+  }, []);
+
+  const fetchTotalProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/allproducts');
+      if (!response.ok) {
+        throw new Error('Failed to fetch total products');
+      }
+      const data = await response.json();
+      setTotalProducts(data.length);
+    } catch (error) {
+      console.error('Error fetching total products:', error);
+    }
   };
 
-  const handleClickButton = () => {
-    message.info('Button clicked');
+  const fetchTotalRevenue = async () => {
+    // Implement fetching total revenue from API
   };
 
-  const handleChangeRadio = (e) => {
-    message.info(`Radio selected: ${e.target.value}`);
+  const fetchTotalOrders = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/orderData');
+      if (!response.ok) {
+        throw new Error('Failed to fetch total orders');
+      }
+      const data = await response.json();
+      setTotalOrders(data.length);
+    } catch (error) {
+      console.error('Error fetching total orders:', error);
+    }
+  };
+
+  const fetchTotalUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/users');
+      if (!response.ok) {
+        throw new Error('Failed to fetch total users');
+      }
+      const data = await response.json();
+      setTotalUsers(data.length);
+    } catch (error) {
+      console.error('Error fetching total users:', error);
+    }
+  };
+
+  const fetchTopProducts = async () => {
+    // Implement fetching top products from API
   };
 
   return (
@@ -62,16 +97,7 @@ const Dashboard = () => {
         <Col xs={24} md={12}>
           <Card title="Biểu Đồ Doanh Thu" style={{ backgroundColor: '#B39DDB' }}>
             <Timeline>
-              <Timeline.Item color="green">Create a CV</Timeline.Item>
-              <Timeline.Item color="green">Sign the contract</Timeline.Item>
-              <Timeline.Item color="red">
-                Support the project
-                <p>Currently in review</p>
-              </Timeline.Item>
-              <Timeline.Item color="gray">
-                Refund
-                <p>Successful completion</p>
-              </Timeline.Item>
+              {/* Implement timeline items */}
             </Timeline>
           </Card>
         </Col>
@@ -86,19 +112,12 @@ const Dashboard = () => {
       {/* Demo components */}
       <Row gutter={[16, 16]} className="dashboard-row">
         <Col span={24}>
-          <Upload beforeUpload={handleUpload}>
+          <Upload>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
         </Col>
         <Col span={24}>
-          <Button type="primary" onClick={handleClickButton}>Click me</Button>
-        </Col>
-        <Col span={24}>
-          <Radio.Group onChange={handleChangeRadio}>
-            <Radio value={1}>Option 1</Radio>
-            <Radio value={2}>Option 2</Radio>
-            <Radio value={3}>Option 3</Radio>
-          </Radio.Group>
+          <Button type="primary">Click me</Button>
         </Col>
       </Row>
     </div>

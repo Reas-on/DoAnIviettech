@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import "./ProductDisplay.css";
+import "./ProductDisplay.scss";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { addToCart } from "../../Redux/Thunk/addToCart"; 

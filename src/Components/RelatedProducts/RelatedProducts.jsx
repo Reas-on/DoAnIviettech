@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './RelatedProducts.css'
+import './RelatedProducts.scss'
 import Item from '../Item/Item'
 const RelatedProducts = () => {
   const [data_product, setRelatedProducts] = useState([]);

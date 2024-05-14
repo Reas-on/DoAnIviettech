@@ -1,5 +1,5 @@
 import React from "react";
-import "./Breadcrum.css";
+import "./Breadcrum.scss";
 import arrow_icon from "../Assets/breadcrum_arrow.png";
 import { Link } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import remove_icon from "../Assets/cart_cross_icon.png";
+// import remove_icon from "../Assets/cart_cross_icon.png";
 import './HandleOrder.scss'
 
 

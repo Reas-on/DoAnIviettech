@@ -21,11 +21,14 @@ import ListProduct from "./layouts/AdminLayout/ListProduct/ListProduct";
 import ProductData from "./layouts/AdminLayout/ProductData/ProductData";
 import UserData from "./layouts/AdminLayout/UserData/UserData";
 import OrderData from "./layouts/AdminLayout/OrderData/OrderData";
+import AddUser from "./layouts/AdminLayout/AddUser/AddUser";
+import FindUser from "./layouts/AdminLayout/FindUser/FindUser";
 
 import { useDispatch } from "react-redux";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { useEffect } from "react";
+import ConfirmOrders from "./layouts/AdminLayout/OrderData/ConfirmOrders";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,14 +66,17 @@ function App() {
           <Route path="admin" element={<AdminLayout />}>
             <Route index element={<DashBoard />} />
             <Route path="/admin/DashBoard" element={<DashBoard />} />
+            <Route path="/admin/AddUser" element={<AddUser />} />
+            <Route path="/admin/Userdata" element={<UserData />} />
+            <Route path="/admin/FindUser" element={<FindUser />} />
             <Route path="/admin/Addproduct" element={<AddProduct />} />
             <Route path="/admin/Listproduct" element={<ListProduct />} />
             <Route
               path="/admin/ListProduct/:id"
               element={<ProductData />}
             />
-            <Route path="/admin/Userdata" element={<UserData />} />
-            <Route path="/admin/OrderData" element={<OrderData />} />
+            <Route path="/admin/AllOrders" element={<OrderData />} />
+            <Route path="/admin/ConfirmOrders" element={<ConfirmOrders />} />
           </Route>
         </Routes>
       </BrowserRouter>
