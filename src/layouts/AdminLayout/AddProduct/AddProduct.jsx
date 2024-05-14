@@ -42,7 +42,7 @@ const AddProduct = () => {
         product.image = responseData.image_url;
 
         const addProductResponse = await fetch(
-          "http://localhost:4000/addproduct",
+          "http://localhost:4000/product/addproduct",
           {
             method: "POST",
             headers: {

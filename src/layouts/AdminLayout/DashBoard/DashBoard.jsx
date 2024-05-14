@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   const fetchTotalProducts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/allproducts');
+      const response = await fetch('http://localhost:4000/product/allproducts');
       if (!response.ok) {
         throw new Error('Failed to fetch total products');
       }

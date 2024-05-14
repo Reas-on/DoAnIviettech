@@ -14,7 +14,7 @@ const ProductData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/allproducts/${id}`);
+        const response = await fetch(`http://localhost:4000/product/allproducts/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch product data');
         }
@@ -37,7 +37,7 @@ const ProductData = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/allproducts/${id}`, {
+      const response = await fetch(`http://localhost:4000/product/allproducts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -48,14 +48,15 @@ const ProductData = () => {
         throw new Error('Failed to update product');
       }
       setIsEditing(false);
-      fetchProduct();
+      setProduct(editedProduct); // Cập nhật dữ liệu sản phẩm mới
       setShowPopup(true);
+      message.success('Product updated successfully');
     } catch (error) {
       console.error('Error updating product:', error);
       message.error('Failed to update product');
     }
   };
-
+  
   const handleClose = () => {
     setIsEditing(false);
   };
@@ -67,20 +68,7 @@ const ProductData = () => {
       [name]: type === 'checkbox' ? checked : value,
     });
   };
-
-  const fetchProduct = async () => {
-    try {
-      const response = await fetch(`http://localhost:4000/allproducts/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch product data');
-      }
-      const productData = await response.json();
-      setProduct(productData);
-    } catch (error) {
-      console.error('Error fetching product data:', error);
-    }
-  };
-
+  
   const closePopup = () => {
     setShowPopup(false);
   };

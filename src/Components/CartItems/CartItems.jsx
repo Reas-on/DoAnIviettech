@@ -32,9 +32,9 @@ const CartItems = () => {
 
   const handleCheckout = () => {
     if (paymentMethod === "receive") {
-      // Redirect to OrderCart page if payment method is "Nhận Hàng Khi Thanh Toán"
       window.location.href = "/OrderCart"; 
     } else {
+      window.location.href = "/testpayment"
     }
   };
 
@@ -112,7 +112,7 @@ const CartItems = () => {
             <p>Select payment method:</p>
             <select value={paymentMethod} onChange={handlePaymentMethodChange}>
               <option value="receive">Nhận Hàng Khi Thanh Toán</option>
-              <option value="vnpay">Thanh Toán Qua VNPay</option>
+              <option value="testpayment">Thanh Toán Qua MôMo</option>
             </select>
           </div>
           <button className="cartitems-checkout-button" onClick={handleCheckout}>

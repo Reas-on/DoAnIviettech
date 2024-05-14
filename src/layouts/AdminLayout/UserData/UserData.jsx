@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, message, Select  } from 'antd';
+import { Table, Button, Modal, message, Select, Input } from 'antd';
 
 const UserData = () => {
   const [userData, setUserData] = useState([]);
@@ -7,6 +7,7 @@ const UserData = () => {
   const [editingUserId, setEditingUserId] = useState(null);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [editedUser, setEditedUser] = useState(null);
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   useEffect(() => {
     fetchUserData();
@@ -15,7 +16,7 @@ const UserData = () => {
   const handleAdminChange = (value) => {
     setEditedUser({ ...editedUser, isAdmin: value });
   };
-  
+
   const fetchUserData = async () => {
     try {
       const response = await fetch('http://localhost:4000/users');
@@ -83,6 +84,21 @@ const UserData = () => {
       message.error('Failed to save changes');
     }
   };
+
+  const handleSearch = () => {
+    // Nếu không có từ khóa tìm kiếm, gọi hàm fetchUserData() để lấy lại toàn bộ dữ liệu người dùng
+    if (!searchKeyword) {
+      fetchUserData();
+      return;
+    }
+    
+    // Bộ lọc người dùng dựa trên từ khóa tìm kiếm
+    const filteredUsers = userData.filter(user =>
+      user.name.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+    setUserData(filteredUsers);
+  };
+  
 
   const columns = [
     {
@@ -197,6 +213,14 @@ const UserData = () => {
   return (
     <div className="user-data">
       <h2>User Data</h2>
+      <Input.Search
+        placeholder="Search users"
+        allowClear
+        enterButton="Search"
+        onSearch={handleSearch}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        style={{ marginBottom: 16 }}
+      />
       <Table
         dataSource={userData}
         columns={columns}

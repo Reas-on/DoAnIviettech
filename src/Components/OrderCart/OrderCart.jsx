@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Steps } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCartItems, selectTotalCartAmount } from "../../Redux/ShopSlice";
-import { fetchCartItems } from "../../Redux/Thunk/fetchCartItems"; // Import fetchCartItems action
+import { fetchCartItems } from "../../Redux/Thunk/fetchCartItems";
 
 const { Step } = Steps;
 
@@ -12,7 +12,7 @@ const OrderCart = () => {
     receiverName: "",
     deliveryAddress: "",
     phoneNumber: "",
-    email: "", // Add email key
+    email: "", 
     note: "",
   });
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ const OrderCart = () => {
           return;
         }
 
-        const response = await fetch(`http://localhost:4000/profile`, {
+        const response = await fetch(`http://localhost:4000/api/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

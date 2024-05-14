@@ -44,6 +44,14 @@ const shopSlice = createSlice({
       })
       .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.cartItems = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchCartItems.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(addToCart.pending, (state) => {
+        state.status = "loading";
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -84,7 +92,7 @@ const shopSlice = createSlice({
 
 export const selectAllProducts = (state) => state.shop.allProducts;
 export const selectCartItems = (state) => state.shop.cartItems;
-export const isLoggedInSelector = selectIsLoggedIn;
+export const isLoggedInSelector = selectIsLoggedIn; 
 export const selectTotalCartItems = (state) => {
   let totalItems = 0;
   for (const item in state.shop.cartItems) {

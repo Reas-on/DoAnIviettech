@@ -12,7 +12,7 @@ const ListProduct = () => {
   const fetchInfo = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/allproducts?page=${currentPage}`
+        `http://localhost:4000/product/allproducts?page=${currentPage}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -30,7 +30,7 @@ const ListProduct = () => {
 
   const removeProduct = async (id) => {
     try {
-      await fetch("http://localhost:4000/removeproduct", {
+      await fetch("http://localhost:4000/product/removeproduct", {
         method: "POST",
         headers: {
           Accept: "application/json",
