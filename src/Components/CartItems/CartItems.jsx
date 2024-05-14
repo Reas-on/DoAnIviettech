@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./CartItems.css";
+import "./CartItems.scss";
 import remove_icon from "../Assets/cart_cross_icon.png";
 import {
   selectCartItems,

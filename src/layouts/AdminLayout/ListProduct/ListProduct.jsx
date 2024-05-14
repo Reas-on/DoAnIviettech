@@ -7,6 +7,7 @@ const ListProduct = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [message, setMessage] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Thêm state cho phần filter
 
   const fetchInfo = useCallback(async () => {
     try {
@@ -55,6 +56,11 @@ const ListProduct = () => {
 
   const totalPages = Math.ceil(allProducts.length / 9);
 
+  // Hàm lọc sản phẩm theo tên
+  const filteredProducts = allProducts.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="list-product">
       <h1>List Product</h1>
@@ -74,6 +80,16 @@ const ListProduct = () => {
           Next
         </button>
       </div>
+      {/* Phần Filter */}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter product name to filter"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+      {/* Danh sách sản phẩm */}
       <div className="listproduct-format-main">
         <p>Products</p>
         <p>Title</p>
@@ -84,7 +100,7 @@ const ListProduct = () => {
       </div>
       <div className="listproduct-allproducts">
         <hr />
-        {allProducts
+        {filteredProducts
           .slice((currentPage - 1) * 9, currentPage * 9)
           .map((product, index) => {
             return (

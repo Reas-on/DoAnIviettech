@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllProducts } from "../Redux/Thunk/fetchAllProducts";
-import "./CSS/ShopCategory.css";
+import "./CSS/ShopCategory.scss";
 import dropdown_icon from "../Components/Assets/dropdown_icon.png";
 import Item from "../Components/Item/Item";
 
@@ -16,7 +16,6 @@ const ShopCategory = (props) => {
   }, [dispatch]);
 
   const sortedProducts = () => {
-    // Add your sorting logic here if needed
     return allProducts.filter((item) => item.category === props.category);
   };
 
@@ -32,7 +31,6 @@ const ShopCategory = (props) => {
     <div className="shop-category">
       <img className="shopcategory-banner" src={props.banner} alt="" />
       <div className="shopcategory-indexSort">
-        {/* Add your index and sort components here */}
         <div className="shopcategory-sort">
           <select>
             <option value="">Sort by</option>

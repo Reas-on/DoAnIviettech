@@ -8,21 +8,24 @@ export const fetchCartItems = createAsyncThunk(
       if (!authToken) {
         const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
         return storedItems;
+      }else {
+        const response = await fetch("http://localhost:4000/getcart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": authToken,
+          },
+        });
+        if (!response.ok) {
+          return {};
+        }
+        const data = await response.json();
+        thunkAPI.dispatch(fetchCartItems());
+        return data;
       }
-      const response = await fetch("http://localhost:4000/getcart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": authToken,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch cart items.");
-      }
-      const data = await response.json();
-      return data;
     } catch (error) {
-      throw new Error("Failed to fetch cart items: " + error.message);
+      return {};
     }
   }
 );
+      

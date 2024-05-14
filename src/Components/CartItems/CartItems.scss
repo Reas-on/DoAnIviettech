@@ -9,7 +9,7 @@
 
   .cartitems-format-main {
     display: grid;
-    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr 1fr; /* Thêm một cột cho "Size" */
     align-items: center;
     gap: 75px;
     padding: 20px 0px;
@@ -30,7 +30,12 @@
   .cartitems-remove-icon {
     width: 15px;
     cursor: pointer;
-    margin: 0px 40px;
+    margin: 0px 20px; 
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .cartitems-remove-icon:hover {
+    transform: scale(1.2);
   }
 
   .cartitems-quantity {
@@ -42,7 +47,7 @@
 
   .cartitems-down {
     display: flex;
-    margin: 50px 0;
+    margin: 100px 0px;
   }
 
   .cartitems-total,
@@ -51,95 +56,119 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    margin-right: 200px;
     color: #787878;
     font-size: 20px;
     font-weight: 500;
     padding: 15px 0px;
   }
 
-  .cartitems-total {
-    margin-right: 40px;
-
-    .cartitems-total-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 0px;
-
-      p {
-        font-size: 20px;
-        font-weight: 500;
-      }
-    }
-
-    button {
-      width: 100%;
-      height: 69px;
-      border-radius: 75px;
-      background: #e2e2e2;
-      color: #787878;
-      font-size: 20px;
-      font-weight: 500;
-      border: 0;
-    }
-  }
-
-  .cartitems-promocode {
-    margin-left: 40px;
+  .cartitems-total-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0px;
 
     p {
-      margin: 0;
-      padding: 0;
-      font-size: 18px;
-      font-weight: 400;
-      color: #454545;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    input {
-      width: 100%;
-      height: 69px;
-      border-radius: 75px;
-      background: #e2e2e2;
-      border: 0;
-      outline: 0;
-      padding: 0 20px;
       font-size: 20px;
       font-weight: 500;
-      color: #787878;
-      transition: color 0.3s;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    button {
-      height: 69px;
-      border-radius: 75px;
-      background: black;
-      color: white !important;
-      font-size: 20px;
-      font-weight: 500;
-      border: 0;
     }
   }
-  @media (max-width: 768px) {
-    margin: 50px 20px;
 
-    .cartitems-format-main {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
+  .cartitems-total button {
+    width: 100%;
+    height: 69px;
+    border-radius: 75px;
+    background: black;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    border: 0;
+  }
 
-    .cartitems-down {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  .cartitems-promocode p {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: #454545;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
 
-    .cartitems-total,
-    .cartitems-promocode {
-      margin: 20px 0;
-    }
+  .cartitems-promocode input {
+    width: 93%;
+    height: 69px;
+    border-radius: 75px;
+    background: #e2e2e2;
+    border: 0;
+    outline: 0;
+    padding: 0 20px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #787878;
+    transition: color 0.3s;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  .cartitems-promocode button {
+    width: 100%;
+    height: 69px;
+    border-radius: 75px;
+    background: black;
+    color: white !important;
+    font-size: 20px;
+    font-weight: 500;
+    border: 0;
+  }
+
+  .cartitems-total-method {
+    margin-top: 20px;
+  }
+
+  .cartitems-total-method p {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #454545;
+  }
+
+  .cartitems-total-method select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .cartitems-total-method select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: 0;
+    transition: border-color 0.3s;
+    color: #454545;
+    font-size: 16px;
+  }
+
+  .cartitems-checkout-button {
+    width: 100%;
+    height: 69px;
+    border-radius: 75px;
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .cartitems-checkout-button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
   }
 }
-
-
