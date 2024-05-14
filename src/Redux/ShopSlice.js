@@ -50,9 +50,6 @@ const shopSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      .addCase(addToCart.pending, (state) => {
-        state.status = "loading";
-      })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.cartItems[action.payload] += 1;

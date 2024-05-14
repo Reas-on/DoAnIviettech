@@ -30,7 +30,6 @@ import { useDispatch } from "react-redux";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { useEffect } from "react";
-import ConfirmOrders from "./layouts/AdminLayout/OrderData/ConfirmOrders";
 
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import TestPayment from "./Pages/TestPayment";
