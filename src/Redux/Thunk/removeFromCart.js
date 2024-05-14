@@ -11,7 +11,7 @@ export const removeFromCart = createAsyncThunk(
         localStorage.setItem("cartItems", JSON.stringify(storedItems));
         return itemId;
       }
-      const response = await fetch("http://localhost:4000/removefromcart", {
+      const response = await fetch("http://localhost:4000/api/removefromcart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

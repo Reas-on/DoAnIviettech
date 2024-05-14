@@ -1,0 +1,141 @@
+.loginsignup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.loginsignup-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.loginsignup h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333; /* Màu chữ */
+}
+
+.loginsignup-fields input {
+  width: calc(100% - 22px);
+  margin-bottom: 20px;
+  padding: 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #f2f2f2; /* Màu nền input */
+  outline: none; /* Loại bỏ đường viền khi focus */
+}
+
+.loginsignup-fields input::placeholder {
+  color: #999; /* Màu chữ placeholder */
+}
+
+.loginsignup-fields input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.loginsignup-login{
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #555; /* Màu chữ */
+  display: flex;
+  gap: 5px;
+  cursor: pointer;
+  transition: color 0.3s;
+  justify-content: center;
+}
+
+.loginsignup-login p{
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555; /* Màu chữ */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.loginsignup-login span {
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s;
+  font-weight: 600;
+}
+
+
+.loginsignup-agree {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.loginsignup-agree p {
+  font-size: 17px;
+  color: #555; /* Màu chữ */
+  margin-left: 15px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-bottom: -22px;
+}
+
+.loginsignup-agree p span {
+  color: #007bff;
+  cursor: pointer;
+}
+
+.loginsignup-agree input {
+  margin-right: 5px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin: 20px 0 0 0;
+  width: 20px;
+  height: 20px;
+}
+
+.loginsignup button {
+  width: calc(100% - 22px);
+  padding: 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.loginsignup button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Thêm animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.loginsignup button:hover {
+  animation: pulse 1s 2.1; /* Sử dụng animation khi di chuột qua */
+}
+
+.loginsignup-message {
+  color: #007bff;
+  font-size: 24px;
+  font-weight: 600px;
+  text-align: center;
+}
+

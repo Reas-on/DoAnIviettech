@@ -1,4 +1,3 @@
-// actions/AddToCart.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchCartItems } from "./fetchCartItems";
 
@@ -8,7 +7,7 @@ export const addToCart = createAsyncThunk(
     const authToken = localStorage.getItem("auth-token");
     if (authToken) {
       try {
-        const response = await fetch("http://localhost:4000/addtocart", {
+        const response = await fetch("http://localhost:4000/api/addtocart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

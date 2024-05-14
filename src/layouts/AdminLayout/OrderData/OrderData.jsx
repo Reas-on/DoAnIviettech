@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Table, Tag } from "antd";
 import moment from "moment";
+import { useNavigate } from "react-router-dom"; 
 
 const OrderData = () => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrderData();
@@ -117,6 +119,13 @@ const OrderData = () => {
         columns={columns}
         loading={loading}
         rowKey="_id"
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              navigate(`/admin/AllOrders/${record.orderNumber}`); // Chuyển hướng đến trang chi tiết đơn hàng khi click
+            },
+          };
+        }}
       />
     </div>
   );

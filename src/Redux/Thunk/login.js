@@ -11,9 +11,9 @@ export const loginUser = createAsyncThunk(
           },
           body: JSON.stringify(formData),
         });
-
+  
         const data = await response.json();
-
+  
         if (response.ok && data.success) {
           localStorage.setItem("auth-token", data.authToken);
           return { success: true };
@@ -29,3 +29,4 @@ export const loginUser = createAsyncThunk(
       }
     }
   );
+  

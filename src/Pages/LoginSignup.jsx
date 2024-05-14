@@ -38,7 +38,7 @@ const LoginSignup = () => {
   };
 
   const signup = async () => {
-    const checkbox = document.querySelector('.loginsignup-agree input[type="checkbox"]');
+    const checkbox = document.querySelector('.loginsignup-agree input[type="checkbox"]'); //TODO: using state, not use DOM
     if (!checkbox.checked) {
       alert('You must agree to the Terms of Service and Privacy Policy to sign up.');
       return;

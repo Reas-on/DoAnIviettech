@@ -55,9 +55,9 @@
           navigate('/login');
           return;
         }
-
-        const response = await fetch(`http://localhost:4000/users/${userInfo._id}`, {
-          method: 'PUT',
+        
+        const response = await fetch(`http://localhost:4000/api/profile`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'auth-token': token

@@ -8,8 +8,8 @@ export const fetchCartItems = createAsyncThunk(
       if (!authToken) {
         const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
         return storedItems;
-      }else {
-        const response = await fetch("http://localhost:4000/getcart", {
+      } else {
+        const response = await fetch("http://localhost:4000/api/getcart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -28,4 +28,3 @@ export const fetchCartItems = createAsyncThunk(
     }
   }
 );
-      

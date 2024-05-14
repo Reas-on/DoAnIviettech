@@ -14,7 +14,7 @@ import OrderCart from "./Components/OrderCart/OrderCart";
 import MainLayout from "./layouts/MainLayout";
 // Admin
 import AdminLayout from "./layouts/AdminLayout";
-import Payment from "./Pages/Payment";
+import Payment from "./Pages/TestPayment";
 import DashBoard from "./layouts/AdminLayout/DashBoard/DashBoard";
 import AddProduct from "./layouts/AdminLayout/AddProduct/AddProduct";
 import ListProduct from "./layouts/AdminLayout/ListProduct/ListProduct";
@@ -23,6 +23,8 @@ import UserData from "./layouts/AdminLayout/UserData/UserData";
 import OrderData from "./layouts/AdminLayout/OrderData/OrderData";
 import AddUser from "./layouts/AdminLayout/AddUser/AddUser";
 import FindUser from "./layouts/AdminLayout/FindUser/FindUser";
+import ConfirmOrders from "./layouts/AdminLayout/OrderData/ConfirmOrders";
+import OrderDetail from "./layouts/AdminLayout/OrderDetail/OrderDetail";
 
 import { useDispatch } from "react-redux";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
@@ -30,6 +32,8 @@ import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { useEffect } from "react";
 import ConfirmOrders from "./layouts/AdminLayout/OrderData/ConfirmOrders";
 
+import PaymentSuccess from "./Pages/PaymentSuccess";
+import TestPayment from "./Pages/TestPayment";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -61,6 +65,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/payment" element={<Payment/>}/>
             <Route path="/OrderCart" element={<OrderCart />} />
+            <Route path="/payment-momo" element={<PaymentSuccess />} />
+            <Route path="/testpayment" element={<TestPayment />} />
           </Route>
           {/* Admin */}
           <Route path="admin" element={<AdminLayout />}>
@@ -76,6 +82,7 @@ function App() {
               element={<ProductData />}
             />
             <Route path="/admin/AllOrders" element={<OrderData />} />
+            <Route path="/admin/AllOrders/:orderId" element={<OrderDetail />} />
             <Route path="/admin/ConfirmOrders" element={<ConfirmOrders />} />
           </Route>
         </Routes>
