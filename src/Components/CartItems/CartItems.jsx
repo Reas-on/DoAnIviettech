@@ -123,7 +123,7 @@ const CartItems = () => {
           <p>Promo code</p>
           <div className="cartitems-promobox">
             <input type="text" placeholder="Enter code" />
-            <button>Apply</button>
+            <button className="cartitems-promocode-button">Apply</button>
           </div>
         </div>
       </div>

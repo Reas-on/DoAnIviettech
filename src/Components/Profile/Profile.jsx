@@ -18,7 +18,7 @@
             return;
           }
           
-          const response = await fetch(`http://localhost:4000/profile`, {
+          const response = await fetch(`http://localhost:4000/api/profile`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

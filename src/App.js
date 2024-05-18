@@ -40,6 +40,8 @@ function App() {
     dispatch(fetchCartItems());
   }, [dispatch]);
 
+
+  
   return (
     <div>
       <BrowserRouter>
