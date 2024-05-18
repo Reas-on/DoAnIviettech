@@ -1,57 +1,31 @@
-  import React, { useState, useEffect } from 'react';
-  import { useNavigate, Link } from 'react-router-dom';
-  import { message } from 'antd';
-  import './Profile.scss';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { message } from 'antd';
+import './Profile.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserInfo } from '../../Redux/Thunk/fetchUserInfo';
+import { selectUserName } from '../../Redux/ShopSlice';
 
-  const Profile = () => {
-    const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState(null);
-    const [editedUserInfo, setEditedUserInfo] = useState(null);
-    const [isEditing, setIsEditing] = useState(false)
+const Profile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userName = useSelector(selectUserName);
+  const [userInfo, setUserInfo] = useState(null);
+  const [editedUserInfo, setEditedUserInfo] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-    useEffect(() => {
-      const fetchUserInfo = async () => {
-        try {
-          const token = localStorage.getItem('auth-token');
-          if (!token) {
-            navigate('/login');
-            return;
-          }
-          
-          const response = await fetch(`http://localhost:4000/api/profile`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'auth-token': token
-            }
-          });
+  useEffect(() => {
+    const authToken = localStorage.getItem('auth-token');
+    if (authToken) {
+      dispatch(fetchUserInfo(authToken));
+    }
+  }, [dispatch]);
 
-          if (!response.ok) {
-            navigate('/login');
-            return;
-          }
-
-          const data = await response.json();
-          setUserInfo(data);
-          setEditedUserInfo({ ...data });
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-          navigate('/login');
-        }
-      };
-
-      fetchUserInfo();
-    }, [navigate]);
-
-    const handleEdit = () => {
-      setEditedUserInfo({ ...userInfo });
-      setIsEditing(true);
-    };
-
-    const handleSave = async () => {
+  useEffect(() => {
+    const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('auth-token');
-        if (!token) {
+        const authToken = localStorage.getItem('auth-token');
+        if (!authToken) {
           navigate('/login');
           return;
         }
@@ -60,60 +34,95 @@
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'auth-token': token
-          },
-          body: JSON.stringify(editedUserInfo) 
+            'auth-token': authToken
+          }
         });
 
         if (!response.ok) {
-          throw new Error('Failed to save changes');
+          navigate('/login');
+          return;
         }
 
-        message.success('Changes saved successfully');
-        setUserInfo(editedUserInfo);
-        setIsEditing(false);
+        const data = await response.json();
+        setUserInfo(data);
+        setEditedUserInfo({ ...data, password: '' }); // Không bao gồm mật khẩu khi chỉnh sửa
       } catch (error) {
-        console.error('Error saving changes:', error);
-        message.error('Failed to save changes');
+        console.error('Error fetching user data:', error);
+        navigate('/login');
       }
     };
 
-    if (!userInfo) {
-      return <div>Loading...</div>;
-    }
+    fetchUserData();
+  }, [navigate]);
 
-    return (
-      <div className={`profile-container ${isEditing ? 'edit-mode' : ''}`}>
-        <h2>User Profile</h2>
-        <div className="profile-info">
-          {isEditing ? (
-            <>
-              <input type="text" value={editedUserInfo.name} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, name: e.target.value })} />
-              <input type="email" value={editedUserInfo.email} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, email: e.target.value })} />
-              <input type="password" value={editedUserInfo.password} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, password: e.target.value })} />
-              <input type="address" value={editedUserInfo.address} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, address: e.target.value })} />
-              <input type="phone" value={editedUserInfo.phone} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, phone: e.target.value })} />
-            </>
-          ) : (
-            <>
-          <p><strong>ID:</strong> {userInfo?._id}</p>
-          <p><strong>Name:</strong> {userInfo?.name}</p>
-          <p><strong>Email:</strong> {userInfo?.email}</p>
-          <p><strong>Password:</strong> {userInfo?.password}</p>
-          <p><strong>Address:</strong> {userInfo?.address}</p>
-          <p><strong>Phone:</strong> {userInfo?.phone}</p>
-          </>
-          )}
-        </div>
-        <div className="profile-buttons">
-          <Link to="/cart">
-            <button className="cart-button">My Cart</button>
-          </Link>
-          <button className="edit-button" onClick={handleEdit}>Edit</button>
-          <button className="save-button" onClick={handleSave}>Save</button>
-        </div>
-      </div>
-    );
+  const handleEdit = () => {
+    setIsEditing(true);
   };
 
-  export default Profile;
+  const handleSave = async () => {
+    try {
+      const authToken = localStorage.getItem('auth-token');
+      if (!authToken) {
+        navigate('/login');
+        return;
+      }
+      
+      const response = await fetch(`http://localhost:4000/api/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': authToken
+        },
+        body: JSON.stringify(editedUserInfo) 
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save changes');
+      }
+
+      message.success('Changes saved successfully');
+      setUserInfo(editedUserInfo);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error saving changes:', error);
+      message.error('Failed to save changes');
+    }
+  };
+
+  if (!userInfo) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className={`profile-container ${isEditing ? 'edit-mode' : ''}`}>
+      <h2>User Profile</h2>
+      <div className="profile-info">
+        {isEditing ? (
+          <>
+            <input type="text" value={editedUserInfo.name} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, name: e.target.value })} />
+            <input type="email" value={editedUserInfo.email} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, email: e.target.value })} />
+            <input type="address" value={editedUserInfo.address} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, address: e.target.value })} />
+            <input type="phone" value={editedUserInfo.phone} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, phone: e.target.value })} />
+          </>
+        ) : (
+          <>
+            <p><strong>ID:</strong> {userInfo?._id}</p>
+            <p><strong>Name:</strong> {userName}</p>
+            <p><strong>Email:</strong> {userInfo?.email}</p>
+            <p><strong>Address:</strong> {userInfo?.address}</p>
+            <p><strong>Phone:</strong> {userInfo?.phone}</p>
+          </>
+        )}
+      </div>
+      <div className="profile-buttons">
+        <Link to="/cart">
+          <button className="cart-button">My Cart</button>
+        </Link>
+        {!isEditing && <button className="edit-button" onClick={handleEdit}>Edit</button>}
+        {isEditing && <button className="save-button" onClick={handleSave}>Save</button>}
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

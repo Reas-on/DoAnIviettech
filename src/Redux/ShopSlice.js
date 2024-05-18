@@ -1,10 +1,12 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchUserInfo } from "./Thunk/fetchUserInfo";
 import { addToCart } from "./Thunk/addToCart"; 
 import { removeFromCart } from "./Thunk/removeFromCart";
 import { fetchAllProducts } from "./Thunk/fetchAllProducts";
 import { fetchCartItems } from "./Thunk/fetchCartItems";
 import { loginUser } from "./Thunk/login";
 import { signupUser } from "./Thunk/signup";
+
 const getDefaultCart = () => {
   let cart = {};
   for (let i = 1; i <= 300; i++) {
@@ -12,19 +14,23 @@ const getDefaultCart = () => {
   }
   return cart;
 };
-const selectIsLoggedIn = createSelector(
-  (state) => state, 
-  (state) => state.isLoggedIn 
-);
+
+const initialState = {
+  allProducts: [],
+  cartItems: getDefaultCart(),
+  user: {
+    name: '',
+    address: '',
+    phone: '',
+    isAdmin: false,
+  },
+  status: 'idle',
+  error: null,
+};
 
 const shopSlice = createSlice({
   name: "shop",
-  initialState: {
-    allProducts: [],
-    cartItems: getDefaultCart(),
-    status: "idle",
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -60,7 +66,7 @@ const shopSlice = createSlice({
           state.cartItems[itemId] -= 1;
         }
       })
-      .addCase(loginUser.fulfilled, (state, action) => { 
+      .addCase(loginUser.fulfilled, (state) => { 
         state.status = "succeeded";
         state.isLoggedIn = true; 
       })
@@ -72,9 +78,25 @@ const shopSlice = createSlice({
           state.error = action.error.message;
         }
       })
-      .addCase(signupUser.fulfilled, (state, action) => {
+      .addCase(signupUser.fulfilled, (state) => {
         state.status = "succeeded";
-      }) 
+      })
+      .addCase(fetchUserInfo.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user.name = action.payload.name;
+        state.user.address = action.payload.address;
+        state.user.phone = action.payload.phone;
+        state.user.isAdmin = action.payload.isAdmin;
+        state.isAdmin = action.payload.isAdmin; 
+      })
+      .addCase(fetchUserInfo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
       .addMatcher(
         (action) =>
           action.type === addToCart.rejected.type ||
@@ -87,9 +109,12 @@ const shopSlice = createSlice({
   },
 });
 
+export const selectUserName = (state) => state.shop.user.name;
+export const selectIsAdmin = (state) => state.shop.user.isAdmin;
 export const selectAllProducts = (state) => state.shop.allProducts;
 export const selectCartItems = (state) => state.shop.cartItems;
-export const isLoggedInSelector = selectIsLoggedIn; 
+export const selectIsLoggedIn = (state) => state.shop.isLoggedIn; 
+
 export const selectTotalCartItems = (state) => {
   let totalItems = 0;
   for (const item in state.shop.cartItems) {

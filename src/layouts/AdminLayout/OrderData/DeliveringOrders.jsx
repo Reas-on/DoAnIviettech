@@ -1,37 +1,29 @@
 import React, { useEffect } from 'react';
-import { Table, Select, message } from 'antd';
+import { Table, Tag } from 'antd';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPendingOrders, updateOrderStatus } from '../../../Redux/admin/confirmOrders';
+import { fetchOrderData } from '../../../Redux/admin/adminorderdata';
 
-const { Option } = Select;
-
-const ConfirmOrders = () => {
+const DeliveringOrders = () => {
   const dispatch = useDispatch();
-  const { pendingOrders, isLoading } = useSelector((state) => state.admin);
+  const { orderData, isLoading } = useSelector((state) => {
+    const cancelledOrders = state.admin.orderData.filter(order => order.status === 'delivered');
+    return {
+      orderData: cancelledOrders,
+      isLoading: state.admin.isLoading
+    };
+  });
 
   useEffect(() => {
-    dispatch(fetchPendingOrders());
+    dispatch(fetchOrderData());
   }, [dispatch]);
-
-  const handleStatusChange = (value, orderId) => {
-    dispatch(updateOrderStatus({ orderId, status: value }))
-      .then((action) => {
-        if (action.meta.requestStatus === 'fulfilled') {
-          message.success(`Đơn hàng ${action.payload.orderNumber} đã chuyển từ ${action.payload.status} sang ${value}`);
-          dispatch(fetchPendingOrders());
-        } else {
-          message.error('Failed to update order status');
-        }
-      });
-  };
 
   const columns = [
     {
       title: 'Ngày Đặt Hàng',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (createdAt) => moment(createdAt).format("DD-MM-YYYY"),
+      render: (createdAt) => moment(createdAt).format('DD-MM-YYYY'),
     },
     {
       title: 'Order Number',
@@ -87,29 +79,39 @@ const ConfirmOrders = () => {
       dataIndex: 'status',
       key: 'status',
       render: (status, record) => (
-        <Select defaultValue={status} onChange={(value) => handleStatusChange(value, record._id)}>
-          <Option value="pending">Pending</Option>
-          <Option value="processing">Processing</Option>
-          <Option value="delivered">Delivered</Option>
-          <Option value="shipped">Shipped</Option>
-          <Option value="completed">Completed</Option>
-          <Option value="cancelled">Cancelled</Option>
-        </Select>
+        <Tag
+          color={
+            status === 'pending'
+              ? 'blue'
+              : status === 'processing'
+              ? 'gold'
+              : status === 'completed'
+              ? 'green'
+              : status === 'delivered'
+              ? 'cyan'
+              : status === 'shipped'
+              ? 'magenta'
+              : status === 'cancelled'
+              ? 'red'
+              : ''
+          }
+        >
+          {status}
+        </Tag>
       ),
     },
   ];
 
   return (
     <div>
-      <h2>Order Data</h2>
+      <h2>Cancelled Orders</h2>
       <Table
-        dataSource={pendingOrders}
+        dataSource={orderData}
         columns={columns}
         loading={isLoading}
-        rowKey="_id"
       />
     </div>
   );
 };
 
-export default ConfirmOrders;
+export default DeliveringOrders;

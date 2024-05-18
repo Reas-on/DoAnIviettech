@@ -178,4 +178,42 @@
     color: black;
     border: 1px solid black;
   }
+
+  .online-payment-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  
+    .zalopay-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+    }
+    .zalopay-button:hover {
+      background-color: #fff;
+      border: #007bff 1px solid;
+    }
+    .momo-button {
+      background-color: #ff4081;
+      color: #fff;
+      border: none;
+    }
+    .momo-button:hover {
+      background-color: #fff;
+      color : #ff4081;
+      border: #ff4081 1px solid;
+    }
+    .vnpay-button {
+      background-color: #fff;
+      color: #ff0000;
+      border: 1px solid #007bff;
+    }
+    .vnpay-button:hover {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+    }
+  }
+  
+  
 }

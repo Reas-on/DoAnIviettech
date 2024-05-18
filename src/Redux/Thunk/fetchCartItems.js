@@ -17,14 +17,13 @@ export const fetchCartItems = createAsyncThunk(
           },
         });
         if (!response.ok) {
-          return {};
+          return thunkAPI.rejectWithValue('Failed to fetch cart items');
         }
         const data = await response.json();
-        thunkAPI.dispatch(fetchCartItems());
         return data;
       }
     } catch (error) {
-      return {};
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

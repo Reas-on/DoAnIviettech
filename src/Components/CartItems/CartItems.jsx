@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./CartItems.scss";
 import remove_icon from "../Assets/cart_cross_icon.png";
 import {
@@ -9,9 +10,13 @@ import {
 } from "../../Redux/ShopSlice";
 import { removeFromCart } from "../../Redux/Thunk/removeFromCart";
 import { fetchCartItems } from "../../Redux/Thunk/fetchCartItems";
+import { Button, Select } from "antd";
+
+const { Option } = Select;
 
 const CartItems = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector(selectCartItems);
   const totalCartAmount = useSelector(selectTotalCartAmount);
   const totalCartItem = useSelector(selectTotalCartItems);
@@ -26,15 +31,15 @@ const CartItems = () => {
     dispatch(removeFromCart(itemId));
   };
 
-  const handlePaymentMethodChange = (event) => {
-    setPaymentMethod(event.target.value);
+  const handlePaymentMethodChange = (value) => {
+    setPaymentMethod(value);
   };
 
-  const handleCheckout = () => {
-    if (paymentMethod === "receive") {
-      window.location.href = "/OrderCart"; 
+  const handleCheckout = (method) => {
+    if (method === "receive") {
+      navigate("/OrderCart");
     } else {
-      window.location.href = "/testpayment"
+      navigate(`/online-payment/${method || paymentMethod}`);
     }
   };
 
@@ -110,20 +115,81 @@ const CartItems = () => {
           </div>
           <div className="cartitems-total-method">
             <p>Select payment method:</p>
-            <select value={paymentMethod} onChange={handlePaymentMethodChange}>
-              <option value="receive">Nhận Hàng Khi Thanh Toán</option>
-              <option value="testpayment">Thanh Toán Qua MôMo</option>
-            </select>
+            <Select
+              value={paymentMethod}
+              onChange={handlePaymentMethodChange}
+              style={{ width: "100%" }}
+            >
+              <Option value="receive">Thanh Toán Khi Nhận Hàng</Option>
+              <Option value="online">Thanh Toán Online</Option>
+            </Select>
           </div>
-          <button className="cartitems-checkout-button" onClick={handleCheckout}>
-            Checkout
-          </button>
+
+          {paymentMethod === "online" && (
+            <div className="online-payment-options">
+              <Button
+                className="zalopay-button"
+                onClick={() => handleCheckout("zalopay")}
+              >
+                <img
+                  src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-ZaloPay-Square.png"
+                  alt="ZaloPay"
+                  style={{
+                    marginRight: "10px",
+                    verticalAlign: "middle",
+                    height: "30px",
+                  }}
+                />
+                ZaloPay
+              </Button>
+              <Button
+                className="momo-button"
+                onClick={() => handleCheckout("momo")}
+              >
+                <img
+                  src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Square.png"
+                  alt="Momo"
+                  style={{
+                    marginRight: "10px",
+                    verticalAlign: "middle",
+                    height: "30px",
+                  }}
+                />
+                MoMo
+              </Button>
+              <Button
+                className="vnpay-button"
+                onClick={() => handleCheckout("vnpay")}
+              disabled>
+                <img
+                  src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR.png"
+                  alt="VnPay"
+                  style={{
+                    marginRight: "10px",
+                    verticalAlign: "middle",
+                    height: "30px",
+                  }}
+                />
+                VnPay
+              </Button>
+            </div>
+          )}
+
+          {paymentMethod !== "online" && (
+            <Button
+              type="primary"
+              className="cartitems-checkout-button"
+              onClick={() => handleCheckout("receive")}
+            >
+              Checkout
+            </Button>
+          )}
         </div>
         <div className="cartitems-promocode">
           <p>Promo code</p>
           <div className="cartitems-promobox">
             <input type="text" placeholder="Enter code" />
-            <button className="cartitems-promocode-button">Apply</button>
+            <Button>Apply</Button>
           </div>
         </div>
       </div>

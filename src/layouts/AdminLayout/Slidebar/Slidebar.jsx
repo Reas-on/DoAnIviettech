@@ -54,7 +54,7 @@ const Sidebar = () => {
           <Link to="/admin/listproduct">All Products</Link>
         </Menu.Item>
         <Menu.Item key="4.2">
-          <Link to="/admin/Voucher">Voucher</Link>
+          <Link to="/admin/Vouchers">Vouchers</Link>
         </Menu.Item>
       </SubMenu>
       <SubMenu key="5" icon={<AppstoreOutlined />} title="User Data">
