@@ -72,11 +72,15 @@ $loadmore-font-size: 18px;
   row-gap: $products-row-gap; 
   justify-items: center;
   animation: slideInBottom 1s ease-in-out; 
+  
+
   .item img {
-    width: 400px; 
+    width: 355px; 
     height: 600px; 
     object-fit: cover;
   }
+
+  
 }
 
 @keyframes slideInBottom {
