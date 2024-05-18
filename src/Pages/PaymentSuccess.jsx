@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Button, Result, Card, Typography, Spin } from 'antd';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +7,7 @@ const { Title, Text } = Typography;
 
 const PaymentSuccess = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   const [isValid, setIsValid] = useState(null);
   const [orderDetails, setOrderDetails] = useState(null);

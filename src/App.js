@@ -12,6 +12,10 @@ import women_banner from "./Components/Assets/banner_women.png";
 import kid_banner from "./Components/Assets/banner_kids.png";
 import OrderCart from "./Components/OrderCart/OrderCart";
 import MainLayout from "./layouts/MainLayout";
+import PaymentSuccess from "./Pages/PaymentSuccess";
+import TestPayment from "./Pages/TestPayment";
+import OnlineMomoPayment from "./Components/OnlinePayment/OnlineMoMo";
+import OnlineZaloPay from "./Components/OnlinePayment/OnlineZaloPay";
 // Admin
 import AdminLayout from "./layouts/AdminLayout";
 import Payment from "./Pages/TestPayment";
@@ -25,14 +29,18 @@ import AddUser from "./layouts/AdminLayout/AddUser/AddUser";
 import FindUser from "./layouts/AdminLayout/FindUser/FindUser";
 import ConfirmOrders from "./layouts/AdminLayout/OrderData/ConfirmOrders";
 import OrderDetail from "./layouts/AdminLayout/OrderDetail/OrderDetail";
+import CancelOrders from "./layouts/AdminLayout/OrderData/CancelOrders";
+import CompletedOrders from "./layouts/AdminLayout/OrderData/CompletedOrders";
+import DeliveringOrders from "./layouts/AdminLayout/OrderData/DeliveringOrders";
+import ShippedOrders from "./layouts/AdminLayout/OrderData/ShippedOrders";
+import Vouchers from "./layouts/AdminLayout/Vouchers/Vouchers";
 
 import { useDispatch } from "react-redux";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { useEffect } from "react";
+import CheckOrder from "./Components/CheckOrder/CheckOrder";
 
-import PaymentSuccess from "./Pages/PaymentSuccess";
-import TestPayment from "./Pages/TestPayment";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -64,13 +72,19 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<LoginSignup />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/payment" element={<Payment/>}/>
+            <Route path="/payment" element={<Payment />} />
             <Route path="/OrderCart" element={<OrderCart />} />
+            <Route path="/CheckOrder" element={<CheckOrder />} />
             <Route path="/payment-momo" element={<PaymentSuccess />} />
             <Route path="/testpayment" element={<TestPayment />} />
+            <Route
+              path="/online-payment/momo"
+              element={<OnlineMomoPayment />}
+            />
+            <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
           </Route>
           {/* Admin */}
-          <Route path="admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<DashBoard />} />
             <Route path="/admin/DashBoard" element={<DashBoard />} />
             <Route path="/admin/AddUser" element={<AddUser />} />
@@ -78,13 +92,24 @@ function App() {
             <Route path="/admin/FindUser" element={<FindUser />} />
             <Route path="/admin/Addproduct" element={<AddProduct />} />
             <Route path="/admin/Listproduct" element={<ListProduct />} />
-            <Route
-              path="/admin/ListProduct/:id"
-              element={<ProductData />}
-            />
+            <Route path="/admin/ListProduct/:id" element={<ProductData />} />
             <Route path="/admin/AllOrders" element={<OrderData />} />
-            <Route path="/admin/AllOrders/:orderId" element={<OrderDetail />} />
+            <Route
+              path="/admin/AllOrders/:orderNumber"
+              element={<OrderDetail />}
+            />
             <Route path="/admin/ConfirmOrders" element={<ConfirmOrders />} />
+            <Route path="/admin/CancelOrders" element={<CancelOrders />} />
+            <Route
+              path="/admin/CompletedOrders"
+              element={<CompletedOrders />}
+            />
+            <Route
+              path="/admin/DeliveringOrders"
+              element={<DeliveringOrders />}
+            />
+            <Route path="/admin/ShippedOrders" element={<ShippedOrders />} />
+            <Route path="/admin/Vouchers" element={<Vouchers />} />
           </Route>
         </Routes>
       </BrowserRouter>

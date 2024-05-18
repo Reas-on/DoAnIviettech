@@ -3,11 +3,11 @@ import axios from 'axios';
 import { Steps, Button, message, Card } from 'antd';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectTotalCartAmount } from '../Redux/ShopSlice';
+import { selectTotalCartAmount } from '../../Redux/ShopSlice';
 
 const { Step } = Steps;
 
-const TestPayment = () => {
+const OnlineMomoPayment  = () => {
   const totalCartAmount = useSelector(selectTotalCartAmount);
   const [current, setCurrent] = useState(0);
   const [orderInfo] = useState('Kuromi Payment'); 
@@ -80,9 +80,9 @@ const TestPayment = () => {
       content: (
         <div className="mb-3">
           <label className="form-label">Order Information:</label>
-          <p>{orderInfo}</p> {/* Hiển thị orderInfo từ cấu hình */}
+          <p>{orderInfo}</p> 
           <label className="form-label mt-3">Total Amount:</label>
-          <p>{totalCartAmount}</p> {/* Hiển thị totalCartAmount */}
+          <p>{totalCartAmount}</p>
         </div>
       ),
     },
@@ -141,4 +141,6 @@ const TestPayment = () => {
   );
 };
 
-export default TestPayment;
+export default OnlineMomoPayment ;
+
+

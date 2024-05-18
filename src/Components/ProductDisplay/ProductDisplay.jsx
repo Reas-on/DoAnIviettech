@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./ProductDisplay.scss";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
@@ -7,14 +9,20 @@ import { addToCart } from "../../Redux/Thunk/addToCart";
 
 const ProductDisplay = ({ product }) => {
   const dispatch = useDispatch();
-  const [showPopup, setShowPopup] = useState(false);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product.id));
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 5000);
+    toast.success(`Added Product ${product.name} in your cart`, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+
+    });
   };
 
   if (!product) {
@@ -72,16 +80,12 @@ const ProductDisplay = ({ product }) => {
         </div>
         <div className="productdisplay-right-cart">
           <button onClick={handleAddToCart}>Add To Cart</button>
-          {showPopup && (
-            <div className="productdisplay-right-cart-popup">
-              Added Product {product.name} in your cart
-            </div>
-          )}
         </div>
         <p className="productdisplay-right-category">
           Category: <span>{product.category}</span>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -22,7 +22,7 @@ const OrderCart = () => {
   const cartItems = useSelector(selectCartItems);
   const totalCartAmount = useSelector(selectTotalCartAmount);
   const allProducts = useSelector((state) => state.shop.allProducts);
-  const dispatch = useDispatch(); // Initialize useDispatch hook
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -110,7 +110,7 @@ const OrderCart = () => {
       orderedProducts: orderedProducts,
       totalBill: totalBill,
     };
-
+    
     try {
       const response = await fetch("http://localhost:4000/orderData", {
         method: "POST",

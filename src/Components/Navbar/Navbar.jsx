@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
-import { useSelector } from "react-redux";
-import { selectTotalCartItems } from "../../Redux/ShopSlice";
-import { Dropdown, Menu } from "antd"; // Import Dropdown and Menu components from antd
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUserInfo } from "../../Redux/Thunk/fetchUserInfo";
+import { selectTotalCartItems, selectUserName, selectIsAdmin } from "../../Redux/ShopSlice";
+import { Dropdown, Menu } from "antd";
 
 const Navbar = () => {
-  const [userName, setUserName] = useState("");
+  const dispatch = useDispatch();
   const authToken = localStorage.getItem("auth-token");
+  const userName = useSelector(selectUserName);
+  const isAdmin = useSelector(selectIsAdmin);
   const totalCartItem = useSelector(selectTotalCartItems);
 
   const handleLogout = () => {
@@ -18,25 +21,10 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/api/profile", {
-          method: "GET",
-          headers: {
-            "auth-token": authToken,
-          },
-        });
-        const data = await response.json();
-        setUserName(data.name);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-
     if (authToken) {
-      fetchUserInfo();
+      dispatch(fetchUserInfo(authToken));
     }
-  }, [authToken]);
+  }, [authToken, dispatch]);
 
   const authMenu = (
     <Menu className="custom-dropdown-menu">
@@ -46,7 +34,7 @@ const Navbar = () => {
       <Menu.Item key="cart">
         <Link to="/cart">Cart</Link>
       </Menu.Item>
-      {authToken === "admin-token" && ( // Check for admin token
+      {isAdmin && (
         <Menu.Item key="admin">
           <Link to="/admin">Admin</Link>
         </Menu.Item>
@@ -84,6 +72,11 @@ const Navbar = () => {
             Kids
           </Link>
         </li>
+        <li className="nav-menu-item">
+          <Link style={{ textDecoration: "none" }} to="/checkorder">
+            Order
+          </Link>
+        </li>
       </ul>
       <div className="nav-login-cart">
         {authToken ? (
@@ -105,4 +98,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Typography, Upload, Button, Timeline } from 'antd';
-import { UploadOutlined } from '@ant-design/icons'; // Import UploadOutlined icon
+import React, { useState, useEffect, useCallback } from 'react';
+import { Card, Col, Row, Typography, Upload, Button, Select, DatePicker } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import moment from 'moment';
 
 const { Title } = Typography;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const Dashboard = () => {
   const [totalProducts, setTotalProducts] = useState(0);
-  const [totalRevenue] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [topProducts] = useState([]);
+  const [revenueData, setRevenueData] = useState([]);
+  const [viewMode, setViewMode] = useState('30days');
+  const [dateRange, setDateRange] = useState([moment().subtract(30, 'days'), moment()]);
 
   useEffect(() => {
     fetchTotalProducts();
-    fetchTotalRevenue();
     fetchTotalOrders();
     fetchTotalUsers();
     fetchTopProducts();
@@ -32,9 +38,21 @@ const Dashboard = () => {
     }
   };
 
-  const fetchTotalRevenue = async () => {
-    // Implement fetching total revenue from API
-  };
+  const fetchTotalRevenue = useCallback(async () => {
+    try {
+      const response = await fetch('http://localhost:4000/orderData');
+      if (!response.ok) {
+        throw new Error('Failed to fetch total revenue');
+      }
+      const data = await response.json();
+      const completedOrders = data.filter(order => order.status === 'completed');
+      const revenue = completedOrders.reduce((total, order) => total + order.totalBill, 0);
+      setTotalRevenue(revenue);
+      setRevenueData(transformData(completedOrders, viewMode, dateRange));
+    } catch (error) {
+      console.error('Error fetching total revenue:', error);
+    }
+  }, [viewMode, dateRange]);
 
   const fetchTotalOrders = async () => {
     try {
@@ -63,13 +81,65 @@ const Dashboard = () => {
   };
 
   const fetchTopProducts = async () => {
-    // Implement fetching top products from API
+    // Implement fetching top products logic
   };
+
+  const transformData = (orders, mode, range) => {
+    const groupedData = {};
+    orders.forEach(order => {
+      const date = new Date(order.createdAt);
+      if (mode === 'custom') {
+        if (date < range[0].toDate() || date > range[1].toDate()) {
+          return;
+        }
+      }
+      let key;
+      if (mode === '30days' || mode === '7days' || mode === 'custom') {
+        key = date.toISOString().slice(0, 10); // yyyy-mm-dd
+      } else if (mode === 'yearly') {
+        key = date.getFullYear().toString(); // yyyy
+      } else if (mode === 'monthly') {
+        key = date.toISOString().slice(0, 7); // yyyy-mm
+      }
+      if (!groupedData[key]) {
+        groupedData[key] = 0;
+      }
+      groupedData[key] += order.totalBill;
+    });
+
+    return Object.entries(groupedData).map(([key, value]) => ({
+      date: key,
+      revenue: value,
+    }));
+  };
+
+  const handleViewModeChange = (value) => {
+    setViewMode(value);
+    if (value === '30days') {
+      setDateRange([moment().subtract(30, 'days'), moment()]);
+    } else if (value === '7days') {
+      setDateRange([moment().subtract(7, 'days'), moment()]);
+    } else if (value === 'monthly') {
+      setDateRange([moment().startOf('year'), moment()]);
+    } else if (value === 'yearly') {
+      setDateRange([moment().startOf('year'), moment()]);
+    } else {
+      setDateRange([moment().subtract(30, 'days'), moment()]);
+    }
+  };
+
+  const handleDateRangeChange = (dates) => {
+    setDateRange(dates);
+    setViewMode('custom');
+  };
+
+  useEffect(() => {
+    fetchTotalRevenue();
+  }, [fetchTotalRevenue]);
 
   return (
     <div style={{ padding: '20px' }}>
       <Title level={2}>Dashboard</Title>
-      {/* First Row */}
       <Row gutter={[16, 16]} className="dashboard-row">
         <Col xs={24} sm={12} md={6}>
           <Card title="Tổng Sản Phẩm" style={{ backgroundColor: '#FFCC80' }}>
@@ -78,7 +148,7 @@ const Dashboard = () => {
         </Col>
         <Col xs={24} sm={12} md={6}>
           <Card title="Tổng Doanh Thu" style={{ backgroundColor: '#81C784' }}>
-            {totalRevenue}
+            {new Intl.NumberFormat('en-US').format(totalRevenue)} VND
           </Card>
         </Col>
         <Col xs={24} sm={12} md={6}>
@@ -92,13 +162,28 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      {/* Second Row */}
       <Row gutter={[16, 16]} className="dashboard-row">
         <Col xs={24} md={12}>
           <Card title="Biểu Đồ Doanh Thu" style={{ backgroundColor: '#B39DDB' }}>
-            <Timeline>
-              {/* Implement timeline items */}
-            </Timeline>
+            <Select defaultValue="30days" onChange={handleViewModeChange} style={{ marginBottom: 20 }}>
+              <Option value="30days">Last 30 Days</Option>
+              <Option value="7days">Last 7 Days</Option>
+              <Option value="monthly">Year to Date (Monthly)</Option>
+              <Option value="yearly">Yearly</Option>
+              <Option value="custom">Custom</Option>
+            </Select>
+            {viewMode === 'custom' && (
+              <RangePicker onChange={handleDateRangeChange} style={{ marginBottom: 20 }} />
+            )}
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={revenueData}>
+                <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
+                <CartesianGrid stroke="#ccc" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+              </LineChart>
+            </ResponsiveContainer>
           </Card>
         </Col>
         <Col xs={24} md={12}>
@@ -109,7 +194,6 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      {/* Demo components */}
       <Row gutter={[16, 16]} className="dashboard-row">
         <Col span={24}>
           <Upload>
