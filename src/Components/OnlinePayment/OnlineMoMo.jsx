@@ -4,7 +4,6 @@ import { Steps, Button, message, Card } from 'antd';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectTotalCartAmount } from '../../Redux/ShopSlice';
-
 const { Step } = Steps;
 
 const OnlineMomoPayment  = () => {
@@ -26,8 +25,8 @@ const OnlineMomoPayment  = () => {
   const handlePayment = async () => {
     try {
       const response = await axios.post('http://localhost:4000/momo/payment', {
-        amount: totalCartAmount, // Sử dụng totalCartAmount thay vì amount
-        orderInfo: orderInfo, // Truyền orderInfo vào payload
+        amount: totalCartAmount, 
+        orderInfo: orderInfo,
       });
       const { payUrl } = response.data;
       window.location.href = payUrl;

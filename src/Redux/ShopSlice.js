@@ -7,7 +7,7 @@ import { fetchCartItems } from "./Thunk/fetchCartItems";
 import { loginUser } from "./Thunk/login";
 import { signupUser } from "./Thunk/signup";
 
-const getDefaultCart = () => {
+export const getDefaultCart = () => {
   let cart = {};
   for (let i = 1; i <= 300; i++) {
     cart[i] = 0;
@@ -26,6 +26,7 @@ const initialState = {
   },
   status: 'idle',
   error: null,
+  userInfo: null,
 };
 
 const shopSlice = createSlice({
@@ -48,17 +49,17 @@ const shopSlice = createSlice({
       .addCase(addToCart.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchCartItems.fulfilled, (state, action) => {
-        state.cartItems = action.payload;
+      .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "succeeded";
+        state.cartItems[action.payload] += 1;
+      })
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.cartItems = action.payload;
       })
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      })
-      .addCase(addToCart.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.cartItems[action.payload] += 1;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         const itemId = action.payload;
@@ -90,8 +91,10 @@ const shopSlice = createSlice({
         state.user.name = action.payload.name;
         state.user.address = action.payload.address;
         state.user.phone = action.payload.phone;
+        state.user.email = action.payload.email;
         state.user.isAdmin = action.payload.isAdmin;
-        state.isAdmin = action.payload.isAdmin; 
+        state.isAdmin = action.payload.isAdmin;
+        state.userInfo = action.payload;
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.loading = false;
@@ -108,13 +111,16 @@ const shopSlice = createSlice({
       );
   },
 });
-
+export const { resetCart } = shopSlice.actions;
 export const selectUserName = (state) => state.shop.user.name;
+export const selectUserAddress = (state) => state.shop.user.address;
+export const selectUserPhone = (state) => state.shop.user.phone;
+export const selectUserEmail = (state) => state.shop.user.email;
 export const selectIsAdmin = (state) => state.shop.user.isAdmin;
 export const selectAllProducts = (state) => state.shop.allProducts;
 export const selectCartItems = (state) => state.shop.cartItems;
 export const selectIsLoggedIn = (state) => state.shop.isLoggedIn; 
-
+export const selectUserId = (state) => state.shop.user.userId;
 export const selectTotalCartItems = (state) => {
   let totalItems = 0;
   for (const item in state.shop.cartItems) {

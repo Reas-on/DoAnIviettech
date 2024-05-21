@@ -132,6 +132,23 @@ $border-color: #7a7a7a;
   background-color: #f0f0f0; 
 }
 
+.list-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  &:last-child {
+    border-bottom: none;
+  }
+  .ant-list-item-meta {
+    margin-right: 20px;
+  }
+  .ant-list-item-meta-avatar {
+    margin-right: 10px;
+  }
+}
+
+.search-input {
+  margin-bottom: 10px;
+}
 
 @media (max-width: 768px) {
   .navbar {

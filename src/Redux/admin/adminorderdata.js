@@ -16,3 +16,26 @@ export const fetchOrderData = createAsyncThunk(
     }
   }
 );
+
+export const submitOrder = createAsyncThunk(
+  'admin/submitOrder',
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:4000/orderData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to submit order');
+      }
+      const data = await response.json();
+      console.log('Order submitted:', data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
