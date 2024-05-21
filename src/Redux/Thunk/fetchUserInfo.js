@@ -12,7 +12,15 @@ export const fetchUserInfo = createAsyncThunk(
         },
       });
       const data = await response.json();
-      return data;
+      const userInfoWithAddress = {
+        ...data,
+        address: {
+          province: data.address.province,
+          district: data.address.district,
+          ward: data.address.ward
+        }
+      };
+      return userInfoWithAddress;
     } catch (error) {
       throw Error("Error fetching user info:", error);
     }
