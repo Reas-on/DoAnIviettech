@@ -1,4 +1,7 @@
-$profile-color: #f0f0f0;
+$primary-color: #007bff;
+$secondary-color: #28a745;
+$warning-color: #ffc107;
+$background-color: #f0f0f0;
 $text-color: #212529;
 $button-border-radius: 5px;
 $button-font-size: 16px;
@@ -7,7 +10,7 @@ $button-font-size: 16px;
   max-width: 800px;
   margin: auto;
   padding: 20px;
-  background-color: $profile-color;
+  background-color: $background-color;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
@@ -49,26 +52,26 @@ $button-font-size: 16px;
     }
 
     .edit-button {
-      background-color: #28a745;
+      background-color: $secondary-color;
       color: $text-color;
       margin-left: 5px;
     }
 
     .save-button {
-      background-color: #ffc107;
+      background-color: $warning-color;
       color: $text-color;
       margin-left: 5px;
       display: none;
     }
     
     .cart-button{
-      background-color: #007bff;
-      color:$text-color;
+      background-color: $primary-color;
+      color: $text-color;
     }
 
     .edit-button:hover,
     .save-button:hover {
-      background-color: darken(#28a745, 10%); 
+      background-color: darken($secondary-color, 10%); 
     }
   }
 

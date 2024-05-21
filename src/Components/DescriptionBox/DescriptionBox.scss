@@ -29,6 +29,7 @@ $description-nav-box-fade-color: #555;
       width: $description-nav-box-size;
       height: $description-nav-box-height;
       border: $description-nav-box-border;
+      cursor: pointer;
 
       &.fade {
         background: $description-nav-box-fade-background;
@@ -37,13 +38,57 @@ $description-nav-box-fade-color: #555;
     }
   }
 
-  .descriptionbox-description {
-    display: flex;
-    flex-direction: column;
-    gap: $descriptionbox-description-gap;
-    padding: $descriptionbox-description-padding;
-    padding-bottom: $descriptionbox-description-padding-bottom;
-    border: $descriptionbox-description-border;
+  .descriptionbox-content {
+    margin-top: 20px;
+
+    .descriptionbox-reviews {
+      form {
+        margin-bottom: 20px;
+
+        div {
+          margin-bottom: 10px;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+
+        select, textarea {
+          width: 100%;
+          padding: 5px;
+          font-size: 14px;
+        }
+
+        button {
+          padding: 5px 10px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
+
+      .review {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+    }
+
+    .descriptionbox-description {
+      display: flex;
+      flex-direction: column;
+      gap: $descriptionbox-description-gap;
+      padding: $descriptionbox-description-padding;
+      padding-bottom: $descriptionbox-description-padding-bottom;
+      border: $descriptionbox-description-border;
+    }
   }
 }
 

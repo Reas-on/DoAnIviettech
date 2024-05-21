@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../Redux/Thunk/fetchUserInfo';
 import { selectUserName } from '../../Redux/ShopSlice';
 
+
 const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Profile = () => {
         }
 
         const data = await response.json();
+        console.log('Data from backend:', data)
         setUserInfo(data);
         setEditedUserInfo({ ...data, password: '' });
       } catch (error) {
@@ -98,14 +100,43 @@ const Profile = () => {
     <div className={`profile-container ${isEditing ? 'edit-mode' : ''}`}>
       <h2>User Profile</h2>
       <div className="profile-info">
-        {isEditing ? (
-          <>
-            <input type="text" value={editedUserInfo.name} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, name: e.target.value })} />
-            <input type="email" value={editedUserInfo.email} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, email: e.target.value })} />
-            <input type="address" value={editedUserInfo.address} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, address: e.target.value })} />
-            <input type="phone" value={editedUserInfo.phone} onChange={(e) => setEditedUserInfo({ ...editedUserInfo, phone: e.target.value })} />
-          </>
-        ) : (
+      {isEditing ? (
+  <>
+    <input 
+      type="text" 
+      value={editedUserInfo.name} 
+      onChange={(e) => setEditedUserInfo({ ...editedUserInfo, name: e.target.value })} 
+    />
+    <input 
+      type="email" 
+      value={editedUserInfo.email} 
+      onChange={(e) => setEditedUserInfo({ ...editedUserInfo, email: e.target.value })} 
+    />
+    <input 
+      type="text" 
+      value={editedUserInfo.address.province} 
+      onChange={(e) => setEditedUserInfo({ ...editedUserInfo, address: { ...editedUserInfo.address, province: e.target.value } })} 
+      placeholder="Province" 
+    />
+    <input 
+      type="text" 
+      value={editedUserInfo.address.district} 
+      onChange={(e) => setEditedUserInfo({ ...editedUserInfo, address: { ...editedUserInfo.address, district: e.target.value } })} 
+      placeholder="District" 
+    />
+    <input 
+      type="text" 
+      value={editedUserInfo.address.ward} 
+      onChange={(e) => setEditedUserInfo({ ...editedUserInfo, address: { ...editedUserInfo.address, ward: e.target.value } })} 
+      placeholder="Ward" 
+    />
+    <input 
+      type="text" 
+      value={editedUserInfo.phone} 
+      onChange={(e) => setEditedUserInfo({ ...editedUserInfo, phone: e.target.value })} 
+    />
+  </>
+) : (
           <>
             <p><strong>ID:</strong> {userInfo?._id}</p>
             <p><strong>Name:</strong> {userName}</p>
