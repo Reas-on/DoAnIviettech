@@ -16,6 +16,7 @@ import PaymentSuccess from "./Pages/PaymentSuccess";
 import TestPayment from "./Pages/TestPayment";
 import OnlineMomoPayment from "./Components/OnlinePayment/OnlineMoMo";
 import OnlineZaloPay from "./Components/OnlinePayment/OnlineZaloPay";
+import Testpage from "./Components/testpage/testpage";
 // Admin
 import AdminLayout from "./layouts/AdminLayout";
 import Payment from "./Pages/TestPayment";
@@ -77,6 +78,7 @@ function App() {
             <Route path="/CheckOrder" element={<CheckOrder />} />
             <Route path="/payment-momo" element={<PaymentSuccess />} />
             <Route path="/testpayment" element={<TestPayment />} />
+            <Route path="/testpage" element={<Testpage />} />
             <Route
               path="/online-payment/momo"
               element={<OnlineMomoPayment />}

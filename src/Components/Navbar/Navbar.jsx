@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserInfo } from "../../Redux/Thunk/fetchUserInfo";
-import { selectTotalCartItems, selectUserName, selectIsAdmin } from "../../Redux/ShopSlice";
-import { Dropdown, Menu } from "antd";
+import {
+  selectTotalCartItems,
+  selectUserName,
+  selectIsAdmin,
+  selectAllProducts,
+} from "../../Redux/ShopSlice";
+import { Dropdown, Menu, Modal, Input, List } from "antd";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -14,10 +19,33 @@ const Navbar = () => {
   const userName = useSelector(selectUserName);
   const isAdmin = useSelector(selectIsAdmin);
   const totalCartItem = useSelector(selectTotalCartItems);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const products = useSelector(selectAllProducts);
 
   const handleLogout = () => {
     localStorage.removeItem("auth-token");
     window.location.replace("/");
+  };
+
+  const handleSearchClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+    setSearchTerm("");
+    setShowSearchResults(false);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearchInputChange = (e) => {
+    setSearchTerm(e.target.value);
+    setShowSearchResults(e.target.value.trim() !== "");
   };
 
   useEffect(() => {
@@ -77,6 +105,11 @@ const Navbar = () => {
             Order
           </Link>
         </li>
+        <li className="nav-menu-item">
+          <span style={{ cursor: "pointer" }} onClick={handleSearchClick}>
+            Search
+          </span>
+        </li>
       </ul>
       <div className="nav-login-cart">
         {authToken ? (
@@ -93,6 +126,50 @@ const Navbar = () => {
         </Link>
         <div className="nav-cart-count">{totalCartItem}</div>
       </div>
+      <Modal
+        title="Search"
+        visible={isModalVisible}
+        onCancel={handleModalCancel}
+        footer={null}
+      >
+        <Input
+          placeholder="Search"
+          value={searchTerm}
+          onChange={handleSearchInputChange}
+        />
+        {showSearchResults && (
+          <List
+            itemLayout="horizontal"
+            dataSource={filteredProducts}
+            renderItem={(product) => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  }
+                  title={
+                    <Link
+                      to={`/product/${product.id}`}
+                      style={{ display: "block", marginBottom: "5px" }}
+                    >
+                      {product.name}
+                    </Link>
+                  }
+                  description={
+                    <span style={{ display: "block" }}>
+                      Price: {product.new_price.toLocaleString("en-US")} VND
+                    </span>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        )}
+      </Modal>
     </div>
   );
 };

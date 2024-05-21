@@ -45,7 +45,7 @@ const Profile = () => {
 
         const data = await response.json();
         setUserInfo(data);
-        setEditedUserInfo({ ...data, password: '' }); // Không bao gồm mật khẩu khi chỉnh sửa
+        setEditedUserInfo({ ...data, password: '' });
       } catch (error) {
         console.error('Error fetching user data:', error);
         navigate('/login');
@@ -58,7 +58,6 @@ const Profile = () => {
   const handleEdit = () => {
     setIsEditing(true);
   };
-
   const handleSave = async () => {
     try {
       const authToken = localStorage.getItem('auth-token');
@@ -66,22 +65,24 @@ const Profile = () => {
         navigate('/login');
         return;
       }
-      
+  
       const response = await fetch(`http://localhost:4000/api/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'auth-token': authToken
+          'auth-token': authToken,
         },
-        body: JSON.stringify(editedUserInfo) 
+        body: JSON.stringify(editedUserInfo),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Failed to save changes');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to save changes');
       }
-
+  
+      const updatedUser = await response.json();
       message.success('Changes saved successfully');
-      setUserInfo(editedUserInfo);
+      setUserInfo(updatedUser.user); 
       setIsEditing(false);
     } catch (error) {
       console.error('Error saving changes:', error);

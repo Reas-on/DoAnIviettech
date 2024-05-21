@@ -26,7 +26,7 @@ const AdminLayout = () => {
   }, [dispatch]);
 
   if (!isAdmin) {
-    return <div>Unauthorized access</div>; 
+    return <div>Check your permission</div>; 
   }
 
   return (

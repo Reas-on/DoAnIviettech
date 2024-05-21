@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllProducts } from "../Redux/Thunk/fetchAllProducts";
 import "./CSS/ShopCategory.scss";
@@ -10,13 +10,33 @@ const ShopCategory = (props) => {
   const allProducts = useSelector((state) => state.shop.allProducts);
   const status = useSelector((state) => state.shop.status);
   const error = useSelector((state) => state.shop.error);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [visibleProducts, setVisibleProducts] = useState(8); // Số sản phẩm hiển thị ban đầu
+  const productsPerPage = 4; // Số sản phẩm mỗi lần hiển thị
 
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
+  // Function to filter products based on price range
+  const filteredProducts = () => {
+    return allProducts.filter((item) => {
+      const itemPrice = parseFloat(item.new_price);
+      const min = parseFloat(minPrice);
+      const max = parseFloat(maxPrice);
+      return (!min || itemPrice >= min) && (!max || itemPrice <= max);
+    });
+  };
+
   const sortedProducts = () => {
-    return allProducts.filter((item) => item.category === props.category);
+    return filteredProducts()
+      .filter((item) => item.category === props.category)
+      .slice(0, visibleProducts); 
+  };
+
+  const handleShowMore = () => {
+    setVisibleProducts(visibleProducts + productsPerPage);
   };
 
   if (status === "loading") {
@@ -39,6 +59,21 @@ const ShopCategory = (props) => {
           </select>
           <img src={dropdown_icon} alt="" />
         </div>
+        <div className="shopcategory-priceFilter">
+          <input
+            type="text"
+            placeholder="Từ Giá"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+          <span>-</span>
+          <input
+            type="text"
+            placeholder="Giá"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+        </div>
       </div>
       <div className="shopcategory-products">
         {sortedProducts().map((item) => (
@@ -52,6 +87,11 @@ const ShopCategory = (props) => {
           />
         ))}
       </div>
+      {visibleProducts < filteredProducts().length && (
+        <button className="shopcategory-loadmore" onClick={handleShowMore}>
+          Load More
+        </button>
+      )}
     </div>
   );
 };

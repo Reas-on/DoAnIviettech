@@ -107,3 +107,24 @@ $loadmore-font-size: 18px;
   font-size: $loadmore-font-size;
   font-weight: 500;
 }
+
+.shopcategory-loadmore:hover {
+  background-color: #d5d5d5;
+  color: #787878;
+  cursor: pointer;
+}
+
+.shopcategory-priceFilter {
+  margin-top: 10px;
+}
+
+.shopcategory-priceFilter input {
+  width: 100px;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.shopcategory-priceFilter span {
+  margin: 0 5px;
+}
+
