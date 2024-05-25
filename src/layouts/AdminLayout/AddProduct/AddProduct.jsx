@@ -1,6 +1,7 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import "./AddProduct.css";
 import upload_area from "../../../assets/upload_area.svg";
+
 const AddProduct = () => {
   const [image, setImage] = useState(false);
   const [productDetails, setProductDetails] = useState({
@@ -9,16 +10,21 @@ const AddProduct = () => {
     new_price: "",
     category: "women",
     image: "",
+    shortDescription: "",
+    longDescription: "",
   });
+
   const imageHandler = (e) => {
     setImage(e.target.files[0]);
   };
+
   const changeHandler = (e) => {
     setProductDetails({
       ...productDetails,
       [e.target.name]: e.target.value,
     });
   };
+
   const Add_Product = async () => {
     try {
       console.log(productDetails);
@@ -113,6 +119,24 @@ const AddProduct = () => {
           <option value="men">men</option>
           <option value="kid">kid</option>
         </select>
+      </div>
+      <div className="addproduct-itemfield">
+        <p>Short Description</p>
+        <textarea
+          value={productDetails.shortDescription}
+          onChange={changeHandler}
+          name="shortDescription"
+          placeholder="Enter short description"
+        />
+      </div>
+      <div className="addproduct-itemfield">
+        <p>Long Description</p>
+        <textarea
+          value={productDetails.longDescription}
+          onChange={changeHandler}
+          name="longDescription"
+          placeholder="Enter long description"
+        />
       </div>
       <div className="addproduct-itemfield">
         <label htmlFor="file-input">

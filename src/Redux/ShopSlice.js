@@ -17,11 +17,12 @@ export const getDefaultCart = () => {
 
 const initialState = {
   allProducts: [],
-  cartItems: getDefaultCart(),
+  cartItems: [],
   user: {
     name: '',
     address: '',
     phone: '',
+    email: '', 
     isAdmin: false,
   },
   status: 'idle',
@@ -51,8 +52,14 @@ const shopSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.cartItems[action.payload] += 1;
-      })
+        const { items } = action.payload;
+        if (items && items.length > 0) { 
+          items.forEach((item) => {
+            const { productId } = item; 
+            state.cartItems[productId] += 1; 
+          });
+        }
+      })           
       .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.cartItems = action.payload;
@@ -62,11 +69,20 @@ const shopSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
-        const itemId = action.payload;
-        if (state.cartItems[itemId] > 0) {
-          state.cartItems[itemId] -= 1;
+        const { productId, size } = action.payload;
+        const itemToRemove = state.cartItems.find(
+          (item) => item.productId === productId && item.size === size
+        );
+        if (itemToRemove) {
+          if (itemToRemove.quantity > 1) {
+            itemToRemove.quantity -= 1;
+          } else {
+            state.cartItems = state.cartItems.filter(
+              (item) => !(item.productId === productId && item.size === size)
+            );
+          }
         }
-      })
+      })          
       .addCase(loginUser.fulfilled, (state) => { 
         state.status = "succeeded";
         state.isLoggedIn = true; 
@@ -111,7 +127,6 @@ const shopSlice = createSlice({
       );
   },
 });
-export const { resetCart } = shopSlice.actions;
 export const selectUserName = (state) => state.shop.user.name;
 export const selectUserAddress = (state) => state.shop.user.address;
 export const selectUserPhone = (state) => state.shop.user.phone;
@@ -121,25 +136,39 @@ export const selectAllProducts = (state) => state.shop.allProducts;
 export const selectCartItems = (state) => state.shop.cartItems;
 export const selectIsLoggedIn = (state) => state.shop.isLoggedIn; 
 export const selectUserId = (state) => state.shop.user.userId;
+
 export const selectTotalCartItems = (state) => {
   let totalItems = 0;
-  for (const item in state.shop.cartItems) {
-    if (state.shop.cartItems[item] > 0) {
-      totalItems += state.shop.cartItems[item];
+  const cartItems = state.shop.cartItems;
+  if (Array.isArray(cartItems)) {
+    cartItems.forEach(item => {
+      totalItems += item.quantity;
+    });
+  } else {
+    for (const itemId in cartItems) {
+      if (Object.hasOwnProperty.call(cartItems, itemId)) {
+        totalItems += cartItems[itemId].quantity;
+      }
     }
   }
   return totalItems;
 };
 
+
 export const selectTotalCartAmount = (state) => {
   let totalAmount = 0;
-  for (const item in state.shop.cartItems) {
-    if (state.shop.cartItems[item] > 0) {
-      let itemInfo = state.shop.allProducts.find(
-        (product) => product.id === Number(item)
-      );
-      if (itemInfo?.new_price) {
-        totalAmount += state.shop.cartItems[item] * itemInfo.new_price;
+  const productMap = {};
+  state.shop.allProducts.forEach((product) => {
+    productMap[product.id] = product;
+  });
+  for (const itemId in state.shop.cartItems) {
+    if (state.shop.cartItems.hasOwnProperty(itemId)) {
+      const item = state.shop.cartItems[itemId];
+      const productId = item.productId;
+      const quantity = item.quantity;
+      const product = productMap[productId];
+      if (quantity > 0 && product && product.new_price) {
+        totalAmount += quantity * product.new_price;
       }
     }
   }

@@ -12,8 +12,8 @@ const ShopCategory = (props) => {
   const error = useSelector((state) => state.shop.error);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [visibleProducts, setVisibleProducts] = useState(8); // Số sản phẩm hiển thị ban đầu
-  const productsPerPage = 4; // Số sản phẩm mỗi lần hiển thị
+  const [visibleProducts, setVisibleProducts] = useState(8); 
+  const productsPerPage = 4; 
 
   useEffect(() => {
     dispatch(fetchAllProducts());
