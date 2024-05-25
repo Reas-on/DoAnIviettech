@@ -1,23 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import './DescriptionBox.scss';
-import Rating from '../Rating/Rating';
-import { useSelector } from 'react-redux';
-import { selectUserName } from '../../Redux/ShopSlice';
+import React, { useEffect, useState } from "react";
+import "./DescriptionBox.scss";
+import { List, Form, Input, Button, Rate } from "antd";
+import moment from "moment";
+import axios from "axios";
 
-const DescriptionBox = () => {
-  const userName = useSelector(selectUserName);
-  const [activeTab, setActiveTab] = useState('description');
+const DescriptionBox = ({ product }) => {
+  const [activeTab, setActiveTab] = useState("description");
   const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({ text: '', rating: 0 });
+  const [newReview, setNewReview] = useState({ text: "", rating: 0 });
+  const [submitting, setSubmitting] = useState(false);
+  const [token, setToken] = useState("");
+  const totalStars = reviews.reduce((acc, cur) => acc + cur.rating, 0);
+  const averageRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        if (product && product.id) {
+          // Kiểm tra nếu product tồn tại và có id
+          const response = await axios.get(
+            `http://localhost:4000/api/comments/${product.id}`
+          );
+          setReviews(response.data.comments);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [product]);
 
   useEffect(() => {
-    const storedReviews = JSON.parse(localStorage.getItem('reviews')) || [];
-    setReviews(storedReviews);
+    const getToken = () => {
+      const storedToken = localStorage.getItem("auth-token");
+      if (storedToken) {
+        setToken(storedToken);
+      } else {
+        console.error("No auth token found.");
+      }
+    };
+
+    getToken();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('reviews', JSON.stringify(reviews));
-  }, [reviews]);
 
   const handleReviewChange = (e) => {
     const { name, value } = e.target;
@@ -27,77 +51,138 @@ const DescriptionBox = () => {
     }));
   };
 
-  const handleSubmitReview = (e) => {
-    e.preventDefault();
-    if (newReview.text && newReview.rating) {
-      setReviews((prev) => [...prev, { ...newReview, userCommentName: userName }]);
-      setNewReview({ text: '', rating: 0 });
+  const handleRatingChange = (value) => {
+    setNewReview((prev) => ({
+      ...prev,
+      rating: value,
+    }));
+  };
+
+  const handleSubmitReview = async () => {
+    setSubmitting(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/addcomment",
+        {
+          productId: product.id,
+          comment: newReview.text,
+          rating: newReview.rating,
+        },
+        {
+          headers: {
+            "auth-token": token,
+          },
+        }
+      );
+      if (response.data.success) {
+        const updatedReviews = [...reviews, response.data.comment];
+        setReviews(updatedReviews);
+        setNewReview({ text: "", rating: 0 });
+      } else {
+        console.error("Error adding comment:", response.data.error);
+      }
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  const CommentList = ({ comments }) => (
+    <List
+      dataSource={comments}
+      header={`${comments.length} ${comments.length > 1 ? "Reviews" : "Review"} With ${averageRating.toFixed(1)} stars`}
+      itemLayout="horizontal"
+      renderItem={(comment) => (
+        <List.Item
+          style={{ marginBottom: "10px", borderBottom: "2px solid #ccc" }}
+        >
+          <List.Item.Meta
+            title={
+              <span style={{ fontWeight: "bold" }}>
+                User: {comment.userName} - Rating: {comment.rating}
+              </span>
+            }
+            description={
+              <>
+                <p>Comment: {comment.comment}</p>
+                <p>
+                  Date: {moment(comment.date).format("YYYY-MM-DD HH:mm:ss")}
+                </p>
+              </>
+            }
+            style={{ width: "100%" }}
+          />
+        </List.Item>
+      )}
+    />
+  );
 
   return (
     <div className="descriptionbox">
       <div className="descriptionbox-navigator">
-        <div 
-          className={`description-nav-box ${activeTab === 'description' ? 'active' : ''}`}
-          onClick={() => setActiveTab('description')}
+        <div
+          className={`description-nav-box ${
+            activeTab === "description" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("description")}
         >
           Description
         </div>
-        <div 
-          className={`description-nav-box ${activeTab === 'reviews' ? 'active' : 'fade'}`}
-          onClick={() => setActiveTab('reviews')}
+        <div
+          className={`description-nav-box ${
+            activeTab === "reviews" ? "active" : "fade"
+          }`}
+          onClick={() => setActiveTab("reviews")}
         >
           Reviews ({reviews.length})
         </div>
       </div>
       <div className="descriptionbox-content">
-        {activeTab === 'description' ? (
+        {activeTab === "description" ? (
           <div className="descriptionbox-description">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem, fugit corrupti sint eligendi architecto culpa! Corporis, totam saepe! Aliquid voluptatum nisi soluta natus corrupti quis aspernatur nesciunt neque doloribus consequuntur.
+              {product
+                ? product.longDescription
+                : "Product description not available"}
             </p>
           </div>
         ) : (
           <div className="descriptionbox-reviews">
-            <form onSubmit={handleSubmitReview}>
-              <div>
-                <label>Rating: </label>
-                <select 
-                  name="rating" 
-                  value={newReview.rating} 
-                  onChange={handleReviewChange}
-                >
-                  <option value="0">Select...</option>
-                  <option value="1">1 - Poor</option>
-                  <option value="2">2 - Fair</option>
-                  <option value="3">3 - Good</option>
-                  <option value="4">4 - Very Good</option>
-                  <option value="5">5 - Excellent</option>
-                </select>
-              </div>
-              <div>
-                <label>Comment: </label>
-                <textarea 
-                  name="text" 
-                  value={newReview.text} 
-                  onChange={handleReviewChange} 
-                  rows="3"
-                ></textarea>
-              </div>
-              <button type="submit">Submit</button>
-            </form>
-            {reviews.map((review, index) => (
-              <div key={index} className="review">
-                <Rating value={review.rating} text={review.text} />
-                <p>{`Comment by: ${review.userCommentName}`}</p>
-              </div>
-            ))}
+            <CommentList comments={reviews}/>
+            {token ? (
+              <Form onFinish={handleSubmitReview}>
+                <Form.Item label="Rating">
+                  <Rate
+                    allowHalf
+                    onChange={handleRatingChange}
+                    value={newReview.rating}
+                  />
+                </Form.Item>
+                <Form.Item label="Comment">
+                  <Input.TextArea
+                    rows={4}
+                    onChange={handleReviewChange}
+                    value={newReview.text}
+                    name="text"
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button htmlType="submit" loading={submitting} type="primary">
+                    Add Comment
+                  </Button>
+                </Form.Item>
+              </Form>
+            ) : (
+              <p>
+                Please <a href="/login">login</a> to leave a review.
+              </p>
+            )}
           </div>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default DescriptionBox;

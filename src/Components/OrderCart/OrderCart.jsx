@@ -10,15 +10,10 @@ import {
   message,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectCartItems,
-  selectTotalCartAmount,
-  resetCart,
-} from "../../Redux/ShopSlice";
+import { selectCartItems, selectTotalCartAmount } from "../../Redux/ShopSlice";
 import { fetchCartItems } from "../../Redux/Thunk/fetchCartItems";
 import { fetchUserInfo } from "../../Redux/Thunk/fetchUserInfo";
 import { submitOrder } from "../../Redux/admin/adminorderdata";
-import { getDefaultCart } from "../../Redux/ShopSlice";
 
 const { Step } = Steps;
 
@@ -33,12 +28,12 @@ const OrderCart = () => {
   });
   const [loading, setLoading] = useState(true);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
   const [orderData, setOrderData] = useState(null);
   const cartItems = useSelector(selectCartItems);
   const totalCartAmount = useSelector(selectTotalCartAmount);
   const allProducts = useSelector((state) => state.shop.allProducts);
   const userId = useSelector((state) => state.shop.user?.userId);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
   const userName = useSelector((state) => state.shop.user?.name);
   const address = useSelector((state) => state.shop.user?.address);
   const phoneNumber = useSelector((state) => state.shop.user?.phone);
@@ -94,38 +89,34 @@ const OrderCart = () => {
 
   const canProceedToNextStep = () => {
     if (currentStep === 0) {
-      const totalItems = Object.values(cartItems).reduce(
-        (acc, curr) => acc + curr,
-        0
-      );
-      return totalItems > 0;
+      // Kiểm tra xem giỏ hàng có sản phẩm nào không
+      return Object.keys(cartItems).length > 0;
     } else {
       const { receiverName, deliveryAddress, phoneNumber, email } = formValues;
       return receiverName && deliveryAddress && phoneNumber && email;
     }
-  };  
+  };
 
   const onFinish = async () => {
     setLoading(true);
     const { receiverName, deliveryAddress, phoneNumber, email, note } =
       formValues;
-    const orderedProducts = Object.keys(cartItems)
-      .map((itemId) => {
-        const item = allProducts.find(
-          (product) => product.id === parseInt(itemId)
-        );
-        const quantity = cartItems[itemId];
-        if (item && quantity > 0) {
+  
+    const orderedProducts = Object.values(cartItems)
+      .map((cartItem) => {
+        const product = allProducts.find((p) => p.id === cartItem.productId);
+        if (product && cartItem.quantity > 0) {
           return {
-            name: item.name,
-            image: item.image,
-            quantity: quantity,
-            total: item.new_price * quantity,
+            name: `[ Size : ${cartItem.size} ] ` + product.name,
+            image: product.image,
+            quantity: cartItem.quantity,
+            total: product.new_price * cartItem.quantity,
           };
         }
         return null;
       })
       .filter((item) => item !== null);
+  
     const totalBill = totalCartAmount;
     const formData = {
       userId: userId,
@@ -139,30 +130,31 @@ const OrderCart = () => {
       PaymentMethodChangeEvent: "Thanh Toán Nhận Hàng",
       status: "pending",
     };
-
+  
     try {
       const authToken = localStorage.getItem("auth-token");
       if (authToken) {
-        await fetch("http://localhost:4000/api/profile", {
+        await fetch("http://localhost:4000/api/cartreset", {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             "auth-token": authToken,
           },
-          body: JSON.stringify({ cartData: getDefaultCart() }),
+          body: JSON.stringify({ userId: userId }),
         });
+      } else {
+        localStorage.removeItem("cartItems");
       }
       const data = await dispatch(submitOrder(formData));
       setLoading(false);
       setOrderData(data.payload);
       setOrderPlaced(true);
-      dispatch(resetCart());
       dispatch(fetchCartItems());
     } catch (error) {
       setLoading(false);
     }
   };
-
+  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -172,33 +164,45 @@ const OrderCart = () => {
       title: "Thông Tin Đơn Hàng",
       content: (
         <div>
-          <Descriptions title="Sản Phẩm Đã Đặt" bordered>
-            {Object.keys(cartItems).map((itemId) => {
-              const item = allProducts.find(
-                (product) => product.id === parseInt(itemId)
+          {Object.values(cartItems).map((item) => {
+            const product = allProducts.find((p) => p.id === item.productId);
+            if (product && item.quantity > 0) {
+              return (
+                <Descriptions.Item
+                  key={item._id}
+                  label="Sản phẩm đã đặt"
+                  span={3}
+                >
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={[product]}
+                    renderItem={(product) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              style={{ width: 50 }}
+                            />
+                          }
+                          title={`${product.name} - Size: ${item.size}`}
+                          description={`Số lượng: ${
+                            item.quantity
+                          } - Tổng giá: ${(
+                            product.new_price * item.quantity
+                          ).toLocaleString("en-US")} VND`}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                </Descriptions.Item>
               );
-              const quantity = cartItems[itemId];
-              if (item && quantity > 0) {
-                return (
-                  <Descriptions.Item key={item.id} label={item.name}>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{ width: 50 }}
-                    />
-                    <span style={{ marginLeft: 10 }}>Số lượng: {quantity}</span>
-                    <br />
-                    <span>
-                      Tổng giá:{" "}
-                      {(item.new_price * quantity).toLocaleString("en-US")} VND
-                    </span>
-                  </Descriptions.Item>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </Descriptions>
+            } else {
+              return null;
+            }
+          })}
+
           <p style={{ marginTop: 20 }}>
             Tổng tiền: {totalCartAmount.toLocaleString("en-US")} VND
           </p>
@@ -374,7 +378,7 @@ const OrderCart = () => {
                           style={{ width: 50 }}
                         />
                       }
-                      title={product.name}
+                      title={`${product.name}`}
                       description={`Số lượng: ${
                         product.quantity
                       } - Tổng giá: ${product.total.toLocaleString(
@@ -385,6 +389,7 @@ const OrderCart = () => {
                 )}
               />
             </Descriptions.Item>
+
             <Descriptions.Item label="Tổng hóa đơn" span={3}>
               {orderData.totalBill &&
                 orderData.totalBill.toLocaleString("en-US")}{" "}

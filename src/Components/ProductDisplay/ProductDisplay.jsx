@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,32 +9,31 @@ import { addToCart } from "../../Redux/Thunk/addToCart";
 
 const ProductDisplay = ({ product }) => {
   const dispatch = useDispatch();
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  const handleSizeClick = (size) => {
+    setSelectedSize(size);
+    console.log(`Selected size: ${size}`);
+  };
 
   const handleAddToCart = () => {
-    if (product.new_price === 0 && product.old_price === 0) {
-      toast.error("This product is out of stock.", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else {
-      dispatch(addToCart(product.id));
-      toast.success(`Added Product ${product.name} to your cart`, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+    if (selectedSize === null) {
+      console.log("Please select a size.");
+      return;
     }
+    // Thêm thuộc tính quantity vào đối tượng sản phẩm
+    const item = { productId: product.id, size: selectedSize, quantity: 1 };
+    dispatch(addToCart(item));
+    toast.success(`Added Product ${product.name} to your cart`, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   if (!product) {
@@ -80,19 +79,20 @@ const ProductDisplay = ({ product }) => {
         </div>
 
         <div className="productdisplay-right-description">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur
-          corporis assumenda optio enim nesciunt dolorem cumque, molestias atque
-          quis fugit eius culpa, unde quos nobis modi corrupti quo inventore
-          similique.
+          <p>{product.shortDescription}</p>
         </div>
         <div className="productdisplay-right-size">
           <h1>Select Size</h1>
           <div className="productdisplay-right-sizes">
-            <div>S</div>
-            <div>M</div>
-            <div>L</div>
-            <div>XL</div>
-            <div>XXL</div>
+            {["S", "M", "L", "XL", "XXL"].map((size) => (
+              <div
+                key={size}
+                className={`size ${selectedSize === size ? "selected" : ""}`}
+                onClick={() => handleSizeClick(size)}
+              >
+                {size}
+              </div>
+            ))}
           </div>
         </div>
         <div className="productdisplay-right-cart">

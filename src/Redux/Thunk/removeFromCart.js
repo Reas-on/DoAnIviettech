@@ -1,28 +1,48 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchCartItems } from "./fetchCartItems";
 
 export const removeFromCart = createAsyncThunk(
   "shop/removeFromCart",
-  async (itemId, thunkAPI) => {
+  async ({ productId, size }, { getState, dispatch, rejectWithValue }) => {
+    const authToken = localStorage.getItem("auth-token");
+
     try {
-      const authToken = localStorage.getItem("auth-token");
-      if (!authToken) {
-        const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
-        delete storedItems[itemId];
+      if (authToken) {
+        const response = await fetch("http://localhost:4000/api/removefromcart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": authToken,
+          },
+          body: JSON.stringify({ productId, size }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "Failed to remove item from cart.");
+        }
+
+        await dispatch(fetchCartItems()); // Cập nhật giỏ hàng từ server
+        return { productId, size };
+      } else {
+        let storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        const existingItemIndex = storedItems.findIndex(
+          (item) => item.productId === productId && item.size === size
+        );
+
+        if (existingItemIndex !== -1) {
+          if (storedItems[existingItemIndex].quantity > 1) {
+            storedItems[existingItemIndex].quantity -= 1;
+          } else {
+            storedItems.splice(existingItemIndex, 1);
+          }
+        }
+
         localStorage.setItem("cartItems", JSON.stringify(storedItems));
-        return itemId;
+        return { productId, size };
       }
-      const response = await fetch("http://localhost:4000/api/removefromcart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": authToken,
-        },
-        body: JSON.stringify({ itemId }),
-      });
-      await response.json();
-      return itemId;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );

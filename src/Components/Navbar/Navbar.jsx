@@ -9,9 +9,9 @@ import {
   selectTotalCartItems,
   selectUserName,
   selectIsAdmin,
-  selectAllProducts,
 } from "../../Redux/ShopSlice";
 import { Dropdown, Menu, Modal, Input, List } from "antd";
+import { searchProducts } from "../../Api/SearchApi";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Navbar = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const products = useSelector(selectAllProducts);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const handleLogout = () => {
     localStorage.removeItem("auth-token");
@@ -37,15 +37,24 @@ const Navbar = () => {
     setIsModalVisible(false);
     setSearchTerm("");
     setShowSearchResults(false);
+    setFilteredProducts([]);
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleSearchInputChange = (e) => {
-    setSearchTerm(e.target.value);
-    setShowSearchResults(e.target.value.trim() !== "");
+  const handleSearchInputChange = async (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (value.trim() !== "") {
+      try {
+        const results = await searchProducts(value);
+        setFilteredProducts(results);
+        setShowSearchResults(true);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      }
+    } else {
+      setShowSearchResults(false);
+      setFilteredProducts([]);
+    }
   };
 
   useEffect(() => {

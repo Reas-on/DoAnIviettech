@@ -3,36 +3,49 @@ import { fetchCartItems } from "./fetchCartItems";
 
 export const addToCart = createAsyncThunk(
   "shop/addToCart",
-  async (itemId, { getState, dispatch, rejectWithValue }) => {
+  async (item, { getState, dispatch, rejectWithValue }) => {
     const authToken = localStorage.getItem("auth-token");
 
-    if (authToken) {
-      try {
+    try {
+      if (authToken) {
         const response = await fetch("http://localhost:4000/api/addtocart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "auth-token": authToken,
           },
-          body: JSON.stringify({ itemId }),
+          body: JSON.stringify({ items: [item] }),
         });
 
         if (!response.ok) {
           throw new Error("Failed to add item to cart.");
         }
 
-        const data = await response.json();
-        await dispatch(fetchCartItems());  // Fetch cart items after adding to cart
-        return data.cartItems;
-      } catch (error) {
-        return rejectWithValue(error.message);
+        await dispatch(fetchCartItems());
+        return getState().shop.cartItems;
+      } else {
+        const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        const existingItemIndex = storedItems.findIndex(
+          (storedItem) =>
+            storedItem.productId === item.productId &&
+            storedItem.size === item.size
+        );
+
+        if (existingItemIndex !== -1) {
+          storedItems[existingItemIndex].quantity += item.quantity || 1;
+        } else {
+          storedItems.push({
+            productId: item.productId,
+            size: item.size,
+            quantity: item.quantity || 1,
+          });
+        }
+        localStorage.setItem("cartItems", JSON.stringify(storedItems));
+        dispatch(fetchCartItems());
+        return storedItems;
       }
-    } else {
-      const storedItems = JSON.parse(localStorage.getItem("cartItems")) || {};
-      storedItems[itemId] = (storedItems[itemId] || 0) + 1;
-      localStorage.setItem("cartItems", JSON.stringify(storedItems));
-      dispatch(fetchCartItems());  // Fetch cart items after adding to cart
-      return storedItems;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );

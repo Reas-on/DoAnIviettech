@@ -1,3 +1,4 @@
+// Biến
 $descriptionbox-margin: 120px 170px;
 $description-nav-box-size: 171px;
 $description-nav-box-height: 76px;
@@ -11,6 +12,7 @@ $descriptionbox-description-border: 1px solid #d0d0d0;
 $description-nav-box-fade-background: #fbfbfb;
 $description-nav-box-fade-color: #555;
 
+// CSS
 .descriptionbox {
   margin: $descriptionbox-margin;
 
@@ -92,6 +94,7 @@ $description-nav-box-fade-color: #555;
   }
 }
 
+// Media queries
 @media (max-width: 768px) {
   .descriptionbox {
     margin: 50px 20px;

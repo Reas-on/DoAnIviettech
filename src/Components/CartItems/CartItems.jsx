@@ -27,8 +27,8 @@ const CartItems = () => {
     dispatch(fetchCartItems());
   }, [dispatch]);
 
-  const handleRemoveFromCart = (itemId) => {
-    dispatch(removeFromCart(itemId));
+  const handleRemoveFromCart = (item) => {
+    dispatch(removeFromCart(item));
   };
 
   const handlePaymentMethodChange = (value) => {
@@ -55,45 +55,39 @@ const CartItems = () => {
         <p>Remove</p>
       </div>
       <hr />
-      {cartItems &&
-        Object.keys(cartItems).length > 0 &&
-        allProducts &&
-        allProducts.length > 0 &&
-        Object.keys(cartItems).map((itemId) => {
-          const product = allProducts.find(
-            (item) => item.id === parseInt(itemId)
-          );
-          const quantity = cartItems[itemId];
-          if (product && quantity > 0) {
-            return (
-              <div key={product.id}>
-                <div className="cartitems-format cartitems-format-main">
-                  <img
-                    src={product.image}
-                    alt=""
-                    className="carticon-product-icon"
-                  />
-                  <p>{product.name}</p>
-                  <p>{product.size}</p>
-                  <p>{product.new_price.toLocaleString("en-US")} VND</p>
-                  <button className="cartitems-quantity">{quantity}</button>
-                  <p>
-                    {(product.new_price * quantity).toLocaleString("en-US")} VND
-                  </p>
-                  <img
-                    className="cartitems-remove-icon"
-                    src={remove_icon}
-                    onClick={() => handleRemoveFromCart(product.id)}
-                    alt=""
-                  />
-                </div>
-                <hr />
+      {Object.values(cartItems).map((item) => {
+        const product = allProducts.find((p) => p.id === item.productId);
+        if (product && item.quantity > 0) {
+          return (
+            <div key={item._id}>
+              <div className="cartitems-format cartitems-format-main">
+                <img
+                  src={product.image}
+                  alt=""
+                  className="carticon-product-icon"
+                />
+                <p>{product.name}</p>
+                <p>{item.size}</p>
+                <p>{product.new_price.toLocaleString("en-US")} VND</p>
+                <button className="cartitems-quantity">{item.quantity}</button>
+                <p>
+                  {(product.new_price * item.quantity).toLocaleString("en-US")}{" "}
+                  VND
+                </p>
+                <img
+                  className="cartitems-remove-icon"
+                  src={remove_icon}
+                  onClick={() => handleRemoveFromCart(item)}
+                  alt=""
+                />
               </div>
-            );
-          } else {
-            return null;
-          }
-        })}
+              <hr />
+            </div>
+          );
+        } else {
+          return null;
+        }
+      })}
       <div className="cartitems-down">
         <div className="cartitems-total">
           <h1>Cart Total - {totalCartItem} items</h1>
@@ -160,7 +154,8 @@ const CartItems = () => {
               <Button
                 className="vnpay-button"
                 onClick={() => handleCheckout("vnpay")}
-              disabled>
+                disabled
+              >
                 <img
                   src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR.png"
                   alt="VnPay"
@@ -174,7 +169,6 @@ const CartItems = () => {
               </Button>
             </div>
           )}
-
           {paymentMethod !== "online" && (
             <Button
               type="primary"

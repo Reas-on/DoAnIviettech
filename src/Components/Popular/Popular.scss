@@ -25,6 +25,15 @@ $popular-gap: 10px;
   margin-top: 50px;
   display: flex;
   gap: 30px;
+  .item {
+    width: 100%;
+    
+    img {
+      width: 400px;
+      height: 600px;
+      object-fit: cover;
+    }
+  }
 }
 
 @media (max-width: 768px) {
