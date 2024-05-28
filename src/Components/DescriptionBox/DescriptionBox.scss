@@ -37,6 +37,10 @@ $description-nav-box-fade-color: #555;
         background: $description-nav-box-fade-background;
         color: $description-nav-box-fade-color;
       }
+      .active {
+        background-color: #ff4141;
+        color: white;
+      }
     }
   }
 

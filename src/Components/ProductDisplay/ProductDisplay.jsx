@@ -87,7 +87,7 @@ const ProductDisplay = ({ product }) => {
             {["S", "M", "L", "XL", "XXL"].map((size) => (
               <div
                 key={size}
-                className={`size ${selectedSize === size ? "selected" : ""}`}
+                className={`size ${selectedSize === size ? "active" : ""}`}
                 onClick={() => handleSizeClick(size)}
               >
                 {size}

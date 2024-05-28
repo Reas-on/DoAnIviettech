@@ -106,8 +106,10 @@ const DescriptionBox = ({ product }) => {
           Description
         </div>
         <div
-          className={`description-nav-box ${activeTab === 'reviews' ? 'active' : 'fade'}`}
-          onClick={() => setActiveTab('reviews')}
+          className={`description-nav-box ${
+            activeTab === "reviews" ? "active" : ""
+          }`}
+          onClick={() => setActiveTab("reviews")}
         >
           Reviews ({reviews.length})
         </div>
