@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async Thunk để fetch thông tin người dùng
 export const fetchUserInfo = createAsyncThunk(
   "user/fetchUserInfo",
   async (authToken) => {

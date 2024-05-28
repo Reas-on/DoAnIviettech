@@ -42,6 +42,7 @@ import CheckOrder from "./Components/CheckOrder/CheckOrder";
 import EmailVerify from "./Components/verify-email/verify-email";
 
 
+
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -50,7 +51,7 @@ function App() {
   }, [dispatch]);
 
 
-  
+
   return (
     <div>
       <BrowserRouter>
@@ -72,7 +73,11 @@ function App() {
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<LoginSignup />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} >
+              <Route index element={<Profile />} />
+            </Route>
+
+            {/* <Route path="ProfileUpdatePassword" element={<ProfileUpdatePassword />} /> */}
             <Route path="/payment" element={<Payment />} />
             <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/CheckOrder" element={<CheckOrder />} />
