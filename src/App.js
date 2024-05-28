@@ -13,10 +13,8 @@ import kid_banner from "./Components/Assets/banner_kids.png";
 import OrderCart from "./Components/OrderCart/OrderCart";
 import MainLayout from "./layouts/MainLayout";
 import PaymentSuccess from "./Pages/PaymentSuccess";
-import TestPayment from "./Pages/TestPayment";
 import OnlineMomoPayment from "./Components/OnlinePayment/OnlineMoMo";
 import OnlineZaloPay from "./Components/OnlinePayment/OnlineZaloPay";
-import Testpage from "./Components/testpage/testpage";
 // Admin
 import AdminLayout from "./layouts/AdminLayout";
 import Payment from "./Pages/TestPayment";
@@ -41,6 +39,7 @@ import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { useEffect } from "react";
 import CheckOrder from "./Components/CheckOrder/CheckOrder";
+import EmailVerify from "./Components/verify-email/verify-email";
 
 
 function App() {
@@ -78,13 +77,12 @@ function App() {
             <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/CheckOrder" element={<CheckOrder />} />
             <Route path="/payment-momo" element={<PaymentSuccess />} />
-            <Route path="/testpayment" element={<TestPayment />} />
-            <Route path="/testpage" element={<Testpage />} />
             <Route
               path="/online-payment/momo"
               element={<OnlineMomoPayment />}
             />
             <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
+            <Route path="/email-verify" element={<EmailVerify />} />
           </Route>
           {/* Admin */}
           <Route path="/admin" element={<AdminLayout />}>

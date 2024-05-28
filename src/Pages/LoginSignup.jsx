@@ -1,64 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
+import { Button, message, Checkbox } from "antd";
 import "./CSS/LoginSignup.scss";
-import { useState } from "react";
+import { loginUser, signupUser } from "../Api/AuthApi";  // Adjust the import path as needed
 
 const LoginSignup = () => {
-  
   const [state, setState] = useState("Login");
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     email: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [messageText, setMessageText] = useState('');
+
   const changeHandler = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  const login = async () => {
-    console.log("Signup", formData);
-    let responseData;
-    await fetch ("http://localhost:4000/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/form-data",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then(response => response.json()).then((data) => {
-      responseData = data;
-    })
-    if(responseData.success) {
-      localStorage.setItem("auth-token", responseData.authToken);
-      window.location.replace("/");
-    }else {
-      alert(responseData.errors);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const responseData = await loginUser(formData);
+      if (responseData.success) {
+        localStorage.setItem("auth-token", responseData.authToken);
+        window.location.replace("/");
+      } else {
+        message.error(responseData.errors);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      message.error("Login failed, please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const signup = async () => {
-    const checkbox = document.querySelector('.loginsignup-agree input[type="checkbox"]'); //TODO: using state, not use DOM
+  const handleSignup = async () => {
+    const checkbox = document.querySelector('.loginsignup-agree input[type="checkbox"]');
     if (!checkbox.checked) {
-      alert('You must agree to the Terms of Service and Privacy Policy to sign up.');
+      message.error('You must agree to the Terms of Service and Privacy Policy to sign up.');
       return;
     }
-    console.log("Signup", formData);
-    let responseData;
-    await fetch ("http://localhost:4000/signup", {
-      method: "POST",
-      headers: {
-        Accept: "application/form-data",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then(response => response.json()).then((data) => {
-      responseData = data;
-    })
-    if(responseData.success) {
-      window.location.replace("/login");
-    }else {
-      alert(responseData.errors);
+    setLoading(true);
+    try {
+      const responseData = await signupUser(formData);
+      if (responseData.success) {
+        setMessageText("Vui Lòng Xác Minh Email Để Login");
+        message.success("Vui Lòng Xác Minh Email Để Login");
+        setTimeout(() => {
+          window.location.replace("/login");
+        }, 5000);
+      } else {
+        message.error(responseData.errors);
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      message.error("Signup failed, please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,17 +69,14 @@ const LoginSignup = () => {
       <div className="loginsignup-container">
         <h1>{state}</h1>
         <div className="loginsignup-fields">
-          {state === "Sign up" ? (
+          {state === "Sign up" && (
             <input
               name="username"
               value={formData.username}
-              onChange={changeHandler
-  }
+              onChange={changeHandler}
               type="text"
               placeholder="Your Name"
             />
-          ) : (
-            <></>
           )}
           <input
             name="email"
@@ -94,11 +93,15 @@ const LoginSignup = () => {
             placeholder="Password"
           />
         </div>
-        <button onClick={() => (state === "Sign up" ? signup() : login())}>
+        <Button 
+          type="primary" 
+          loading={loading} 
+          style={{ width: "100%" , marginTop: "20px" , height: "50px" , fontSize: "16px" , textTransform: "uppercase" }}
+          onClick={() => (state === "Sign up" ? handleSignup() : handleLogin())}
+        >
           Continue
-        </button>
-        {
-  state === "Sign up" ? (
+        </Button>
+        {state === "Sign up" ? (
           <p className="loginsignup-login">
             Already have an account?{" "}
             <span onClick={() => setState("Login")}>Log In</span>
@@ -111,16 +114,20 @@ const LoginSignup = () => {
         )}
         {state === "Sign up" && (
           <div className="loginsignup-agree">
-            <input type="checkbox" name="" id="check-button" />
-            <p>
+            <Checkbox>
               I agree to the <span>Terms of Service</span> and{" "}
               <span>Privacy Policy</span>
-            </p>
+            </Checkbox>
+          </div>
+        )}
+        {messageText && (
+          <div className="loginsignup-message">
+            <p>{messageText}</p>
           </div>
         )}
       </div>
     </div>
-  );  
+  );
 };
 
 export default LoginSignup;

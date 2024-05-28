@@ -14,7 +14,7 @@ $hero-hand-icon-gap: 20px;
 
 .hero {
   height: $hero-height;
-  background: linear-gradient(180deg, #fde1ff, #e1ffea22 60%);
+  background: linear-gradient(180deg, #696963, #e1ffea22 60%);
   display: flex;
 
   .hero-left {
@@ -68,5 +68,9 @@ $hero-hand-icon-gap: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    img {
+      width: 90%;
+    }
   }
 }

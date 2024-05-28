@@ -42,21 +42,6 @@ const TestPayment = () => {
       case "0":
         setPaymentStatus('Thanh toán thành công');
         break;
-      case "5":
-        setPaymentStatus('Người dùng đã hủy giao dịch');
-        break;
-      case "9":
-        setPaymentStatus('Thông tin đơn hàng không hợp lệ');
-        break;
-      case "11":
-        setPaymentStatus('Giao dịch bị từ chối bởi hệ thống ngân hàng');
-        break;
-      case "12":
-        setPaymentStatus('Giao dịch bị từ chối do không đủ số dư');
-        break;
-      case "13":
-        setPaymentStatus('Giao dịch bị từ chối bởi Momo');
-        break;
       default:
         setPaymentStatus(`Thanh toán thất bại với mã lỗi: ${resultCode}`);
         break;

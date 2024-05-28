@@ -1,42 +1,40 @@
-import React, { useEffect, useState } from "react";
-import "./DescriptionBox.scss";
-import { List, Form, Input, Button, Rate } from "antd";
-import moment from "moment";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import './DescriptionBox.scss';
+import { List, Form, Input, Button, Rate } from 'antd';
+import moment from 'moment';
+import { fetchReviews, addReview } from '../../Api/ReviewsApi';
 
 const DescriptionBox = ({ product }) => {
-  const [activeTab, setActiveTab] = useState("description");
+  const [activeTab, setActiveTab] = useState('description');
   const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({ text: "", rating: 0 });
+  const [newReview, setNewReview] = useState({ text: '', rating: 0 });
   const [submitting, setSubmitting] = useState(false);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState('');
   const totalStars = reviews.reduce((acc, cur) => acc + cur.rating, 0);
   const averageRating = reviews.length > 0 ? totalStars / reviews.length : 0;
+
   useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchReviewsData = async () => {
       try {
         if (product && product.id) {
-          // Kiểm tra nếu product tồn tại và có id
-          const response = await axios.get(
-            `http://localhost:4000/api/comments/${product.id}`
-          );
-          setReviews(response.data.comments);
+          const comments = await fetchReviews(product.id);
+          setReviews(comments);
         }
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error('Error fetching reviews:', error);
       }
     };
 
-    fetchReviews();
+    fetchReviewsData();
   }, [product]);
 
   useEffect(() => {
     const getToken = () => {
-      const storedToken = localStorage.getItem("auth-token");
+      const storedToken = localStorage.getItem('auth-token');
       if (storedToken) {
         setToken(storedToken);
       } else {
-        console.error("No auth token found.");
+        console.error('No auth token found.');
       }
     };
 
@@ -61,28 +59,16 @@ const DescriptionBox = ({ product }) => {
   const handleSubmitReview = async () => {
     setSubmitting(true);
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/addcomment",
-        {
-          productId: product.id,
-          comment: newReview.text,
-          rating: newReview.rating,
-        },
-        {
-          headers: {
-            "auth-token": token,
-          },
-        }
-      );
-      if (response.data.success) {
-        const updatedReviews = [...reviews, response.data.comment];
+      const response = await addReview(product.id, newReview.text, newReview.rating, token);
+      if (response.success) {
+        const updatedReviews = [...reviews, response.comment];
         setReviews(updatedReviews);
-        setNewReview({ text: "", rating: 0 });
+        setNewReview({ text: '', rating: 0 });
       } else {
-        console.error("Error adding comment:", response.data.error);
+        console.error('Error adding comment:', response.error);
       }
     } catch (error) {
-      console.error("Error adding comment:", error);
+      console.error('Error adding comment:', error);
     } finally {
       setSubmitting(false);
     }
@@ -91,27 +77,19 @@ const DescriptionBox = ({ product }) => {
   const CommentList = ({ comments }) => (
     <List
       dataSource={comments}
-      header={`${comments.length} ${comments.length > 1 ? "Reviews" : "Review"} With ${averageRating.toFixed(1)} stars`}
-      itemLayout="horizontal"
+      header={`${comments.length} ${comments.length > 1 ? 'Reviews' : 'Review'} With ${averageRating.toFixed(1)} stars`}
+      itemLayout='horizontal'
       renderItem={(comment) => (
-        <List.Item
-          style={{ marginBottom: "10px", borderBottom: "2px solid #ccc" }}
-        >
+        <List.Item style={{ marginBottom: '10px', borderBottom: '2px solid #ccc' }}>
           <List.Item.Meta
-            title={
-              <span style={{ fontWeight: "bold" }}>
-                User: {comment.userName} - Rating: {comment.rating}
-              </span>
-            }
+            title={<span style={{ fontWeight: 'bold' }}>User: {comment.userName} - Rating: {comment.rating}</span>}
             description={
               <>
                 <p>Comment: {comment.comment}</p>
-                <p>
-                  Date: {moment(comment.date).format("YYYY-MM-DD HH:mm:ss")}
-                </p>
+                <p>Date: {moment(comment.date).format('YYYY-MM-DD HH:mm:ss')}</p>
               </>
             }
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
           />
         </List.Item>
       )}
@@ -119,63 +97,46 @@ const DescriptionBox = ({ product }) => {
   );
 
   return (
-    <div className="descriptionbox">
-      <div className="descriptionbox-navigator">
+    <div className='descriptionbox'>
+      <div className='descriptionbox-navigator'>
         <div
-          className={`description-nav-box ${
-            activeTab === "description" ? "active" : ""
-          }`}
-          onClick={() => setActiveTab("description")}
+          className={`description-nav-box ${activeTab === 'description' ? 'active' : ''}`}
+          onClick={() => setActiveTab('description')}
         >
           Description
         </div>
         <div
-          className={`description-nav-box ${
-            activeTab === "reviews" ? "active" : "fade"
-          }`}
-          onClick={() => setActiveTab("reviews")}
+          className={`description-nav-box ${activeTab === 'reviews' ? 'active' : 'fade'}`}
+          onClick={() => setActiveTab('reviews')}
         >
           Reviews ({reviews.length})
         </div>
       </div>
-      <div className="descriptionbox-content">
-        {activeTab === "description" ? (
-          <div className="descriptionbox-description">
-            <p>
-              {product
-                ? product.longDescription
-                : "Product description not available"}
-            </p>
+      <div className='descriptionbox-content'>
+        {activeTab === 'description' ? (
+          <div className='descriptionbox-description'>
+            <p>{product ? product.longDescription : 'Product description not available'}</p>
           </div>
         ) : (
-          <div className="descriptionbox-reviews">
-            <CommentList comments={reviews}/>
+          <div className='descriptionbox-reviews'>
+            <CommentList comments={reviews} />
             {token ? (
               <Form onFinish={handleSubmitReview}>
-                <Form.Item label="Rating">
-                  <Rate
-                    allowHalf
-                    onChange={handleRatingChange}
-                    value={newReview.rating}
-                  />
+                <Form.Item label='Rating'>
+                  <Rate allowHalf onChange={handleRatingChange} value={newReview.rating} />
                 </Form.Item>
-                <Form.Item label="Comment">
-                  <Input.TextArea
-                    rows={4}
-                    onChange={handleReviewChange}
-                    value={newReview.text}
-                    name="text"
-                  />
+                <Form.Item label='Comment'>
+                  <Input.TextArea rows={4} onChange={handleReviewChange} value={newReview.text} name='text' />
                 </Form.Item>
                 <Form.Item>
-                  <Button htmlType="submit" loading={submitting} type="primary">
+                  <Button htmlType='submit' loading={submitting} type='primary'>
                     Add Comment
                   </Button>
                 </Form.Item>
               </Form>
             ) : (
               <p>
-                Please <a href="/login">login</a> to leave a review.
+                Please <a href='/login'>login</a> to leave a review.
               </p>
             )}
           </div>

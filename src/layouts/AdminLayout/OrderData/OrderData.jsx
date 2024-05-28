@@ -10,7 +10,6 @@ const OrderData = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { orderData, isLoading } = useSelector((state) => {
-    // Lọc ra các đơn hàng không ở trạng thái 'completed' hoặc 'cancelled'
     const filteredOrders = state.admin.orderData.filter(order => !['completed', 'cancelled'].includes(order.status));
     return {
       orderData: filteredOrders,

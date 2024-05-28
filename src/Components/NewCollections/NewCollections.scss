@@ -37,3 +37,32 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .new-collections {
+    padding: 0 20px; /* Giảm padding cho điện thoại */
+    margin-top: 50px; /* Giảm khoảng cách trên điện thoại */
+    margin-bottom: 50px; /* Giảm khoảng cách dưới điện thoại */
+  }
+
+  h1 {
+    font-size: 30px; /* Giảm kích thước font chữ */
+  }
+
+  hr {
+    width: 100px; /* Giảm chiều rộng */
+    height: 4px; /* Giảm chiều cao */
+    border-radius: 5px; /* Giảm độ cong viền */
+  }
+
+  .collections {
+    grid-template-columns: repeat(2, 1fr); /* Hiển thị 2 cột trên mỗi hàng */
+    gap: 20px; /* Giảm khoảng cách giữa các phần tử */
+    margin-top: 30px; /* Giảm khoảng cách trên điện thoại */
+  }
+
+  img {
+    width: 100%; /* Đảm bảo hình ảnh điền vào phần tử cha */
+    height: auto; /* Tự động tính toán chiều cao dựa trên chiều rộng */
+  }
+}
