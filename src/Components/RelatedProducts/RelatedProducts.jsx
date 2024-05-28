@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './RelatedProducts.scss';
 import Item from '../Item/Item';
+import getRelatedProducts from '../../Api/RelatedApi';
 
 const RelatedProducts = ({ productCategory }) => {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/relatedproducts`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchRelatedProducts = async () => {
+      try {
+        const data = await getRelatedProducts();
         setRelatedProducts(data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching related products:", error);
-      });
+      }
+    };
+
+    fetchRelatedProducts();
   }, [productCategory]);
 
   return (
@@ -35,6 +38,5 @@ const RelatedProducts = ({ productCategory }) => {
     </div>
   );
 }
-
 
 export default RelatedProducts;

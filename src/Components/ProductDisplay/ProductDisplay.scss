@@ -21,7 +21,7 @@
       height: 700px;
     }
   }
-  .out-of-stock{
+  .out-of-stock {
     color: #ff4141;
     font-size: 20px;
     font-weight: 600;
@@ -116,6 +116,141 @@
 
       span {
         font-weight: 600;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin: 0 20px;
+
+    .productdisplay-left {
+      flex-direction: column;
+      align-items: center;
+
+      .producdisplay-img-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+
+        img {
+          width: 80px;
+        }
+      }
+
+      .productdisplay-main-img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .productdisplay-right {
+      margin: 20px 0;
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .productdisplay-right-stars {
+        font-size: 16px;
+
+        img {
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      .productdisplay-right-prices {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 20px;
+
+        .productdisplay-right-price-old {
+          font-size: 16px;
+        }
+
+        .productdisplay-right-price-new {
+          font-size: 20px;
+        }
+      }
+
+      .productdisplay-right-size h1 {
+        font-size: 18px;
+        margin-top: 30px;
+      }
+
+      .productdisplay-right-size {
+        gap: 10px;
+      }
+
+      .productdisplay-right-sizes {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+
+        div {
+          padding: 10px 15px;
+          font-size: 14px;
+        }
+      }
+
+      button {
+        width: 100%;
+        padding: 15px;
+        font-size: 14px;
+      }
+
+      .productdisplay-right-category {
+        font-size: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .productdisplay-left {
+      .producdisplay-img-list {
+        img {
+          width: 60px;
+        }
+      }
+    }
+
+    .productdisplay-right {
+      h1 {
+        font-size: 20px;
+      }
+
+      .productdisplay-right-stars {
+        font-size: 14px;
+      }
+
+      .productdisplay-right-prices {
+        font-size: 18px;
+
+        .productdisplay-right-price-new {
+          font-size: 18px;
+        }
+      }
+
+      .productdisplay-right-size h1 {
+        font-size: 16px;
+      }
+
+      .productdisplay-right-sizes {
+        div {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+      }
+
+      button {
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      .productdisplay-right-category {
+        font-size: 12px;
       }
     }
   }

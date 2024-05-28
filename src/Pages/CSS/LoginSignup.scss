@@ -160,3 +160,24 @@ $border-radius: 10px;
   font-weight: 600px;
   text-align: center;
 }
+
+.email-verify-container {
+  text-align: center;
+  margin-top: 20%;
+}
+
+.email-verify-container .ant-typography-success {
+  color: #52c41a;
+}
+
+.email-verify-container .ant-typography-danger {
+  color: #ff4d4f;
+}
+
+.email-verify-container .ant-typography-secondary {
+  color: #8c8c8c;
+}
+
+.email-verify-container .ant-btn-primary {
+  margin-top: 20px;
+}

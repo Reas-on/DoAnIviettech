@@ -14,7 +14,7 @@ export const removeFromCart = createAsyncThunk(
             "Content-Type": "application/json",
             "auth-token": authToken,
           },
-          body: JSON.stringify({ productId, size }),
+          body: JSON.stringify({ productId, size, quantity: 1 }),
         });
 
         if (!response.ok) {
@@ -22,7 +22,7 @@ export const removeFromCart = createAsyncThunk(
           throw new Error(data.error || "Failed to remove item from cart.");
         }
 
-        await dispatch(fetchCartItems()); // Cập nhật giỏ hàng từ server
+        await dispatch(fetchCartItems());
         return { productId, size };
       } else {
         let storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];

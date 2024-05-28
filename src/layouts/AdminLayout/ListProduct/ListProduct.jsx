@@ -45,18 +45,13 @@ const ListProduct = () => {
       setMessage("Failed to remove product.");
     }
   };
-
   const handleActionClick = (id) => {
     setSelectedProductId(selectedProductId === id ? null : id);
   };
-
   const handleViewProduct = (product) => {
     window.open(`http://localhost:3000/product/${product.id}`, "_blank");
   };
-
   const totalPages = Math.ceil(allProducts.length / 9);
-
-  // Hàm lọc sản phẩm theo tên
   const filteredProducts = allProducts.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -80,7 +75,6 @@ const ListProduct = () => {
           Next
         </button>
       </div>
-      {/* Phần Filter */}
       <div>
         <input
           type="text"

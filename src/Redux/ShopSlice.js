@@ -69,16 +69,17 @@ const shopSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
-        const { productId, size } = action.payload;
+        state.status = "succeeded";
+        const { productId, size, quantity } = action.payload;
         const itemToRemove = state.cartItems.find(
-          (item) => item.productId === productId && item.size === size
+          (item) => item.productId === productId && item.size === size && item.quantity === quantity
         );
         if (itemToRemove) {
           if (itemToRemove.quantity > 1) {
             itemToRemove.quantity -= 1;
           } else {
             state.cartItems = state.cartItems.filter(
-              (item) => !(item.productId === productId && item.size === size)
+              (item) => !(item.productId === productId && item.size === size && item.quantity === 1)
             );
           }
         }

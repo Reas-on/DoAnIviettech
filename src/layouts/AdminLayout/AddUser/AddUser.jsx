@@ -94,10 +94,11 @@ const AddUser = () => {
         phone: formData.phone,
         address,
         isAdmin: formData.isAdmin === "true" ? true : false,
-        cartData: cart,
+        cartData: [],
       };
       dispatch(addUser(userData));
       message.success("Registration successful!");
+      console.log("Registration data:", userData);
       form.resetFields();
     } catch (error) {
       console.error("Error when submitting registration data:", error);
