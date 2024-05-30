@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { List, message } from 'antd';
 import './Profile.scss';
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '../../Redux/Thunk/fetchUserInfo';
 import { selectUserName } from '../../Redux/ShopSlice';

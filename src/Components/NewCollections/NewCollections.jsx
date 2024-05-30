@@ -23,7 +23,7 @@ const NewCollections = () => {
     <div className="new-collections">
       <h1>NEW COLLECTION</h1>
       <hr />
-      <div className="collections">
+      <div className="row gap-3">
         {newCollection.map((item, i) => (
           <Item
             key={i}
