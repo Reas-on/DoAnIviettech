@@ -7,14 +7,6 @@ import { fetchCartItems } from "./Thunk/fetchCartItems";
 import { loginUser } from "./Thunk/login";
 import { signupUser } from "./Thunk/signup";
 
-export const getDefaultCart = () => {
-  let cart = {};
-  for (let i = 1; i <= 300; i++) {
-    cart[i] = 0;
-  }
-  return cart;
-};
-
 const initialState = {
   allProducts: [],
   cartItems: [],
@@ -137,6 +129,7 @@ export const selectAllProducts = (state) => state.shop.allProducts;
 export const selectCartItems = (state) => state.shop.cartItems;
 export const selectIsLoggedIn = (state) => state.shop.isLoggedIn; 
 export const selectUserId = (state) => state.shop.user.userId;
+export const selectProducts = (state) => state.shop.products;
 
 export const selectTotalCartItems = (state) => {
   let totalItems = 0;

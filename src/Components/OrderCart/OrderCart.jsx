@@ -89,7 +89,6 @@ const OrderCart = () => {
 
   const canProceedToNextStep = () => {
     if (currentStep === 0) {
-      // Kiểm tra xem giỏ hàng có sản phẩm nào không
       return Object.keys(cartItems).length > 0;
     } else {
       const { receiverName, deliveryAddress, phoneNumber, email } = formValues;

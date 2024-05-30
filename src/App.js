@@ -12,7 +12,6 @@ import women_banner from "./Components/Assets/banner_women.png";
 import kid_banner from "./Components/Assets/banner_kids.png";
 import OrderCart from "./Components/OrderCart/OrderCart";
 import MainLayout from "./layouts/MainLayout";
-import PaymentSuccess from "./Pages/PaymentSuccess";
 import OnlineMomoPayment from "./Components/OnlinePayment/OnlineMoMo";
 import OnlineZaloPay from "./Components/OnlinePayment/OnlineZaloPay";
 // Admin
@@ -34,23 +33,24 @@ import DeliveringOrders from "./layouts/AdminLayout/OrderData/DeliveringOrders";
 import ShippedOrders from "./layouts/AdminLayout/OrderData/ShippedOrders";
 import Vouchers from "./layouts/AdminLayout/Vouchers/Vouchers";
 
-import { useDispatch } from "react-redux";
-import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
-import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import CheckOrder from "./Components/CheckOrder/CheckOrder";
 import EmailVerify from "./Components/verify-email/verify-email";
-
-
+import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
+import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
+import { selectAllProducts } from "./Redux/ShopSlice";
+import OnlineMoMoTest from "./Components/OnlinePayment/OnlineMoMoTest";
 
 function App() {
   const dispatch = useDispatch();
+  const allProducts = useSelector(selectAllProducts);
   useEffect(() => {
-    dispatch(fetchAllProducts());
     dispatch(fetchCartItems());
-  }, [dispatch]);
-
-
+    if (allProducts.length === 0) {
+      dispatch(fetchAllProducts());
+    }
+  }, [dispatch, allProducts]);
 
   return (
     <div>
@@ -58,35 +58,21 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Shop />} />
-            <Route
-              path="/mens"
-              element={<ShopCategory banner={men_banner} category="men" />}
-            />
-            <Route
-              path="/womans"
-              element={<ShopCategory banner={women_banner} category="women" />}
-            />
-            <Route
-              path="/kids"
-              element={<ShopCategory banner={kid_banner} category="kid" />}
-            />
+            <Route path="/mens" element={<ShopCategory banner={men_banner} category="men" />}/>
+            <Route path="/womans" element={<ShopCategory banner={women_banner} category="women" />}/>
+            <Route path="/kids"element={<ShopCategory banner={kid_banner} category="kid" />}/>
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<LoginSignup />} />
             <Route path="/profile" element={<Profile />} >
               <Route index element={<Profile />} />
             </Route>
-
-            {/* <Route path="ProfileUpdatePassword" element={<ProfileUpdatePassword />} /> */}
             <Route path="/payment" element={<Payment />} />
             <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/CheckOrder" element={<CheckOrder />} />
-            <Route path="/payment-momo" element={<PaymentSuccess />} />
-            <Route
-              path="/online-payment/momo"
-              element={<OnlineMomoPayment />}
-            />
+            <Route path="/online-payment/momo" element={<OnlineMomoPayment />}/>
             <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
+            <Route path="/online-payment/momotest" element={<OnlineMoMoTest />} />
             <Route path="/email-verify" element={<EmailVerify />} />
           </Route>
           {/* Admin */}
