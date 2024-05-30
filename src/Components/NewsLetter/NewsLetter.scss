@@ -1,12 +1,10 @@
 $newsletter-width: 65%;
-$newsletter-height: 40vh;
-$newsletter-padding: 0px 140px;
+$newsletter-padding: 20px 140px;
 $newsletter-margin-bottom: 150px;
 $newsletter-gap: 30px;
 $newsletter-button-width: 200px;
 $newsletter-button-height: 60px;
 $newsletter-input-font-size: 16px;
-
 $newsletter-width-mobile: 90%;
 $newsletter-padding-mobile: 0px 20px;
 $newsletter-margin-bottom-mobile: 50px;
@@ -14,14 +12,12 @@ $newsletter-input-width-mobile: 100%;
 
 .newsletter {
   width: $newsletter-width;
-  height: $newsletter-height;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: auto;
-  padding: $newsletter-padding;
-  margin-bottom: $newsletter-margin-bottom;
+  margin: 40px auto 0;
+  padding: 20px 40px;
   gap: $newsletter-gap;
   background: linear-gradient(180deg, #fde1ff, #e1ffea22 60%);
   color: #454545;
@@ -30,6 +26,7 @@ $newsletter-input-width-mobile: 100%;
     font-size: 55px;
     font-weight: 600;
     margin-bottom: 20px;
+    text-align: center;
   }
 
   p {
@@ -43,9 +40,8 @@ $newsletter-input-width-mobile: 100%;
     justify-content: space-between;
     background: white;
     width: 730px;
-    height: 70px;
-    border-radius: 80px;
-    border: 1px solid #e3e3e3;
+    // border-radius: 80px;
+    // border: 1px solid #e3e3e3;
 
     button {
       width: $newsletter-button-width;
@@ -66,11 +62,15 @@ $newsletter-input-width-mobile: 100%;
       color: black;
       border: 1px solid black;
     }
+
+    @media (max-width: 662px) {
+      flex-direction: column;
+    }
   }
 
   input {
     width: $newsletter-width;
-    margin-left: 30px;
+    margin-right: 10px;
     border: none;
     outline: none;
     color: #616161;
@@ -84,13 +84,14 @@ $newsletter-input-width-mobile: 100%;
 
     @media (max-width: 768px) {
       width: $newsletter-input-width-mobile;
+      margin-right: 0;
+      margin-bottom: 10px;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1224px) {
     width: $newsletter-width-mobile;
-    padding: $newsletter-padding-mobile;
-    margin-bottom: $newsletter-margin-bottom-mobile;
+    margin: 40px auto 0;
 
     h1 {
       font-size: 40px;

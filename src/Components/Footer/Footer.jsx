@@ -6,10 +6,9 @@ import instagram_icon from '../Assets/instagram_icon.png'
 import footer_logo from '../Assets/logo_big.png'
 const Footer = () => {
   return (
-    <div className="footer">
+    <div className="footer mt-5">
       <div className="footer-logo">
         <img src={footer_logo} alt="" />
-        <p>Kuromi Srore</p>
       </div>
       <ul className='footer-links'>
         <li>Company</li>

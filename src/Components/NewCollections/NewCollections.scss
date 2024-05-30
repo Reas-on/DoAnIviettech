@@ -5,7 +5,7 @@
   gap: 10px;
   margin-top: 100px;
   margin-bottom: 100px;
-  padding: 0 50px;
+  // padding: 0 50px;
 
   h1 {
     color: #171717;
@@ -25,16 +25,6 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     margin-top: 50px;
-
-    .item {
-      width: 100%;
-      
-      img {
-        width: 400px;
-        height: 600px;
-        object-fit: cover;
-      }
-    }
   }
 }
 
@@ -64,5 +54,14 @@
   img {
     width: 100%; /* Đảm bảo hình ảnh điền vào phần tử cha */
     height: auto; /* Tự động tính toán chiều cao dựa trên chiều rộng */
+  }
+}
+.item {
+  width: 100%;
+
+  img {
+    width: 350px;
+    height: 600px;
+    object-fit: cover;
   }
 }

@@ -13,6 +13,7 @@ $offers-left-button-height: 70px;
   padding: $offers-padding;
   margin-bottom: $offers-margin-bottom;
   background: linear-gradient(180deg, #fde1ff, #e1ffea22 60%);
+  margin-top: 40px;
 
   .offers-left {
     flex: 1;
@@ -54,7 +55,7 @@ $offers-left-button-height: 70px;
     padding-top: 50px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1224px) {
     width: 90%;
     padding: 0px 20px;
 
@@ -70,6 +71,19 @@ $offers-left-button-height: 70px;
       button {
         width: 100%;
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+
+    .offers-right {
+      justify-content: center;
+    }
+    
+    .offers-right>img {
+      max-height: 250px;
+      width: auto;
     }
   }
 }

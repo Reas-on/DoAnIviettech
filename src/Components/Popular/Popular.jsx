@@ -23,7 +23,7 @@ const Popular = () => {
     <div className="popular">
       <h1>POPULAR IN WOMEN</h1>
       <hr />
-      <div className="popular-item">
+      <div className="row gap-3">
         {popularProducts.map((item, i) => (
           <Item
             key={i}
