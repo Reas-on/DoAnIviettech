@@ -10,13 +10,15 @@ import Profile from "./Components/Profile/Profile";
 import men_banner from "./Components/Assets/banner_mens.png";
 import women_banner from "./Components/Assets/banner_women.png";
 import kid_banner from "./Components/Assets/banner_kids.png";
-import OrderCart from "./Components/OrderCart/OrderCart";
 import MainLayout from "./layouts/MainLayout";
-import OnlineMomoPayment from "./Components/OnlinePayment/OnlineMoMo";
+import CheckOrder from "./Components/CheckOrder/CheckOrder";
+import EmailVerify from "./Components/verify-email/verify-email";
 import OnlineZaloPay from "./Components/OnlinePayment/OnlineZaloPay";
+import OnlinePayment from "./Components/OnlinePayment/OnlinePayment";
+import OnlineMomo from "./Components/OnlinePayment/OnlineMomo";
+
 // Admin
 import AdminLayout from "./layouts/AdminLayout";
-import Payment from "./Pages/TestPayment";
 import DashBoard from "./layouts/AdminLayout/DashBoard/DashBoard";
 import AddProduct from "./layouts/AdminLayout/AddProduct/AddProduct";
 import ListProduct from "./layouts/AdminLayout/ListProduct/ListProduct";
@@ -35,12 +37,9 @@ import Vouchers from "./layouts/AdminLayout/Vouchers/Vouchers";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import CheckOrder from "./Components/CheckOrder/CheckOrder";
-import EmailVerify from "./Components/verify-email/verify-email";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { selectAllProducts } from "./Redux/ShopSlice";
-import OnlineMoMoTest from "./Components/OnlinePayment/OnlineMoMoTest";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,12 +66,10 @@ function App() {
             <Route path="/profile" element={<Profile />} >
               <Route index element={<Profile />} />
             </Route>
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/CheckOrder" element={<CheckOrder />} />
-            <Route path="/online-payment/momo" element={<OnlineMomoPayment />}/>
+            <Route path="/online-payment" element={<OnlinePayment />}/>
+            <Route path="/online-payment/momo" element={<OnlineMomo />}/>
             <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
-            <Route path="/online-payment/momotest" element={<OnlineMoMoTest />} />
             <Route path="/email-verify" element={<EmailVerify />} />
           </Route>
           {/* Admin */}
