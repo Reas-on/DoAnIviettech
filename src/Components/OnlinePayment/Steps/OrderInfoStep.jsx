@@ -1,3 +1,4 @@
+// OrderInfoStep.js
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
@@ -45,7 +46,6 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
   };
 
   const handleNext = () => {
-    localStorage.setItem("recipientInfo", JSON.stringify(formValues));
     setRecipientInfo(formValues);
     onNext();
   };

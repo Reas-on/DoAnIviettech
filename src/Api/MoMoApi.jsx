@@ -1,4 +1,4 @@
-// MomoApi.jsx
+// MoMoApi.jsx
 import axios from 'axios';
 
 export const createMomoPayment = async (amount, orderInfo) => {
@@ -14,7 +14,7 @@ export const createMomoPayment = async (amount, orderInfo) => {
   }
 };
 
-export const checkMomoPayment = async (orderId) => {
+export const checkMomoPayment = async ({ orderId }) => {  // Chỉnh sửa để nhận đối tượng có orderId
   try {
     const response = await axios.post('http://localhost:4000/momo/checkmomopayment', {
       orderId,

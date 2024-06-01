@@ -37,7 +37,7 @@ const CartItems = () => {
 
   const handleCheckout = (method) => {
     if (method === "receive") {
-      navigate("/OrderCart");
+      navigate("/online-payment");
     } else {
       navigate(`/online-payment/${method || paymentMethod}`);
     }
