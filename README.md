@@ -12,7 +12,7 @@
 
 - [@socktow](https://github.com/socktow)
 
-[![trophy](https://github-profile-trophy.vercel.app/?username=socktow-on&theme=onedar)](https://github.com/=socktow)
+[![trophy](https://github-profile-trophy.vercel.app/?username=socktow&theme=onedark)](https://github.com/socktow)
 - [@Reas-on](https://github.com/Reas-on)
 
 [![trophy](https://github-profile-trophy.vercel.app/?username=Reas-on&theme=onedark)](https://github.com/Reas-on)
