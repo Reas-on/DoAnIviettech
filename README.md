@@ -12,8 +12,10 @@
 
 - [@socktow](https://github.com/socktow)
 
+[![trophy](https://github-profile-trophy.vercel.app/?username=socktow)](https://github.com/ryo-ma/github-profile-trophy)
 - [@Reas-on](https://github.com/Reas-on)
 
+[![trophy](https://github-profile-trophy.vercel.app/?username=Reas-on&theme=onedark)](https://github.com/ryo-ma/github-profile-trophy)
 
 
 ## Free User
@@ -64,3 +66,5 @@
 | Add Voucher | ✅ |
 | Remove Voucher | ✅ |
 | Change Status Order Data | ✅ |
+
+
