@@ -59,8 +59,8 @@ const ShopCategory = (props) => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(99999999999);
   const [productView, setProductView] = useState([]);
-  const [visibleProducts, setVisibleProducts] = useState(8); // Số sản phẩm hiển thị ban đầu
-  const productsPerPage = 4; // Số sản phẩm mỗi lần hiển thị
+  const [visibleProducts, setVisibleProducts] = useState(6); // Số sản phẩm hiển thị ban đầu
+  const productsPerPage = 3; // Số sản phẩm mỗi lần hiển thị
 
   useLayoutEffect(() => {
     dispatch(fetchAllProducts());

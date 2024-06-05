@@ -1,15 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import { Rate } from "antd";
 import "react-toastify/dist/ReactToastify.css";
 import "./ProductDisplay.scss";
-import star_icon from "../Assets/star_icon.png";
-import star_dull_icon from "../Assets/star_dull_icon.png";
 import { addToCart } from "../../Redux/Thunk/addToCart";
+import { fetchReviews } from "../../Api/ReviewsApi";
 
 const ProductDisplay = ({ product }) => {
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+
+  useEffect(() => {
+    const fetchProductReviews = async () => {
+      try {
+        if (product && product.id) {
+          const comments = await fetchReviews(product.id);
+          setReviews(comments);
+          const totalStars = comments.reduce((acc, cur) => acc + cur.rating, 0);
+          setAverageRating(comments.length > 0 ? totalStars / comments.length : 0);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchProductReviews();
+  }, [product]);
 
   const handleSizeClick = (size) => {
     setSelectedSize(size);
@@ -18,10 +37,19 @@ const ProductDisplay = ({ product }) => {
 
   const handleAddToCart = () => {
     if (selectedSize === null) {
-      console.log("Please select a size.");
+      toast.error("Please select a size.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
-    // Thêm thuộc tính quantity vào đối tượng sản phẩm
+
     const item = { productId: product.id, size: selectedSize, quantity: 1 };
     dispatch(addToCart(item));
     toast.success(`Added Product ${product.name} to your cart`, {
@@ -56,12 +84,8 @@ const ProductDisplay = ({ product }) => {
       <div className="productdisplay-right">
         <h1>{product.name}</h1>
         <div className="productdisplay-right-stars">
-          <img src={star_icon} alt="" />
-          <img src={star_icon} alt="" />
-          <img src={star_icon} alt="" />
-          <img src={star_icon} alt="" />
-          <img src={star_dull_icon} alt="" />
-          <p>(20 reviews)</p>
+          <Rate allowHalf value={averageRating} style={{ color: "#ff4141" }} disabled />
+          <p className="rating-text">{averageRating.toFixed(1)} ({reviews.length} reviews)</p>
         </div>
         <div className="productdisplay-right-prices">
           {product.old_price && product.old_price !== 0 ? (
@@ -96,7 +120,9 @@ const ProductDisplay = ({ product }) => {
           </div>
         </div>
         <div className="productdisplay-right-cart">
-          <button onClick={handleAddToCart}>Add To Cart</button>
+          <button onClick={handleAddToCart} disabled={product.new_price === 0}>
+            Add To Cart
+          </button>
         </div>
         <p className="productdisplay-right-category">
           Category: <span>{product.category}</span>

@@ -10,17 +10,13 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
   const [orderSent, setOrderSent] = useState(false);
   const cartItems = useSelector(selectCartItems);
   const allProducts = useSelector((state) => state.shop.allProducts);
-  const receiverName = useSelector((state) => state.shop.user?.name);
-  const deliveryAddress = useSelector((state) => state.shop.user?.address);
-  const phoneNumber = useSelector((state) => state.shop.user?.phone);
-  const email = useSelector((state) => state.shop.user?.email);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setOrderSent(true);
   }, []);
-
-  const handleOrder = useCallback(async () => {
+  
+  const handleOrder = useCallback(async (  ) => {
     try {
       if (orderSent) {
         return;
@@ -33,27 +29,26 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
         setOrder(response.data[0]);
         message.info("Đơn hàng đã được xử lí");
       } else {
-        const orderedProducts = cartItems
-          .map((cartItem) => {
-            const product = allProducts.find(
-              (p) => p.id === cartItem.productId
-            );
-            return product
-              ? {
-                  name: `[ Size : ${cartItem.size} ] ${product.name}`,
-                  image: product.image,
-                  quantity: cartItem.quantity,
-                  total: product.new_price * cartItem.quantity,
-                }
-              : null;
-          })
-          .filter((product) => product !== null);
+        const orderedProducts = cartItems.map((cartItem) => {
+          const product = allProducts.find((p) => p.id === cartItem.productId);
+          return product
+            ? {
+                name: `[ Size : ${cartItem.size} ] ${product.name}`,
+                image: product.image,
+                productId: product.id,
+                quantity: cartItem.quantity,
+                total: product.new_price * cartItem.quantity,
+              }
+            : null;
+        }).filter(product => product !== null);
 
+        const localStorageData = JSON.parse(localStorage.getItem("OrderData"));
         const formData = {
-          receiverName,
-          deliveryAddress,
-          phoneNumber,
-          email,
+          receiverName: localStorageData.fullName,
+          deliveryAddress: localStorageData.address,
+          phoneNumber: localStorageData.phoneNumber,
+          email: localStorageData.email,
+          Voucher: localStorageData.voucher,
           note: "",
           orderedProducts,
           PaymentMethodChangeEvent: "MOMO",
@@ -81,10 +76,6 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
     transactionInfo,
     cartItems,
     allProducts,
-    receiverName,
-    deliveryAddress,
-    phoneNumber,
-    email,
     orderSent,
     dispatch,
   ]);
@@ -96,13 +87,14 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
   const resetCart = async () => {
     try {
       const authToken = localStorage.getItem("auth-token");
-      const headers = authToken ? { "auth-token": authToken } : {};
-
-      await axios.patch("http://localhost:4000/api/cartreset", null, {
-        headers,
-      });
-
-      console.log("Cart reset successful");
+      if (authToken) {
+        const headers = { "auth-token": authToken };
+        await axios.patch("http://localhost:4000/api/cartreset", null, { headers });
+        console.log("Cart reset successful");
+      } else {
+        localStorage.removeItem("cartItems");
+        console.log("Cart in localStorage reset successful");
+      }
     } catch (error) {
       console.error("Error resetting cart:", error);
     }

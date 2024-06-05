@@ -1,164 +1,142 @@
 import React, { useState } from "react";
-import "./AddProduct.css";
-import upload_area from "../../../assets/upload_area.svg";
+import { Button, Form, Input, InputNumber, Select, Upload, message, Typography } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import addProductApi from "../../../Api/admin/AddproductApi";
+
+const { TextArea } = Input;
+const { Option } = Select;
 
 const AddProduct = () => {
-  const [image, setImage] = useState(false);
-  const [productDetails, setProductDetails] = useState({
-    name: "",
-    old_price: "",
-    new_price: "",
-    category: "women",
-    image: "",
-    shortDescription: "",
-    longDescription: "",
-  });
+  const [form] = Form.useForm();
+  const [image, setImage] = useState(null);
+  const [fileName, setFileName] = useState("");
 
-  const imageHandler = (e) => {
-    setImage(e.target.files[0]);
+  const imageHandler = (file) => {
+    setImage(file);
+    setFileName(file.name);
+    return false;
   };
 
-  const changeHandler = (e) => {
-    setProductDetails({
-      ...productDetails,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const Add_Product = async () => {
+  const onFinish = async (values) => {
     try {
-      console.log(productDetails);
-      let responseData;
-      let product = productDetails;
-
-      let formData = new FormData();
-      formData.append("product", image);
-
-      const uploadResponse = await fetch("http://localhost:4000/upload", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: formData,
-      });
-
-      responseData = await uploadResponse.json();
-
-      if (responseData.success) {
-        product.image = responseData.image_url;
-
-        const addProductResponse = await fetch(
-          "http://localhost:4000/product/addproduct",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(product),
-          }
-        );
-
-        responseData = await addProductResponse.json();
-
-        if (responseData.success) {
-          alert(
-            `Product Added Successfully:\nName: ${product.name}\nNew Price: ${product.new_price}\nOld Price: ${product.old_price}\nCategory: ${product.category}\nImage: ${product.image}`
-          );
+      const uploadResponse = await addProductApi.uploadProductImage(image);
+      if (uploadResponse.success) {
+        values.image = uploadResponse.image_url;
+        const addProductResponse = await addProductApi.addProduct(values);
+        if (addProductResponse.success) {
+          message.success("Product Added Successfully");
+          form.resetFields();
+          setImage(null);
+          setFileName("");
         } else {
-          alert("Product Not Added");
+          message.error("Product Not Added");
         }
+      } else {
+        message.error("Image Upload Failed");
       }
     } catch (error) {
       console.error("Error adding product:", error.message);
-      alert("Error adding product: " + error.message);
+      message.error("Error adding product: " + error.message);
     }
   };
 
   return (
-    <div className="addproduct">
-      <div className="addproduct-itemfield">
-        <p>Product title</p>
-        <input
-          value={productDetails.name}
-          onChange={changeHandler}
-          type="text"
-          name="name"
-          placeholder="Enter product name"
-        />
-      </div>
-      <div className="addproduct-price">
-        <p>Price</p>
-        <input
-          value={productDetails.old_price}
-          onChange={changeHandler}
-          type="text"
-          name="old_price"
-          placeholder="Enter product price"
-        />
-      </div>
-      <div className="addproduct-price">
-        <p>Offer Price</p>
-        <input
-          value={productDetails.new_price}
-          onChange={changeHandler}
-          type="text"
-          name="new_price"
-          placeholder="Enter product price"
-        />
-      </div>
-      <div className="addproduct-itemfield">
-        <p>Product Category</p>
-        <select
-          value={productDetails.category}
-          onChange={changeHandler}
-          name="category"
-          className="add-product-selector"
-        >
-          <option value="women">women</option>
-          <option value="men">men</option>
-          <option value="kid">kid</option>
-        </select>
-      </div>
-      <div className="addproduct-itemfield">
-        <p>Short Description</p>
-        <textarea
-          value={productDetails.shortDescription}
-          onChange={changeHandler}
-          name="shortDescription"
-          placeholder="Enter short description"
-        />
-      </div>
-      <div className="addproduct-itemfield">
-        <p>Long Description</p>
-        <textarea
-          value={productDetails.longDescription}
-          onChange={changeHandler}
-          name="longDescription"
-          placeholder="Enter long description"
-        />
-      </div>
-      <div className="addproduct-itemfield">
-        <label htmlFor="file-input">
-          <img src={image ? URL.createObjectURL(image) : upload_area} alt="" />
-          <p>Upload product image</p>
-        </label>
-        <input
-          onChange={imageHandler}
-          type="file"
-          name="image"
-          id="file-input"
-          hidden
-        />
-      </div>
-      <button
-        onClick={() => {
-          Add_Product();
-        }}
-        className="addproduct-btn"
+    <div style={{ maxWidth: "700px", margin: "auto", padding: "20px" }}>
+      <h1>Add Product</h1>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
       >
-        Add Product
-      </button>
+        <Form.Item
+          name="name"
+          label="Product Title"
+          rules={[{ required: true, message: 'Please enter the product title' }]}
+        >
+          <Input placeholder="Enter product name" />
+        </Form.Item>
+
+        <Form.Item
+          name="old_price"
+          label="Price"
+          rules={[{ required: true, message: 'Please enter the product price' }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="Enter product price"
+            min={0}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="new_price"
+          label="Offer Price"
+          rules={[{ required: true, message: 'Please enter the offer price' }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="Enter offer price"
+            min={0}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="category"
+          label="Product Category"
+          rules={[{ required: true, message: 'Please select a category' }]}
+        >
+          <Select placeholder="Select a category">
+            <Option value="women">Women</Option>
+            <Option value="men">Men</Option>
+            <Option value="kid">Kid</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name="shortDescription"
+          label="Short Description"
+          rules={[{ required: true, message: 'Please enter a short description' }]}
+        >
+          <TextArea placeholder="Enter short description" />
+        </Form.Item>
+
+        <Form.Item
+          name="longDescription"
+          label="Long Description"
+          rules={[{ required: true, message: 'Please enter a long description' }]}
+        >
+          <TextArea placeholder="Enter long description" />
+        </Form.Item>
+
+        <Form.Item
+          name="image"
+          label="Upload Product Image"
+          rules={[{ required: true, message: 'Please upload a product image' }]}
+        >
+          <Upload
+            beforeUpload={imageHandler}
+            showUploadList={false}
+          >
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </Upload>
+          {image && (
+            <div style={{ marginTop: "10px" }}>
+              <img
+                src={URL.createObjectURL(image)}
+                alt="product"
+                style={{ maxWidth: "15%", height: "auto" }}
+              />
+              <Typography.Text> {fileName}</Typography.Text>
+            </div>
+          )}
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Add Product
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

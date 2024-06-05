@@ -28,7 +28,11 @@ const CartItems = () => {
   }, [dispatch]);
 
   const handleRemoveFromCart = (item) => {
-    dispatch(removeFromCart(item));
+    dispatch(removeFromCart(item)).then(() => {
+      // Update local storage after removing item from cart
+      const updatedCart = cartItems.filter(cartItem => cartItem.id !== item.id);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+    });
   };
 
   const handlePaymentMethodChange = (value) => {

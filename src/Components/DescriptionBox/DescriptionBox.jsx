@@ -34,7 +34,7 @@ const DescriptionBox = ({ product }) => {
       if (storedToken) {
         setToken(storedToken);
       } else {
-        console.error('No auth token found.');
+        console.log('No auth token found.');
       }
     };
 

@@ -40,6 +40,9 @@ import { useEffect } from "react";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { selectAllProducts } from "./Redux/ShopSlice";
+import InfoTable from "./Components/InfoTable/InfoTable";
+import Testotp from "./Components/testotp/testotp";
+import ProcessingOrder from "./layouts/AdminLayout/OrderData/ProcessingOrder";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +52,15 @@ function App() {
     if (allProducts.length === 0) {
       dispatch(fetchAllProducts());
     }
+    fetch("http://localhost:4000/api/ipnguoidung", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("IP logged successfully:", data))
+      .catch((error) => console.error("Error logging IP:", error));
   }, [dispatch, allProducts]);
 
   return (
@@ -71,6 +83,8 @@ function App() {
             <Route path="/online-payment/momo" element={<OnlineMomo />}/>
             <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
             <Route path="/email-verify" element={<EmailVerify />} />
+            <Route path="/infotable" element={<InfoTable />} />
+            <Route path="/testotp" element={<Testotp />} />
           </Route>
           {/* Admin */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -98,6 +112,7 @@ function App() {
               element={<DeliveringOrders />}
             />
             <Route path="/admin/ShippedOrders" element={<ShippedOrders />} />
+            <Route path="/admin/ProcessingOrders" element={<ProcessingOrder />} />
             <Route path="/admin/Vouchers" element={<Vouchers />} />
           </Route>
         </Routes>

@@ -86,13 +86,10 @@ const UserData = () => {
   };
 
   const handleSearch = () => {
-    // Nếu không có từ khóa tìm kiếm, gọi hàm fetchUserData() để lấy lại toàn bộ dữ liệu người dùng
     if (!searchKeyword) {
       fetchUserData();
       return;
     }
-    
-    // Bộ lọc người dùng dựa trên từ khóa tìm kiếm
     const filteredUsers = userData.filter(user =>
       user.name.toLowerCase().includes(searchKeyword.toLowerCase())
     );

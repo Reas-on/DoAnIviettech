@@ -1,6 +1,5 @@
 import { Button, Divider, Form, Input, message, Select } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const ChangeProfile = ({ userInfo, setUserInfo, handleSave }) => {
@@ -134,19 +133,6 @@ const ChangeProfile = ({ userInfo, setUserInfo, handleSave }) => {
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        name="_id"
-                        label="ID"
-                        className="col-6"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input your ID",
-                            },
-                        ]}
-                    >
-                        <Input readOnly />
-                    </Form.Item>
-                    <Form.Item
                         name="name"
                         className="col-6"
                         label="Name"
@@ -163,14 +149,8 @@ const ChangeProfile = ({ userInfo, setUserInfo, handleSave }) => {
                         name="email"
                         className="col-6"
                         label="Email"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input your email",
-                            },
-                        ]}
                     >
-                        <Input />
+                        <Input disabled style={{cursor: 'not-allowed' }}/>
                     </Form.Item>
                     <Form.Item
                         name="phone"

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Switch } from "antd";
-import { MailOutlined, AppstoreOutlined, MinusOutlined } from "@ant-design/icons"; // Removed unused icon
+import { MailOutlined, AppstoreOutlined, MinusOutlined } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
@@ -14,7 +14,6 @@ const Sidebar = () => {
   };
 
   const handleClick = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
 
@@ -24,11 +23,11 @@ const Sidebar = () => {
       onClick={handleClick}
       style={{
         width: 300,
-        height: "100vh",
         borderRight: 0,
         padding: 0,
         fontSize: 18,
         fontWeight: "bold",
+        overflowY: "auto",
       }}
       defaultOpenKeys={["sub1"]}
       selectedKeys={[current]}
@@ -40,10 +39,7 @@ const Sidebar = () => {
       >
         Set Theme
       </Menu.Item>
-      <Menu.Item key="1" icon={<MailOutlined />}>
-        <Link to="/">Home</Link>
-      </Menu.Item>
-      <Menu.Item key="2" icon={<AppstoreOutlined />}>
+      <Menu.Item key="2" icon={<MailOutlined />}>
         <Link to="/admin/DashBoard">Dashboard</Link>
       </Menu.Item>
       <Menu.Item key="3" icon={<AppstoreOutlined />}>
@@ -67,39 +63,35 @@ const Sidebar = () => {
       </SubMenu>
       <SubMenu key="6" icon={<AppstoreOutlined />} title="Order Data">
         <Menu.Item key="6.1">
-          <Link to="/admin/AllOrders">Tất Cả</Link>
+          <Link to="/admin/AllOrders">All Orders</Link>
         </Menu.Item>
-        <SubMenu key="6.2" icon={<AppstoreOutlined />} title="Trạng Thái Đơn Hàng">
-          <Menu.Item key="6.2" icon={<MinusOutlined />}>
-            <Link to="/admin/ConfirmOrders">Chờ Xác Nhận</Link>
+        <SubMenu key="6.2" icon={<AppstoreOutlined />} title="Order Status">
+          <Menu.Item key="6.2.1" icon={<MinusOutlined />}>
+            <Link to="/admin/ConfirmOrders">Pending Confirmation</Link>
           </Menu.Item>
-          <Menu.Item key="6.4" icon={<MinusOutlined />}>
-            <Link to="/admin/CompletedOrders">Đang Xử lý</Link>
+          <Menu.Item key="6.2.2" icon={<MinusOutlined />}>
+            <Link to="/admin/ProcessingOrders">Processing</Link>
           </Menu.Item>
-          <Menu.Item key="6.6" icon={<MinusOutlined />}>
-            <Link to="/admin/CancelOrders">Đã Hủy</Link>
-          </Menu.Item>
-        </SubMenu>
-        <SubMenu
-          key="6.2.1"
-          icon={<AppstoreOutlined />}
-          title="Tình Trạng Giao Hàng"
-        >
-          <Menu.Item key="6.2.2"icon={<MinusOutlined />}>
-            <Link to="/admin/DeliveringOrders">Đang Giao Hàng</Link>
-          </Menu.Item>
-          <Menu.Item key="6.2.3"icon={<MinusOutlined />}>
-            <Link to="/admin/ShippedOrders">Đã Giao Hàng</Link>
-          </Menu.Item>
-          <Menu.Item key="6.2.4"icon={<MinusOutlined />}>
-            <Link to="/admin/CompletedOrders">Đã Hoàn Thành</Link>
+          <Menu.Item key="6.2.3" icon={<MinusOutlined />}>
+            <Link to="/admin/CancelOrders">Cancelled</Link>
           </Menu.Item>
         </SubMenu>
-        <SubMenu key="6.3" icon={<AppstoreOutlined />} title="Thanh Toán"> 
-          <Menu.Item key="6.3" icon={<MinusOutlined />}>
-            <Link to="/admin/PaidOrders">Nhận Hàng</Link>
+        <SubMenu key="6.3" icon={<AppstoreOutlined />} title="Delivery Status">
+          <Menu.Item key="6.3.1" icon={<MinusOutlined />}>
+            <Link to="/admin/DeliveringOrders">Delivering</Link>
           </Menu.Item>
-          <Menu.Item key="6.4" icon={<MinusOutlined />}>
+          <Menu.Item key="6.3.2" icon={<MinusOutlined />}>
+            <Link to="/admin/ShippedOrders">Shipped</Link>
+          </Menu.Item>
+          <Menu.Item key="6.3.3" icon={<MinusOutlined />}>
+            <Link to="/admin/CompletedOrders">Completed</Link>
+          </Menu.Item>
+        </SubMenu>
+        <SubMenu key="6.4" icon={<AppstoreOutlined />} title="Payment Status">
+          <Menu.Item key="6.4.1" icon={<MinusOutlined />}>
+            <Link to="/admin/PaidOrders">Cash on Delivery</Link>
+          </Menu.Item>
+          <Menu.Item key="6.4.2" icon={<MinusOutlined />}>
             <Link to="/admin/PaidVNPAYOrders">VN PAY</Link>
           </Menu.Item>
         </SubMenu>

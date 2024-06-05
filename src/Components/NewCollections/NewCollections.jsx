@@ -10,7 +10,8 @@ const NewCollections = () => {
     const fetchNewCollections = async () => {
       try {
         const data = await getNewCollections();
-        setNewCollection(data);
+        const filteredData = data.filter(item => item.available !== false);
+        setNewCollection(filteredData);
       } catch (error) {
         console.error("Error fetching new collections:", error);
       }

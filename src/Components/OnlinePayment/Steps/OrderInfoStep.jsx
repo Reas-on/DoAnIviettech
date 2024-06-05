@@ -17,7 +17,6 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
   const userAddress = useSelector((state) => state.shop.user?.address);
   const userPhone = useSelector((state) => state.shop.user?.phone);
   const userEmail = useSelector((state) => state.shop.user?.email);
-  const userId = useSelector((state) => state.shop.user?.userId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +35,8 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
       address: userAddress || "",
       phoneNumber: userPhone || "",
       email: userEmail || "",
-      userId: userId || "",
     });
-  }, [userName, userAddress, userPhone, userEmail, userId]);
+  }, [userName, userAddress, userPhone, userEmail]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,6 +45,7 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
 
   const handleNext = () => {
     setRecipientInfo(formValues);
+    localStorage.setItem("OrderData", JSON.stringify(formValues));
     onNext();
   };
 
@@ -78,6 +77,7 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
             name="fullName"
             onChange={handleInputChange}
             value={formValues.fullName}
+            required
           />
         </Form.Item>
         <Form.Item

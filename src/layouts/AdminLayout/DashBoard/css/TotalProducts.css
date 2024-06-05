@@ -1,0 +1,24 @@
+.total-products-card {
+    background: linear-gradient(135deg, #882, #ffffff);
+    color: white;
+    border-radius: 8px;
+  }
+  
+  .total-products-icon {
+    font-size: 36px;
+    color: white;
+  }
+  
+  .total-products-title {
+    margin: 0;
+    font-size: 24px;
+    color: white;
+  }
+  
+  .total-products-number {
+    margin: 0;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+  }
+  

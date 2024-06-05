@@ -104,7 +104,7 @@ const ShippedOrders = () => {
 
   return (
     <div>
-      <h2>Cancelled Orders</h2>
+      <h2>Shipped Orders</h2>
       <Table
         dataSource={orderData}
         columns={columns}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, message, Popconfirm, Modal, Form, Input, InputNumber, DatePicker } from 'antd';
-import axios from 'axios';
 import moment from 'moment';
+import VouchersApi from './../../../Api/admin/VouchersApi'; 
 
 const Vouchers = () => {
   const [vouchers, setVouchers] = useState([]);
@@ -14,20 +14,20 @@ const Vouchers = () => {
 
   const fetchVouchers = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/vouchers');
-      setVouchers(response.data);
+      const data = await VouchersApi.getAllVouchers();
+      setVouchers(data);
     } catch (error) {
-      message.error('Failed to fetch vouchers');
+      message.error(error.message);
     }
   };
 
   const deleteVoucher = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/vouchers/${id}`);
+      await VouchersApi.deleteVoucher(id);
       setVouchers(vouchers.filter(voucher => voucher._id !== id));
       message.success('Voucher deleted successfully');
     } catch (error) {
-      message.error('Failed to delete voucher');
+      message.error(error.message);
     }
   };
 
@@ -46,13 +46,13 @@ const Vouchers = () => {
         ...values,
         voucherExpiry: values.voucherExpiry.toISOString()
       };
-      const response = await axios.post('http://localhost:4000/api/vouchers', newVoucher);
-      setVouchers([...vouchers, response.data.voucher]);
+      const data = await VouchersApi.createVoucher(newVoucher);
+      setVouchers([...vouchers, data.voucher]);
       message.success('Voucher created successfully');
       form.resetFields();
       setIsModalVisible(false);
     } catch (error) {
-      message.error('Failed to create voucher');
+      message.error(error.message);
     }
   };
 
@@ -149,7 +149,7 @@ const Vouchers = () => {
           <Form.Item
             name="discountPercentage"
             label="Discount Percentage"
-            rules={[{ required: true, message: 'Please input the discount percentage!' }]}
+            rules={[{ required: false, message: 'Please input the discount percentage!' }]}
           >
             <InputNumber style={{ width: '100%' }} />
           </Form.Item>
