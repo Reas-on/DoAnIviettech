@@ -11,7 +11,10 @@ $item-price-old-weight: 600;
 
 .item {
   // width: $item-width;
-
+  .out-of-stock {
+    color: red;
+  }
+  
   p {
     margin: $item-p-margin;
     height: $item-p-height;

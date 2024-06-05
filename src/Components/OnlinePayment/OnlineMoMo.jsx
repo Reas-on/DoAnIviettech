@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { message } from "antd";
-import { checkMomoPayment, createMomoPayment } from "../../Api/MoMoApi"; // Chỉnh sửa import để khớp với tên hàm trong MoMoApi.jsx
+import { checkMomoPayment, createMomoPayment } from "../../Api/MoMoApi";
 import { useSelector } from "react-redux";
 import {
   selectTotalCartAmount,
@@ -24,18 +24,14 @@ const OnlineMoMo = () => {
     const resultCode = params.get("resultCode");
     if (resultCode === "0") {
       try {
-        const orderId = params.get("orderId"); 
+        const orderId = params.get("orderId");
         const transactionData = await checkMomoPayment({ orderId });
-        if (transactionData.resultCode === 0) { 
+        if (transactionData.resultCode === 0) {
           setTransactionInfo({
             transactionId: orderId,
             amount: transactionData.amount,
-            timestamp: new Date(transactionData.responseTime).toLocaleString(), 
+            timestamp: new Date(transactionData.responseTime).toLocaleString(),
           });
-          const savedOrderInfo = JSON.parse(localStorage.getItem("orderInfo"));
-          const savedRecipientInfo = savedOrderInfo?.recipientInfo;
-          
-          setRecipientInfo(savedRecipientInfo);
           setCurrentStep(3);
         } else {
           message.error("Giao dịch không thành công");

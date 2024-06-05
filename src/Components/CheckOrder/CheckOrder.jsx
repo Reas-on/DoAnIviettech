@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Input, Button, Card, message } from 'antd';
+import { Input, Button, Card, message as antdMessage } from 'antd';
 import moment from 'moment';
-import { fetchOrderData } from '../../Api/CheckOrderApi';
+import OrderDetailApi from '../../Api/OrderDetailApi';
 
 const CheckOrder = () => {
   const [orderNumber, setOrderNumber] = useState('');
@@ -11,11 +11,11 @@ const CheckOrder = () => {
 
   const handleCheckOrder = async () => {
     try {
-      const data = await fetchOrderData(orderNumber);
+      const data = await OrderDetailApi.getOrderDetail(orderNumber);
       setOrderData(data);
       setIsPhoneVerified(false);
     } catch (error) {
-      message.error('Order not found');
+      antdMessage.error('Order not found');
       setOrderData(null);
     }
   };
@@ -24,7 +24,18 @@ const CheckOrder = () => {
     if (orderData && orderData.phoneNumber === phoneNumber) {
       setIsPhoneVerified(true);
     } else {
-      message.error('Incorrect phone number');
+      antdMessage.error('Incorrect phone number');
+    }
+  };
+
+  const handleCancelOrder = async () => {
+    try {
+      await OrderDetailApi.updateOrder(orderData._id, 'cancelled', 'Order was cancelled');
+      await OrderDetailApi.addLog(orderData._id, 'Order was cancelled');
+      antdMessage.success('Order cancelled successfully');
+      setOrderData({ ...orderData, status: 'cancelled' });
+    } catch (error) {
+      antdMessage.error('Failed to cancel order');
     }
   };
 
@@ -47,6 +58,18 @@ const CheckOrder = () => {
             <strong>Order Number:</strong> {orderData.orderNumber}
           </p>
           <p>
+            <strong>Receiver Name:</strong> {orderData.receiverName}
+          </p>
+          <p>
+            <strong>Delivery Address:</strong> {orderData.deliveryAddress}
+          </p>
+          <p>
+            <strong>Phone Number:</strong> {orderData.phoneNumber}
+          </p>
+          <p>
+            <strong>Email:</strong> {orderData.email}
+          </p>
+          <p>
             <strong>Total Bill:</strong> {new Intl.NumberFormat('en-US').format(orderData.totalBill)} VND
           </p>
           <p>
@@ -61,7 +84,8 @@ const CheckOrder = () => {
           <ul>
             {orderData.orderedProducts.map((product) => (
               <li key={product._id}>
-                {product.name} - {product.quantity} pcs
+                <img src={product.image} alt={product.name} style={{ width: '50px', marginRight: '10px' }} />
+                {product.name} - {product.quantity} pcs - {new Intl.NumberFormat('en-US').format(product.total)} VND
               </li>
             ))}
           </ul>
@@ -91,20 +115,13 @@ const CheckOrder = () => {
           {isPhoneVerified && (
             <>
               <p>
-                <strong>Receiver Name:</strong> {orderData.receiverName}
-              </p>
-              <p>
-                <strong>Delivery Address:</strong> {orderData.deliveryAddress}
-              </p>
-              <p>
-                <strong>Phone Number:</strong> {orderData.phoneNumber}
-              </p>
-              <p>
-                <strong>Email:</strong> {orderData.email}
-              </p>
-              <p>
                 <strong>Note:</strong> {orderData.note}
               </p>
+              {(orderData.status === 'pending' || orderData.status === 'processing') && (
+                <Button type='primary' onClick={handleCancelOrder}>
+                  Cancel Order
+                </Button>
+              )}
             </>
           )}
         </Card>

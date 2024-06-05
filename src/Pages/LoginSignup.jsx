@@ -8,6 +8,7 @@ const LoginSignup = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    confirmPassword: "",
     email: "",
   });
   const [loading, setLoading] = useState(false);
@@ -44,12 +45,16 @@ const LoginSignup = () => {
       message.error('You must agree to the Terms of Service and Privacy Policy to sign up.');
       return;
     }
+    if (formData.password !== formData.confirmPassword) {
+      message.error('Passwords do not match.');
+      return;
+    }
     setLoading(true);
     try {
       const responseData = await signupUser(formData);
       if (responseData.success) {
         setMessageText("Vui Lòng Xác Minh Email Để Login");
-        message.success("Vui Lòng Xác Minh Email Để Login");
+        message.success("Vui Lòng Xác Minh Email Để Login ");
         setTimeout(() => {
           window.location.replace("/login");
         }, 5000);
@@ -92,11 +97,20 @@ const LoginSignup = () => {
             type="password"
             placeholder="Password"
           />
+          {state === "Sign up" && (
+            <input
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={changeHandler}
+              type="password"
+              placeholder="Confirm Password"
+            />
+          )}
         </div>
         <Button 
           type="primary" 
           loading={loading} 
-          style={{ width: "100%" , marginTop: "20px" , height: "50px" , fontSize: "16px" , textTransform: "uppercase" }}
+          style={{ width: "100%", marginTop: "20px", height: "50px", fontSize: "16px", textTransform: "uppercase" }}
           onClick={() => (state === "Sign up" ? handleSignup() : handleLogin())}
         >
           Continue

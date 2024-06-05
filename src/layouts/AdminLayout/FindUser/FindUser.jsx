@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Input, Modal, message } from "antd";
-
+import findUserApi from "../../../Api/admin/findUserApi"; 
 const FindUser = () => {
   const [visible, setVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,27 +12,12 @@ const FindUser = () => {
 
   const handleSearch = async () => {
     try {
-      // Gửi yêu cầu tìm kiếm lên máy chủ
-      const response = await fetch(
-        `http://localhost:4000/users?query=${searchQuery}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.length > 0) {
-          setSearchResult(data);
-          setVisible(true);
-        } else {
-          message.info("No user found.");
-        }
+      const data = await findUserApi.searchUser(searchQuery);
+      if (data.length > 0) {
+        setSearchResult(data);
+        setVisible(true);
       } else {
-        throw new Error("Failed to search user");
+        message.info("No user found.");
       }
     } catch (error) {
       console.error("Error searching for user:", error);
@@ -41,6 +26,7 @@ const FindUser = () => {
       );
     }
   };
+
 
   return (
     <>

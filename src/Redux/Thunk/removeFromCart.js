@@ -23,7 +23,7 @@ export const removeFromCart = createAsyncThunk(
         }
 
         await dispatch(fetchCartItems());
-        return { productId, size };
+        return { productId, size, isGuest: false };
       } else {
         let storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
         const existingItemIndex = storedItems.findIndex(
@@ -39,7 +39,7 @@ export const removeFromCart = createAsyncThunk(
         }
 
         localStorage.setItem("cartItems", JSON.stringify(storedItems));
-        return { productId, size };
+        return { productId, size, isGuest: true };
       }
     } catch (error) {
       return rejectWithValue(error.message);

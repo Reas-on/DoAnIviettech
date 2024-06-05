@@ -95,6 +95,8 @@ const AddUser = () => {
         address,
         isAdmin: formData.isAdmin === "true" ? true : false,
         cartData: [],
+        isEmailVerified: true,
+        emailVerificationToken: null,
       };
       dispatch(addUser(userData));
       message.success("Registration successful!");

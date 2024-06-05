@@ -32,10 +32,6 @@ const OnlineZaloPay = () => {
             amount: transactionData.amount,
             timestamp: new Date(transactionData.server_time).toLocaleString(),
           });
-          const savedOrderInfo = JSON.parse(localStorage.getItem("orderInfo"));
-          const savedRecipientInfo = savedOrderInfo?.recipientInfo;
-          
-          setRecipientInfo(savedRecipientInfo);
           setCurrentStep(3);
         } else {
           message.error("Giao dịch không thành công");

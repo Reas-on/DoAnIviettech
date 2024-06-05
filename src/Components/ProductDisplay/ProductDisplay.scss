@@ -123,6 +123,19 @@
       }
     }
   }
+  .productdisplay-right-stars {
+    display: flex;
+    align-items: center;
+  
+    .ant-rate {
+      margin-right: 8px; 
+    }
+  
+    .rating-text {
+      margin: 0; 
+    }
+  }
+  
 
   @media (max-width: 768px) {
     flex-direction: column;

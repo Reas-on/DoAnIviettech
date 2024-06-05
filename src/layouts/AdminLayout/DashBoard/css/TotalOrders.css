@@ -1,0 +1,24 @@
+.total-orders-card {
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+    color: white;
+    border-radius: 8px;
+  }
+  
+  .total-orders-icon {
+    font-size: 36px;
+    color: white;
+  }
+  
+  .total-orders-title {
+    margin: 0;
+    font-size: 24px;
+    color: white;
+  }
+  
+  .total-orders-number {
+    margin: 0;
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+  }
+  

@@ -30,9 +30,9 @@ const AdminLayout = () => {
   }
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", height: "100vh", width: "100vw" }}>
       <Slidebar />
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, overflowY: "auto" }}>
         <Navbar />
         <div style={{ padding: '20px' }}>
           <Outlet />

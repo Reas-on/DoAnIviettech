@@ -62,20 +62,25 @@ const shopSlice = createSlice({
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.status = "succeeded";
-        const { productId, size, quantity } = action.payload;
-        const itemToRemove = state.cartItems.find(
-          (item) => item.productId === productId && item.size === size && item.quantity === quantity
-        );
-        if (itemToRemove) {
-          if (itemToRemove.quantity > 1) {
-            itemToRemove.quantity -= 1;
-          } else {
-            state.cartItems = state.cartItems.filter(
-              (item) => !(item.productId === productId && item.size === size && item.quantity === 1)
-            );
+        const { productId, size, quantity , isGuest } = action.payload;
+        if (isGuest) {
+          let storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+          state.cartItems = storedItems;
+        } else {
+          const itemToRemove = state.cartItems.find(
+            (item) => item.productId === productId && item.size === size && item.quantity === quantity
+          );
+          if (itemToRemove) {
+            if (itemToRemove.quantity > 1) {
+              itemToRemove.quantity -= 1;
+            } else {
+              state.cartItems = state.cartItems.filter(
+                (item) => !(item.productId === productId && item.size === size)
+              );
+            }
           }
         }
-      })          
+      })            
       .addCase(loginUser.fulfilled, (state) => { 
         state.status = "succeeded";
         state.isLoggedIn = true; 
