@@ -92,7 +92,10 @@ const Sidebar = () => {
             <Link to="/admin/PaidOrders">Cash on Delivery</Link>
           </Menu.Item>
           <Menu.Item key="6.4.2" icon={<MinusOutlined />}>
-            <Link to="/admin/PaidVNPAYOrders">VN PAY</Link>
+            <Link to="/admin/PaidVNPAYOrders">Zalo PAY</Link>
+          </Menu.Item>
+          <Menu.Item key="6.4.3" icon={<MinusOutlined />}>
+            <Link to="/admin/PaidMoMoOrders">MoMo</Link>
           </Menu.Item>
         </SubMenu>
       </SubMenu>

@@ -34,15 +34,15 @@ const OnlineZaloPay = () => {
           });
           setCurrentStep(3);
         } else {
-          message.error("Giao dịch không thành công");
+          message.error("Transaction failed.");
         }
       } catch (error) {
         console.error("Error in handleZaloPayCallback:", error);
       }
     } else if (status === "-49") {
-      message.error("Thanh toán đã bị hủy");
+      message.error("Payment canceled");
     } else if (status === "-217") {
-      message.error("[UserAndSystem] Thanh toán thất bại ");
+      message.error("[UserAndSystem] Transaction failed.");
     }
   }, []);
 

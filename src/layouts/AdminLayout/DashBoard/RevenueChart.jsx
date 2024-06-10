@@ -54,7 +54,9 @@ const RevenueChart = () => {
       groupedData[key].total += order.totalBill;
       groupedData[key].productsSold += order.orderedProducts.reduce((acc, product) => acc + product.quantity, 0);
     });
-    return Object.entries(groupedData).map(([date, { total, productsSold }]) => ({ date, total, productsSold }));
+    return Object.entries(groupedData)
+      .map(([date, { total, productsSold }]) => ({ date, total, productsSold }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date)); // Ensure data is sorted by date
   };
 
   const handleViewModeChange = value => {

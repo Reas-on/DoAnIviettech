@@ -43,6 +43,9 @@ import { selectAllProducts } from "./Redux/ShopSlice";
 import InfoTable from "./Components/InfoTable/InfoTable";
 import Testotp from "./Components/testotp/testotp";
 import ProcessingOrder from "./layouts/AdminLayout/OrderData/ProcessingOrder";
+import PaidOrders from "./layouts/AdminLayout/PaymentStatus/PaidOrders";
+import PaidVNPAYOrders from "./layouts/AdminLayout/PaymentStatus/PaidVNPAYOrders";
+import PaidMoMoOrders from "./layouts/AdminLayout/PaymentStatus/PaidMoMoOrders";
 
 function App() {
   const dispatch = useDispatch();
@@ -114,6 +117,9 @@ function App() {
             <Route path="/admin/ShippedOrders" element={<ShippedOrders />} />
             <Route path="/admin/ProcessingOrders" element={<ProcessingOrder />} />
             <Route path="/admin/Vouchers" element={<Vouchers />} />
+            <Route path="/admin/PaidOrders" element={<PaidOrders />} />
+            <Route path="/admin/PaidVNPAYOrders" element={<PaidVNPAYOrders />} />
+            <Route path="/admin/PaidMoMoOrders" element={<PaidMoMoOrders />} />
           </Route>
         </Routes>
       </BrowserRouter>
