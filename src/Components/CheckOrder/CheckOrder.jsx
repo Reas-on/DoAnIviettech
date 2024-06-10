@@ -64,9 +64,6 @@ const CheckOrder = () => {
             <strong>Delivery Address:</strong> {orderData.deliveryAddress}
           </p>
           <p>
-            <strong>Phone Number:</strong> {orderData.phoneNumber}
-          </p>
-          <p>
             <strong>Email:</strong> {orderData.email}
           </p>
           <p>

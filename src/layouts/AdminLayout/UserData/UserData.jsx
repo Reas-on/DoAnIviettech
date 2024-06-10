@@ -95,6 +95,11 @@ const UserData = () => {
     );
     setUserData(filteredUsers);
   };
+
+  const shortenPassword = (password) => {
+    if (password.length <= 6) return password;
+    return `${password.substring(0, 6)}...`;
+  };
   
 
   const columns = [
@@ -147,18 +152,19 @@ const UserData = () => {
       )
     },
     {
-      title: 'Mật khẩu',
-      dataIndex: 'password',
-      key: 'password',
-      render: (text, record) => (
-        editingUserId === record._id ? (
-          <input
-            value={editedUser ? editedUser.password : ''}
-            onChange={(e) => setEditedUser({ ...editedUser, password: e.target.value })}
-          />
-        ) : text
-      )
-    },
+  title: 'Mật khẩu',
+  dataIndex: 'password',
+  key: 'password',
+  render: (text, record) => (
+    editingUserId === record._id ? (
+      <input
+        value={editedUser ? editedUser.password : ''}
+        onChange={(e) => setEditedUser({ ...editedUser, password: e.target.value })}
+      />
+    ) : shortenPassword(text)
+  )
+}
+,
     {
       title: 'Địa chỉ',
       dataIndex: 'address',
