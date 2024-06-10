@@ -27,7 +27,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
       );
       if (response.data.length > 0) {
         setOrder(response.data[0]);
-        message.info("Đơn hàng đã được xử lí");
+        message.info("Order already exists, please check your order history");
       } else {
         const orderedProducts = cartItems.map((cartItem) => {
           const product = allProducts.find((p) => p.id === cartItem.productId);
@@ -62,7 +62,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
           formData
         );
         console.log("OrderData:", postResponse.data);
-        message.success("Đơn hàng đã được xử lý thành công");
+        message.success("Order created successfully");
         setOrder(postResponse.data);
         setOrderSent(true);
         await resetCart();
@@ -70,7 +70,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
       }
     } catch (error) {
       console.error("Error checking or posting order data:", error);
-      message.error("Có lỗi xảy ra khi xử lý đơn hàng");
+      message.error("Error checking or posting order data");
     }
   }, [
     transactionInfo,
@@ -84,6 +84,10 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
     handleOrder();
   }, [handleOrder]);
 
+  const formatAmount = (amount) => {
+    return amount.toLocaleString('vi-VN');
+  };
+  
   const resetCart = async () => {
     try {
       const authToken = localStorage.getItem("auth-token");
@@ -103,7 +107,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
   return (
     <div>
       <Card
-        title="Thông tin thanh toán"
+        title="Payment Result"
         bordered={true}
         style={{
           maxWidth: "500px",
@@ -112,40 +116,40 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
         }}
       >
         <p>
-          <strong>Mã giao dịch:</strong> {transactionInfo.transactionId}
+          <strong>Transaction ID:</strong> {transactionInfo.transactionId}
         </p>
         <p>
-          <strong>Số tiền đã thanh toán:</strong> {transactionInfo.amount}
+          <strong>Total amount:</strong> {formatAmount(transactionInfo.amount)} VND
         </p>
         <p>
-          <strong>Thời gian:</strong> {transactionInfo.timestamp}
+          <strong>Timestamp:</strong> {transactionInfo.timestamp}
         </p>
         {order ? (
           <>
             <p>
-              <strong>Mã đơn hàng:</strong> {order.orderNumber}
+              <strong>Order Number:</strong> {order.orderNumber}
             </p>
             <p>
-              <strong>Tên người nhận:</strong> {order.receiverName}
+              <strong>Recever Name:</strong> {order.receiverName}
             </p>
             <p>
-              <strong>Địa chỉ giao hàng:</strong> {order.deliveryAddress}
+              <strong>Delivery Address:</strong> {order.deliveryAddress}
             </p>
             <p>
-              <strong>Số điện thoại:</strong> {order.phoneNumber}
+              <strong>Phone Number:</strong> {order.phoneNumber}
             </p>
             <p>
               <strong>Email:</strong> {order.email}
             </p>
             <p>
-              <strong>Trạng thái:</strong> {order.status}
+              <strong>Status:</strong> {order.status}
             </p>
             <p>
               <strong>Voucher:</strong>{" "}
-              {order.Voucher ? order.Voucher : "Không có"}
+              {order.Voucher ? order.Voucher : "None"}
             </p>
             <p>
-              <strong>Sản phẩm đã đặt:</strong>
+              <strong>Ordered Products:</strong>
             </p>
             <ul>
               {order.orderedProducts.map((product) => (
@@ -159,19 +163,19 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
                       marginRight: "10px",
                     }}
                   />
-                  {product.name} - Số lượng: {product.quantity} - Tổng:{" "}
-                  {product.total} VND
+                  {product.name} - Quantity: {product.quantity} - Total:{" "}
+                  {formatAmount(product.total)} VND
                 </li>
               ))}
             </ul>
           </>
         ) : (
           <p>
-            <strong>Thanh toán thành công!</strong>
+            <strong>Loading !</strong>
           </p>
         )}
         <Button type="primary" style={{ marginTop: 20, width: "100%" }}>
-          Trang Chủ
+          Home
         </Button>
       </Card>
     </div>

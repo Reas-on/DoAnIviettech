@@ -1,30 +1,45 @@
 import { Button, Form, Input, message } from "antd";
 
-const ChangePassword = ({ userInfo, handleSave }) => {
+const ChangePassword = ({ handleSave }) => {
     const onFinish = async (values) => {
-        if (values.password !== values.confirmNewPassword) {
+        if (values.newPassword !== values.confirmNewPassword) {
             message.error("New password and confirm new password do not match");
             return;
         }
-        if (values.currentPassword === values.password) {
-            message.error(
-                "New password cannot be the same as current password"
-            );
-            return;
-        }
-        if (userInfo?.password !== values.currentPassword) {
-            message.error("Current password is incorrect");
+        if (values.currentPassword === values.newPassword) {
+            message.error("New password cannot be the same as current password");
             return;
         }
 
-        // Save the updated password
+        try {
+            const response = await fetch('http://localhost:4000/api/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'auth-token': localStorage.getItem('auth-token'),
+                },
+                body: JSON.stringify({
+                    currentPassword: values.currentPassword,
+                    newPassword: values.newPassword,
+                }),
+            });
 
-        handleSave({password: values.password });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update password');
+            }
+
+            message.success('Password updated successfully');
+            handleSave();
+        } catch (error) {
+            message.error(error.message);
+        }
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
     };
+
     return (
         <>
             <h2>Change Password</h2>
@@ -54,7 +69,7 @@ const ChangePassword = ({ userInfo, handleSave }) => {
                 <Form.Item
                     className="col-6"
                     label="New Password"
-                    name="password"
+                    name="newPassword"
                     rules={[
                         {
                             required: true,

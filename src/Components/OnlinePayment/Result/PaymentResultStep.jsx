@@ -57,7 +57,7 @@ const PaymentResultStep = () => {
       orderSentRef.current = true;
       await resetCart();
       dispatch(fetchCartItems());
-      message.success("Đơn hàng đã được xử lý thành công");
+      message.success("Order successfully created");
     } catch (error) {
       console.error("Error posting order data:", error);
       message.error("Có lỗi xảy ra khi xử lý đơn hàng");
@@ -87,7 +87,7 @@ const PaymentResultStep = () => {
   return (
     <div>
       <Card
-        title="Thông tin thanh toán"
+        title="Order Details"
         bordered={true}
         style={{
           maxWidth: "500px",
@@ -98,27 +98,27 @@ const PaymentResultStep = () => {
         <div className="ant-card-body">
           {order ? (
             <>
-              <p><strong>Mã đơn hàng: {order.orderNumber}</strong></p>
-              <p><strong>Tên nhận: {order.receiverName}</strong></p>
-              <p><strong>Địa chỉ: {order.deliveryAddress}</strong></p>
-              <p><strong>SDT: {order.phoneNumber}</strong></p>
+              <p><strong>Order Number: {order.orderNumber}</strong></p>
+              <p><strong>Receiver Name: {order.receiverName}</strong></p>
+              <p><strong>Delivery Address: {order.deliveryAddress}</strong></p>
+              <p><strong>Phone Number: {order.phoneNumber}</strong></p>
               <p><strong>Email: {order.email}</strong></p>
-              <p><strong>Tổng tiền: {formatAmount(order.totalBill)} VND</strong></p>
-              <p><strong>Trạng thái: {order.status}</strong></p>
+              <p><strong>Total: {formatAmount(order.totalBill)} VND</strong></p>
+              <p><strong>Status: {order.status}</strong></p>
               {order.orderedProducts && order.orderedProducts.length > 0 ? (
                 <div>
-                  <p><strong>Sản phẩm đã đặt:</strong></p>
+                  <p><strong>Ordered Products:</strong></p>
                   <ul>
                     {order.orderedProducts.map((product) => (
                       <li key={product._id}>
                         <img src={product.image} alt={product.name} style={{ width: '50px', height: '50px', marginRight: '10px' }} />
-                        {product.name} - Số lượng: {product.quantity} - Tổng: {formatAmount(product.total)} VND
+                        {product.name} - Quantity: {product.quantity} - Total: {formatAmount(product.total)} VND
                       </li>
                     ))}
                   </ul>
                 </div>
               ) : (
-                <p>Không có sản phẩm nào trong đơn hàng.</p>
+                <p>Không có sản phẩm trong đơn hàng.</p>
               )}
             </>
           ) : (
