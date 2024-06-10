@@ -110,8 +110,8 @@ const RecipientInfoStepZalo = ({ onPrev, createZaloPayment, totalCartAmount, car
         }}
         onFinish={handlePayment}
       >
-        <Descriptions title="Thông Tin Đơn Hàng" bordered>
-          <Descriptions.Item label="Tổng tiền" span={3}>
+        <Descriptions title="Order details" bordered>
+          <Descriptions.Item label="Total amount" span={3}>
             {(selectedVoucher
               ? totalCartAmount - totalAmountDiscount
               : totalCartAmount || 0
@@ -119,16 +119,16 @@ const RecipientInfoStepZalo = ({ onPrev, createZaloPayment, totalCartAmount, car
             VND
           </Descriptions.Item>
           {selectedVoucherInfo && (
-            <Descriptions.Item label="Giảm giá từ voucher" span={3}>
+            <Descriptions.Item label="Discount" span={3}>
               {totalAmountDiscount.toLocaleString("en-US")} VND
             </Descriptions.Item>
           )}
-          <Descriptions.Item label="Số Lượng" span={3}>
-            {cartItems.length} Sản Phẩm
+          <Descriptions.Item label="Number of items" span={3}>
+            {cartItems.length} items
           </Descriptions.Item>
           <Descriptions.Item label="Voucher" span={3}>
             <Select
-              placeholder="Chọn voucher"
+              placeholder="Select a voucher"
               style={{ width: "100%" }}
               onChange={handleVoucherChange}
               value={selectedVoucher}
@@ -137,31 +137,31 @@ const RecipientInfoStepZalo = ({ onPrev, createZaloPayment, totalCartAmount, car
             </Select>
           </Descriptions.Item>
           {selectedVoucherInfo && (
-            <Descriptions.Item label="Thông tin Voucher" span={3}>
+            <Descriptions.Item label="Voucher Info" span={3}>
               <div>
                 <p>
-                  <strong>Tên Voucher:</strong>{" "}
+                  <strong>Voucher name:</strong>{" "}
                   {selectedVoucherInfo.voucherName}
                 </p>
                 <p>
-                  <strong>Mã Voucher:</strong> {selectedVoucherInfo.voucherCode}
+                  <strong>Voucher code:</strong> {selectedVoucherInfo.voucherCode}
                 </p>
                 <p>
-                  <strong>Đơn hàng tối thiểu:</strong>{" "}
+                  <strong>Minimum order size:</strong>{" "}
                   {(selectedVoucherInfo.minimumOrderValue || 0).toLocaleString(
                     "en-US"
                   )}{" "}
                   VND
                 </p>
                 <p>
-                  <strong>Giảm tối đa:</strong>{" "}
+                  <strong>Maximum discount:</strong>{" "}
                   {(selectedVoucherInfo.maximumDiscount || 0).toLocaleString(
                     "en-US"
                   )}{" "}
                   VND
                 </p>
                 <p>
-                  <strong>Hạn sử dụng:</strong>{" "}
+                  <strong>Voucher expiry:</strong>{" "}
                   {selectedVoucherInfo.voucherExpiry}
                 </p>
               </div>
@@ -184,11 +184,11 @@ const RecipientInfoStepZalo = ({ onPrev, createZaloPayment, totalCartAmount, car
                     />
                   }
                   title={product?.name || "Unknown"}
-                  description={`Số lượng: ${item.quantity} Size: ${
+                  description={`Quantity: ${item.quantity} Size: ${
                     item.size
-                  } - Giá: ${(product?.new_price || 0).toLocaleString(
+                  } - Price: ${(product?.new_price || 0).toLocaleString(
                     "en-US"
-                  )} VND  Tổng giá: ${(
+                  )} VND  Total: ${(
                     (product?.new_price || 0) * item.quantity
                   ).toLocaleString("en-US")} VND`}
                 />
@@ -198,10 +198,10 @@ const RecipientInfoStepZalo = ({ onPrev, createZaloPayment, totalCartAmount, car
         />
         <Form.Item>
           <Button onClick={onPrev} style={{ marginRight: "10px" }}>
-            Quay Lại
+            Back
           </Button>
           <Button type="primary" htmlType="submit">
-            Thanh Toán
+            Continue
           </Button>
         </Form.Item>
       </Form>

@@ -21,7 +21,25 @@ const LoginSignup = () => {
     });
   };
 
+  const validateForm = () => {
+    if (!formData.email || !formData.password) {
+      message.error("Email and password are required");
+      return false;
+    }
+    if (state === "Sign up" && !formData.username) {
+      message.error("Username is required");
+      return false;
+    }
+    if (state === "Sign up" && formData.password !== formData.confirmPassword) {
+      message.error("Passwords do not match");
+      return false;
+    }
+    return true;
+  };
+
   const handleLogin = async () => {
+    if (!validateForm()) return;
+
     setLoading(true);
     try {
       const responseData = await loginUser(formData);
@@ -40,21 +58,20 @@ const LoginSignup = () => {
   };
 
   const handleSignup = async () => {
+    if (!validateForm()) return;
+
     const checkbox = document.querySelector('.loginsignup-agree input[type="checkbox"]');
     if (!checkbox.checked) {
       message.error('You must agree to the Terms of Service and Privacy Policy to sign up.');
       return;
     }
-    if (formData.password !== formData.confirmPassword) {
-      message.error('Passwords do not match.');
-      return;
-    }
+
     setLoading(true);
     try {
       const responseData = await signupUser(formData);
       if (responseData.success) {
-        setMessageText("Vui Lòng Xác Minh Email Để Login");
-        message.success("Vui Lòng Xác Minh Email Để Login ");
+        setMessageText("Please verify your email to log in");
+        message.success("Please verify your email to log in");
         setTimeout(() => {
           window.location.replace("/login");
         }, 5000);

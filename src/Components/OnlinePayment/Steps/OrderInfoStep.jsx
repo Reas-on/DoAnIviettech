@@ -67,11 +67,11 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
           marginTop: "20px",
         }}
       >
-        <h2>Thông tin người nhận</h2>
+        <h2>Recipient details</h2>
         <Form.Item
-          label="Họ và tên"
+          label="Full Name"
           name="fullName"
-          rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
+          rules={[{ required: true, message: "Please enter your full name!" }]}
         >
           <Input
             name="fullName"
@@ -81,9 +81,9 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
           />
         </Form.Item>
         <Form.Item
-          label="Địa chỉ"
+          label="Address"
           name="address"
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
+          rules={[{ required: true, message: "Please enter your address!" }]}
         >
           <Input
             name="address"
@@ -92,9 +92,9 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
           />
         </Form.Item>
         <Form.Item
-          label="Số Điện Thoại"
+          label="Phone Number"
           name="phoneNumber"
-          rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}
+          rules={[{ required: true, message: "Please enter your phone number!" }]}
         >
           <Input
             name="phoneNumber"
@@ -109,7 +109,7 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
             {
               type: "email",
               required: true,
-              message: "Vui lòng nhập địa chỉ email hợp lệ!",
+              message: "Please enter a valid email!",
             },
           ]}
         >
@@ -125,7 +125,7 @@ const OrderInfoStep = ({ onNext, setRecipientInfo }) => {
             type="primary"
             style={{ width: "60%", margin: "auto", display: "block" }}
           >
-            Tiếp Tục
+            Next
           </Button>
         </Form.Item>
       </Form>

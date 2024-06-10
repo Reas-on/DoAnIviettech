@@ -25,12 +25,12 @@ const RecipientInfoStep = ({ onPrev,onNext, totalCartAmount, cartItems, allProdu
         }}
         onFinish={handlePayment}
       >
-        <Descriptions title="Thông Tin Đơn Hàng" bordered>
-          <Descriptions.Item label="Tổng tiền" span={3}>
+        <Descriptions title="Order details" bordered>
+          <Descriptions.Item label="Total amount" span={3}>
             {(totalCartAmount || 0).toLocaleString("en-US")} VND
           </Descriptions.Item>
-          <Descriptions.Item label="Số Lượng" span={3}>
-            {cartItems && cartItems.length} Sản Phẩm
+          <Descriptions.Item label="Number of items" span={3}>
+            {cartItems && cartItems.length} items
           </Descriptions.Item>
         </Descriptions>
         {cartItems && (
@@ -50,11 +50,11 @@ const RecipientInfoStep = ({ onPrev,onNext, totalCartAmount, cartItems, allProdu
                       />
                     }
                     title={product?.name || "Unknown"}
-                    description={`Số lượng: ${item.quantity} Size: ${
+                    description={`Quantity: ${item.quantity} Size: ${
                       item.size
-                    } - Giá: ${(product?.new_price || 0).toLocaleString(
+                    } - Price: ${(product?.new_price || 0).toLocaleString(
                       "en-US"
-                    )} VND  Tổng giá: ${(
+                    )} VND  Total: ${(
                       (product?.new_price || 0) * item.quantity
                     ).toLocaleString("en-US")} VND`}
                   />
@@ -65,10 +65,10 @@ const RecipientInfoStep = ({ onPrev,onNext, totalCartAmount, cartItems, allProdu
         )}
         <Form.Item>
           <Button onClick={onPrev} style={{ marginRight: "10px" }}>
-            Quay Lại
+            Back
           </Button>
           <Button type="primary" htmlType="submit">
-            Đặt Hàng
+            Continue
           </Button>
         </Form.Item>
       </Form>
