@@ -6,8 +6,13 @@ const InfoTable = () => {
   const dataSource = [
     {
       key: '1',
-      category: 'Signup Test',
-      info: 'mjssdn90@gmail.com',
+      category: 'Signup Test - Account ',
+      info: 'mjssdn99@gmail.com',
+    },
+    {
+      key: '1.1',
+      category: 'Signup Test - Password',
+      info: '123',
     },
     {
       key: '2',
@@ -17,7 +22,7 @@ const InfoTable = () => {
     {
       key: '3',
       category: 'Card ZaloPay Test',
-      info: 'Info',
+      info: '4111111111111111',
     },
   ];
 

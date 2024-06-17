@@ -16,8 +16,8 @@ const Hero = () => {
                                 <p>New</p>
                                 <img src={hand_icon} style={{ width: "80px", height: "80px" }} alt="" />
                             </div>
-                            <p>collections</p>
-                            <p>for everyone</p>
+                            <p>Collections</p>
+                            <p>For Everyone</p>
                         </div>
                         <div className="text-white rounded-pill" style={{ width: "310px", height: "70px", backgroundColor: "#ff4141", fontSize: "20px", fontWeight: "500", cursor: "pointer" }}>
                             <div className="d-flex justify-content-center align-items-center h-100">

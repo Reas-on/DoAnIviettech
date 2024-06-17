@@ -55,15 +55,6 @@ function App() {
     if (allProducts.length === 0) {
       dispatch(fetchAllProducts());
     }
-    fetch("http://localhost:4000/api/ipnguoidung", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log("IP logged successfully:", data))
-      .catch((error) => console.error("Error logging IP:", error));
   }, [dispatch, allProducts]);
 
   return (

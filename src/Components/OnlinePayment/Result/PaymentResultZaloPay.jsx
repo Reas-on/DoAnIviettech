@@ -101,7 +101,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
   return (
     <div style={{ padding: "20px" }}>
       <Card
-        title="Thông tin thanh toán"
+        title="information"
         bordered={true}
         style={{
           maxWidth: "700px",
@@ -111,13 +111,13 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
         <Row>
           <Col span={24}>
             <p>
-              <strong>Mã giao dịch:</strong> {transactionInfo.transactionId}
+              <strong>Transaction ID:</strong> {transactionInfo.transactionId}
             </p>
             <p>
-              <strong>Số tiền đã thanh toán:</strong> {transactionInfo.amount.toLocaleString()}
+              <strong>Amount:</strong> {transactionInfo.amount.toLocaleString()}
             </p>
             <p>
-              <strong>Thời gian:</strong> {transactionInfo.timestamp}
+              <strong>Timestamp:</strong> {transactionInfo.timestamp}
             </p>
           </Col>
         </Row>
@@ -126,16 +126,16 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
             <Row>
               <Col span={24}>
                 <p>
-                  <strong>Mã đơn hàng:</strong> {order.orderNumber}
+                  <strong>Order Number:</strong> {order.orderNumber}
                 </p>
                 <p>
-                  <strong>Tên người nhận:</strong> {order.receiverName}
+                  <strong>Receiver Name:</strong> {order.receiverName}
                 </p>
                 <p>
-                  <strong>Địa chỉ giao hàng:</strong> {order.deliveryAddress}
+                  <strong>Delivery Address:</strong> {order.deliveryAddress}
                 </p>
                 <p>
-                  <strong>Số điện thoại:</strong> {order.phoneNumber}
+                  <strong>Phone Number:</strong> {order.phoneNumber}
                 </p>
                 <p>
                   <strong>Email:</strong> {order.email}
@@ -145,12 +145,12 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
                 </p>
                 <p>
                   <strong>Voucher:</strong>{" "}
-                  {order.Voucher ? order.Voucher : "Không có"}
+                  {order.Voucher ? order.Voucher : "None"}
                 </p>
               </Col>
             </Row>
             <p>
-              <strong>Sản phẩm đã đặt:</strong>
+              <strong>Ordered Products:</strong>
             </p>
             <List
               itemLayout="horizontal"
@@ -166,19 +166,19 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
                       />
                     }
                     title={product.name}
-                    description={`Số lượng: ${product.quantity} - Tổng: ${product.total.toLocaleString()} VND`}
+                    description={`Quantity: ${product.quantity} - Total: ${product.total.toLocaleString()} VND`}
                   />
                 </List.Item>
               )}
             />
           </>
         ) : (
-          <p>
-            <strong>Thanh toán thành công!</strong>
+          <p> 
+            <strong>Loading !</strong>
           </p>
         )}
         <Button type="primary" style={{ marginTop: 20, width: "100%" }}>
-          Trang Chủ
+          Home
         </Button>
       </Card>
     </div>

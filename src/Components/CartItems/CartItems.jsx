@@ -78,7 +78,7 @@ const CartItems = () => {
                   {(product.new_price * item.quantity).toLocaleString("en-US")}{" "}
                   VND
                 </p>
-                <img
+                <img1
                   className="cartitems-remove-icon"
                   src={remove_icon}
                   onClick={() => handleRemoveFromCart(item)}

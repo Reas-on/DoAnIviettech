@@ -60,7 +60,7 @@ const PaymentResultStep = () => {
       message.success("Order successfully created");
     } catch (error) {
       console.error("Error posting order data:", error);
-      message.error("Có lỗi xảy ra khi xử lý đơn hàng");
+      message.error("Error posting order data");
     }
   }, [totalCartAmount, cartItems, allProducts,dispatch]);
 
@@ -118,11 +118,11 @@ const PaymentResultStep = () => {
                   </ul>
                 </div>
               ) : (
-                <p>Không có sản phẩm trong đơn hàng.</p>
+                <p>No ordered products.</p>
               )}
             </>
           ) : (
-            <p><strong>Thanh toán thành công!</strong></p>
+            <p><strong>Loading !</strong></p>
           )}
           <Button type="primary" style={{ marginTop: 20, width: "100%" }}>Trang Chủ</Button>
         </div>
