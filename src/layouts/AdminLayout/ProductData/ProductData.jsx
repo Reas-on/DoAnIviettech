@@ -148,7 +148,7 @@ const ProductData = () => {
           <span className="popup-close" onClick={closePopup}>
             &times;
           </span>
-          <p className="popup-message">Thông tin sản phẩm đã được cập nhật!</p>
+          <p className="popup-message">Product updated successfully!</p>
         </div>
       )}
     </div>

@@ -51,7 +51,7 @@ const UserData = () => {
         method: 'DELETE',
       });
       if (!response.ok) {
-        throw new Error('Failed to delete user');
+        throw new Error('Failed to delete user http://localhost:4000');
       }
       message.success('User deleted successfully');
       fetchUserData();
