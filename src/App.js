@@ -1,4 +1,3 @@
-import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ShopCategory from "./Pages/ShopCategory";
 import Product from "./Pages/Product";
@@ -40,8 +39,6 @@ import { useEffect } from "react";
 import { fetchCartItems } from "./Redux/Thunk/fetchCartItems";
 import { fetchAllProducts } from "./Redux/Thunk/fetchAllProducts";
 import { selectAllProducts } from "./Redux/ShopSlice";
-import InfoTable from "./Components/InfoTable/InfoTable";
-import Testotp from "./Components/testotp/testotp";
 import ProcessingOrder from "./layouts/AdminLayout/OrderData/ProcessingOrder";
 import PaidOrders from "./layouts/AdminLayout/PaymentStatus/PaidOrders";
 import PaidVNPAYOrders from "./layouts/AdminLayout/PaymentStatus/PaidVNPAYOrders";
@@ -77,8 +74,6 @@ function App() {
             <Route path="/online-payment/momo" element={<OnlineMomo />}/>
             <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
             <Route path="/email-verify" element={<EmailVerify />} />
-            <Route path="/infotable" element={<InfoTable />} />
-            <Route path="/testotp" element={<Testotp />} />
           </Route>
           {/* Admin */}
           <Route path="/admin" element={<AdminLayout />}>

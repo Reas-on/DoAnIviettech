@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:4000'; // Update with your server URL
+const baseURL = 'https://kiemhieptinhduyen.one'; // Update with your server URL
 
 const AddproductApi = {
   uploadProductImage: async (image) => {

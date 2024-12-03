@@ -8,7 +8,7 @@ export const addToCart = createAsyncThunk(
 
     try {
       if (authToken) {
-        const response = await fetch("http://localhost:4000/api/addtocart", {
+        const response = await fetch("https://kiemhieptinhduyen.one/api/addtocart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

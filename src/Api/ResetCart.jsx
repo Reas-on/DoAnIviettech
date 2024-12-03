@@ -9,7 +9,7 @@ const resetCart = async (authToken) => {
       },
     };
     const response = await axios.patch(
-      "http://localhost:4000/api/cartreset",
+      "https://kiemhieptinhduyen.one/api/cartreset",
       {},
       config 
     );

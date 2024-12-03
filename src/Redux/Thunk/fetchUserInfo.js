@@ -4,7 +4,7 @@ export const fetchUserInfo = createAsyncThunk(
   "user/fetchUserInfo",
   async (authToken) => {
     try {
-      const response = await fetch("http://localhost:4000/api/profile", {
+      const response = await fetch("https://kiemhieptinhduyen.one/api/profile", {
         method: "GET",
         headers: {
           "auth-token": authToken,

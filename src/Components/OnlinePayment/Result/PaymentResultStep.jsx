@@ -51,7 +51,7 @@ const PaymentResultStep = () => {
         status: "pending",
       };
 
-      const postResponse = await axios.post("http://localhost:4000/orderData", formData);
+      const postResponse = await axios.post("https://kiemhieptinhduyen.one/orderData", formData);
       console.log("OrderData:", postResponse.data);
       setOrder(postResponse.data);
       orderSentRef.current = true;
@@ -73,7 +73,7 @@ const PaymentResultStep = () => {
       const authToken = localStorage.getItem("auth-token");
       if (authToken) {
         const headers = { "auth-token": authToken };
-        await axios.patch("http://localhost:4000/api/cartreset", null, { headers });
+        await axios.patch("https://kiemhieptinhduyen.one/api/cartreset", null, { headers });
         console.log("Cart reset successful");
       } else {
         localStorage.removeItem("cartItems");

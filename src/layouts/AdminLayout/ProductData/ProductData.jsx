@@ -14,7 +14,7 @@ const ProductData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/product/allproducts/${id}`);
+        const response = await fetch(`https://kiemhieptinhduyen.one/product/allproducts/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch product data');
         }
@@ -37,7 +37,7 @@ const ProductData = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/product/allproducts/${id}`, {
+      const response = await fetch(`https://kiemhieptinhduyen.one/product/allproducts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
