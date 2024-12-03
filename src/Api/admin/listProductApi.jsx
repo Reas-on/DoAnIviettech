@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:4000';
+const baseURL = 'https://kiemhieptinhduyen.one';
 const listProductApi = {
   getAllProducts: async (currentPage) => {
     try {

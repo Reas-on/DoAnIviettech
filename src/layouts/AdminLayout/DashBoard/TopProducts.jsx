@@ -10,7 +10,7 @@ const TopProducts = () => {
 
   const fetchTopProducts = async () => {
     try {
-      const ordersResponse = await fetch('http://localhost:4000/orderData');
+      const ordersResponse = await fetch('https://kiemhieptinhduyen.one/orderData');
       if (!ordersResponse.ok) {
         throw new Error('Failed to fetch order data');
       }

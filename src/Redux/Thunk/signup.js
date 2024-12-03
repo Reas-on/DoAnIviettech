@@ -4,7 +4,7 @@ export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async (formData, thunkAPI) => {
     try {
-      const response = await fetch("http://localhost:4000/signup", {
+      const response = await fetch("https://kiemhieptinhduyen.one/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -19,7 +19,7 @@ const UserData = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch('http://localhost:4000/users');
+      const response = await fetch('https://kiemhieptinhduyen.one/users');
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
       }
@@ -47,11 +47,11 @@ const UserData = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/users/${deleteUserId}`, {
+      const response = await fetch(`https://kiemhieptinhduyen.one/users/${deleteUserId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
-        throw new Error('Failed to delete user http://localhost:4000');
+        throw new Error('Failed to delete user https://kiemhieptinhduyen.one');
       }
       message.success('User deleted successfully');
       fetchUserData();
@@ -65,7 +65,7 @@ const UserData = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/users/${editingUserId}`, {
+      const response = await fetch(`https://kiemhieptinhduyen.one/users/${editingUserId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

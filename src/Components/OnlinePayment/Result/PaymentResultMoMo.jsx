@@ -23,7 +23,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
       }
 
       const response = await axios.get(
-        `http://localhost:4000/orderData?mathanhtoan=${transactionInfo.transactionId}`
+        `https://kiemhieptinhduyen.one/orderData?mathanhtoan=${transactionInfo.transactionId}`
       );
       if (response.data.length > 0) {
         setOrder(response.data[0]);
@@ -58,7 +58,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
         };
 
         const postResponse = await axios.post(
-          "http://localhost:4000/orderData",
+          "https://kiemhieptinhduyen.one/orderData",
           formData
         );
         console.log("OrderData:", postResponse.data);
@@ -93,7 +93,7 @@ const PaymentResultStepMoMo = ({ transactionInfo }) => {
       const authToken = localStorage.getItem("auth-token");
       if (authToken) {
         const headers = { "auth-token": authToken };
-        await axios.patch("http://localhost:4000/api/cartreset", null, { headers });
+        await axios.patch("https://kiemhieptinhduyen.one/api/cartreset", null, { headers });
         console.log("Cart reset successful");
       } else {
         localStorage.removeItem("cartItems");

@@ -12,7 +12,7 @@ const TotalProducts = () => {
 
   const fetchTotalProducts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/product/allproducts');
+      const response = await fetch('https://kiemhieptinhduyen.one/product/allproducts');
       if (!response.ok) {
         throw new Error('Failed to fetch total products');
       }

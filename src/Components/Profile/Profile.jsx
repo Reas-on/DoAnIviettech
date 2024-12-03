@@ -31,7 +31,7 @@ const Profile = () => {
               navigate("/login");
               return;
           }
-          const response = await fetch(`http://localhost:4000/api/profile`, {
+          const response = await fetch(`https://kiemhieptinhduyen.one/api/profile`, {
               method: "PUT",
               headers: {
                   "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const Profile = () => {
           return;
         }
         
-        const response = await fetch(`http://localhost:4000/api/profile`, {
+        const response = await fetch(`https://kiemhieptinhduyen.one/api/profile`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

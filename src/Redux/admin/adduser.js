@@ -5,7 +5,7 @@ export const addUser = createAsyncThunk(
   'admin/addUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:4000/users', {
+      const response = await fetch('https://kiemhieptinhduyen.one/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

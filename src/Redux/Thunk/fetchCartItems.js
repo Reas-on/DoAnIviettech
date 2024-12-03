@@ -9,7 +9,7 @@ export const fetchCartItems = createAsyncThunk(
         const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
         return storedItems;
       } else {
-        const response = await fetch("http://localhost:4000/api/getcart", {
+        const response = await fetch("https://kiemhieptinhduyen.one/api/getcart", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

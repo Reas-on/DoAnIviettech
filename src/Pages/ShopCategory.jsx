@@ -182,19 +182,6 @@ const ShopCategory = (props) => {
             defaultValue={sortPriceOption}
             onChange={handleSortPrice}
           />
-          {/* <input
-            type="text"
-            placeholder="Từ Giá"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-          /> */}
-          {/* <span>-</span>
-          <input
-            type="text"
-            placeholder="Giá"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value)}
-          /> */}
         </div>
       </div>
       <div className="container mt-5 shopcategory-products">

@@ -12,7 +12,7 @@ const TotalUsers = () => {
 
   const fetchTotalUsers = async () => {
     try {
-      const response = await fetch('http://localhost:4000/users');
+      const response = await fetch('https://kiemhieptinhduyen.one/users');
       if (!response.ok) {
         throw new Error('Failed to fetch total users');
       }

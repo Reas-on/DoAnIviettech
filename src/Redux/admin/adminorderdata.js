@@ -5,7 +5,7 @@ export const fetchOrderData = createAsyncThunk(
   'admin/fetchOrderData',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:4000/orderData');
+      const response = await fetch('https://kiemhieptinhduyen.one/orderData');
       if (!response.ok) {
         throw new Error('Failed to fetch order data');
       }
@@ -21,7 +21,7 @@ export const submitOrder = createAsyncThunk(
   'admin/submitOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:4000/orderData', {
+      const response = await fetch('https://kiemhieptinhduyen.one/orderData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

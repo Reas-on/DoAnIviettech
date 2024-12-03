@@ -15,7 +15,7 @@ const RevenueChart = () => {
 
   const fetchRevenueData = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:4000/orderData');
+      const response = await fetch('https://kiemhieptinhduyen.one/orderData');
       if (!response.ok) {
         throw new Error('Failed to fetch revenue data');
       }

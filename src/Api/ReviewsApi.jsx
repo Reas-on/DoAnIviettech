@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const fetchReviews = async (productId) => {
   try {
-    const response = await axios.get(`http://localhost:4000/api/comments/${productId}`);
+    const response = await axios.get(`https://kiemhieptinhduyen.one/api/comments/${productId}`);
     return response.data.comments;
   } catch (error) {
     console.error('Error fetching reviews:', error);
@@ -13,7 +13,7 @@ const fetchReviews = async (productId) => {
 const addReview = async (productId, comment, rating, token) => {
   try {
     const response = await axios.post(
-      'http://localhost:4000/api/addcomment',
+      'https://kiemhieptinhduyen.one/api/addcomment',
       { productId, comment, rating },
       {
         headers: { 'auth-token': token }

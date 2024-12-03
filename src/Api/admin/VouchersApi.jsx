@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:4000/api/vouchers';
+const baseURL = 'https://kiemhieptinhduyen.one/api/vouchers';
 
 const VouchersApi = {
   getAllVouchers: async () => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:4000/zalo';
+const BASE_URL = 'https://kiemhieptinhduyen.one/zalo';
 
 // GET all vouchers
 const getAllVouchers = async () => {

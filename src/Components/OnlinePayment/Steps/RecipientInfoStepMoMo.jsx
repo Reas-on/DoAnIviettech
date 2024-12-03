@@ -57,7 +57,7 @@ const RecipientInfoStepMoMo = ({
 
   const handlePayment = async (values) => {
     try {
-      const response = await fetch("http://localhost:4000/momo/payment", {
+      const response = await fetch("https://kiemhieptinhduyen.one/momo/payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

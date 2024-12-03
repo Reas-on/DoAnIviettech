@@ -8,7 +8,7 @@ export const removeFromCart = createAsyncThunk(
 
     try {
       if (authToken) {
-        const response = await fetch("http://localhost:4000/api/removefromcart", {
+        const response = await fetch("https://kiemhieptinhduyen.one/api/removefromcart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
