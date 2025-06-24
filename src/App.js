@@ -72,7 +72,7 @@ function App() {
             </Route>
             <Route path="/CheckOrder" element={<CheckOrder />} />
             <Route path="/online-payment" element={<OnlinePayment />}/>
-            <Route path="/online-payment/momo" element={<OnlineMomo />}/>
+            <Route path="/online-payment/momo" element={<OnlineMoMo />}/>
             <Route path="/online-payment/zalopay" element={<OnlineZaloPay />} />
             <Route path="/email-verify" element={<EmailVerify />} />
           </Route>
