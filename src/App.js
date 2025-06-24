@@ -14,7 +14,8 @@ import CheckOrder from "./Components/CheckOrder/CheckOrder";
 import EmailVerify from "./Components/verify-email/verify-email";
 import OnlineZaloPay from "./Components/OnlinePayment/OnlineZaloPay";
 import OnlinePayment from "./Components/OnlinePayment/OnlinePayment";
-import OnlineMomo from "./Components/OnlinePayment/OnlineMomo";
+import OnlineMoMo from './Components/OnlinePayment/OnlineMoMo.jsx';
+
 
 // Admin
 import AdminLayout from "./layouts/AdminLayout";
